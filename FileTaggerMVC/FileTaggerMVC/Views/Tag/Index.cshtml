@@ -46,11 +46,9 @@
         <div id="thanks">
             @*<p><a data-toggle="modal" href="#form-content" class="btn btn-primary btn-large">Add Tag type...</a></p>*@
             <p>
-                @*@Html.ActionLink("Add Tag type...", "Create")*@
                 <button type="button" class="btn btn-primary btn-large" data-toggle="modal" data-target="#createTagTypeModal">
                     Add Tag type...
                 </button>
-                @*<a href="#" id="loadViewButton" class="btn btn-primary btn-large">Add Tag type...</a>*@
             </p>
         </div>
         @if (ViewBag.TagTypes.Count == 0)
