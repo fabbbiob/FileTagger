@@ -4,5 +4,78 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+@Html.Partial("Create")
+
+<div class="row">
+    <div class="col-md-8">
+        @if (ViewBag.Tags.Count == 0)
+        {
+            <p>There are no Tags.</p>
+        }
+        else
+        {
+            <table class="table">
+                <tr>
+                    <th>
+                        Tag
+                    </th>
+                    <th>
+                        Tag type
+                    </th>
+                </tr>
+                @foreach (FileTaggerMVC.Models.Tag @tag in ViewBag.Tags)
+                {
+                    <tr>
+                        <td>
+                            @tag.Description
+                        </td>
+                        @if (@tag.TagType == null)
+                        {
+                            <td><i>None</i></td>
+                        }
+                        else
+                        {
+                           <td>@tag.TagType.Description</td>
+                        }
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+    <div class="col-md-4">
+        <div id="thanks">
+            @*<p><a data-toggle="modal" href="#form-content" class="btn btn-primary btn-large">Add Tag type...</a></p>*@
+            <p>
+                @*@Html.ActionLink("Add Tag type...", "Create")*@
+                <button type="button" class="btn btn-primary btn-large" data-toggle="modal" data-target="#createTagTypeModal">
+                    Add Tag type...
+                </button>
+                @*<a href="#" id="loadViewButton" class="btn btn-primary btn-large">Add Tag type...</a>*@
+            </p>
+        </div>
+        @if (ViewBag.TagTypes.Count == 0)
+        {
+            <p>There are no Tag types.</p>
+        }
+        else
+        { 
+            <table class="table">
+                <tr>
+                    <th>
+                        Tag type
+                    </th>
+                </tr>
+                @foreach (FileTaggerMVC.Models.TagType @tagType in ViewBag.TagTypes)
+                {
+                    <tr>
+                        <td>
+                            @tagType.Description
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+</div>
+
 

@@ -1,20 +1,11 @@
 ﻿using FileTaggerMVC.Models;
 using FileTaggerMVC.Sqlite;
-using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace FileTaggerMVC.Controllers
 {
     public class HomeController : Controller
     {
-        private static string SqliteConnectionString
-        {
-            get
-            {
-                return WebConfigurationManager.AppSettings["SqliteConnectionString"];
-            }
-        }
-
         public ActionResult Index()
         {
             //using (var ctx = new TagsSQLiteContext(SqliteConnectionString))

@@ -10,6 +10,9 @@ namespace FileTaggerMVC
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-1.11.3.min.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jquery.validate").Include(
+                        "~/Scripts/jquery.validate.min.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.min.js"));
 

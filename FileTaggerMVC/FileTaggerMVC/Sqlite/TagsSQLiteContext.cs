@@ -2,12 +2,13 @@
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.SQLite;
+using System.Web.Configuration;
 
 namespace FileTaggerMVC.Sqlite
 {
     public class TagsSQLiteContext : DbContext
     {
-        public TagsSQLiteContext(string connectionString) : base(new SQLiteConnection() { ConnectionString = connectionString }, true) { }
+        public TagsSQLiteContext() : base(new SQLiteConnection() { ConnectionString = WebConfigurationManager.AppSettings["SqliteConnectionString"] }, true) { }
 
         public DbSet<TagType> TagTypes { get; set; }
         public DbSet<Tag> Tags { get; set; }
