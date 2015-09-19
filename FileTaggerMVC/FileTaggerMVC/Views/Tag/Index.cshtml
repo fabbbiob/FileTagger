@@ -1,137 +1,33 @@
-﻿
+﻿@model IEnumerable<FileTaggerMVC.Models.Tag>
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script type="text/javascript">
-    $(function () {
-        $.ajaxSetup({ cache: false });
+<h2>Index</h2>
 
-        $("button[data-toggle]").on("click", function (e) {
-            $(e.target).closest('.btn-group').children('.dropdown-toggle').dropdown('toggle');
-            
-            $('#myModalContent').load(this.href, function () {
-                $('#myModal').modal({
-                    keyboard: true
-                }, 'show');
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th></th>
+    </tr>
 
-                bindForm(this);
-            });
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
 
-            return false;
-        });
-    });
-
-    function bindForm(dialog) {
-        $('form', dialog).submit(function () {
-            $.ajax({
-                url: this.action,
-                type: this.method,
-                data: $(this).serialize(),
-                success: function (result) {
-                    if (result.success) {
-                        $('#myModal').modal('hide');
-                        location.reload();
-                    } else {
-                        $('#myModalContent').html(result);
-                        bindForm(dialog);
-                    }
-                }
-            });
-            return false;
-        });
-    }
-</script>
-
-@*@Html.Partial("Create")*@
-
-<div id='myModal' class='modal fade in'>
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div id='myModalContent'></div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-8">
-        @if (ViewBag.Tags.Count == 0)
-        {
-            <p>There are no Tags.</p>
-        }
-        else
-        {
-            <table class="table">
-                <tr>
-                    <th>
-                        Tag
-                    </th>
-                    <th>
-                        Tag type
-                    </th>
-                </tr>
-                @foreach (FileTaggerMVC.Models.Tag @tag in ViewBag.Tags)
-                {
-                    <tr>
-                        <td>
-                            @tag.Description
-                        </td>
-                        @if (@tag.TagType == null)
-                        {
-                            <td><i>None</i></td>
-                        }
-                        else
-                        {
-                           <td>@tag.TagType.Description</td>
-                        }
-                    </tr>
-                }
-            </table>
-        }
-    </div>
-    <div class="col-md-4">
-        <div id="thanks">
-            <p>
-                @*<button type="button" class="btn btn-primary btn-large" data-toggle="modal" data-target="#createTagTypeModal">
-                    Add Tag type...
-                </button>*@
-                @Html.ActionLink("Add Tag type...", "Create", routeValues: null, htmlAttributes: new { @class = "btn btn-primary", @data_toggle = "modal" })
-            </p>
-        </div>
-        @if (ViewBag.TagTypes.Count == 0)
-        {
-            <p>There are no Tag types.</p>
-        }
-        else
-        { 
-            <table class="table">
-                <tr>
-                    <th>
-                        Tag type
-                    </th>
-                    <th></th>
-                </tr>
-                @foreach (FileTaggerMVC.Models.TagType @tagType in ViewBag.TagTypes)
-                {
-                    <tr>
-                        <td>
-                            @tagType.Description
-                        </td>
-                        <td>
-                            @*<button type="button" class="btn btn-primary btn-large" data-toggle="modal" data-target="#createTagTypeModal">
-                                Edit
-                            </button>
-                            <button type="button" class="btn btn-danger btn-large" data-toggle="modal" data-target="#createTagTypeModal">
-                                Delete
-                            </button>*@
-                            @Html.ActionLink("Edit", "Edit", routeValues: new { id = tagType.Id }, htmlAttributes: new { @class = "btn btn-primary", @data_toggle = "modal" })
-                        </td>
-                    </tr>
-                }
-            </table>
-        }
-    </div>
-</div>
-
-
+</table>

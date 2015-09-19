@@ -1,8 +1,7 @@
 ﻿using FileTaggerMVC.Models;
 using FileTaggerMVC.Sqlite;
-using System.Web.Configuration;
-using System.Web.Mvc;
 using System.Linq;
+using System.Web.Mvc;
 
 namespace FileTaggerMVC.Controllers
 {
@@ -13,35 +12,82 @@ namespace FileTaggerMVC.Controllers
         {
             using (var ctx = new TagsSQLiteContext())
             {
-                ctx.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
-
-                ViewBag.Tags = ctx.Tags.ToList();
-                ViewBag.TagTypes = ctx.TagTypes.ToList();
+                var list = ctx.Tags.ToList();
+                return View(list);
             }
+        }
 
+        // GET: Tag/Create
+        public ActionResult Create()
+        {
+            using (var ctx = new TagsSQLiteContext())
+            {
+                ViewBag.TagTypes = ctx.TagTypes.ToList();
+                var tag = new Tag();
+                tag.TagTypeViewModel = new DropDownListViewModel();
+                tag.TagTypeViewModel.Items = ctx.TagTypes.Select(tt => new SelectListItem {Text = tt.Description, Value = "1" }).ToList();
+                return View(tag);
+            }
+        }
+
+        // POST: Tag/Create
+        [HttpPost]
+        public ActionResult Create(Tag tag)
+        {
+            try
+            {
+                // TODO: Add insert logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Tag/Edit/5
+        public ActionResult Edit(int id)
+        {
             return View();
         }
 
-        // GET: Create
-        public ActionResult Create()
+        // POST: Tag/Edit/5
+        [HttpPost]
+        public ActionResult Edit(Tag tag)
         {
-            return PartialView("Create");
+            try
+            {
+                // TODO: Add update logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
         }
 
-        // POST: Create
-        [HttpPost]
-        public ActionResult Create(TagType tagType)
+        // GET: Tag/Delete/5
+        public ActionResult Delete(int id)
         {
-            if (ModelState.IsValid)
+            return View();
+        }
+
+        // POST: Tag/Delete/5
+        [HttpPost]
+        public ActionResult Delete(Tag tag)
+        {
+            try
             {
-                using (var ctx = new TagsSQLiteContext())
-                {
-                    ctx.TagTypes.Add(tagType);
-                    ctx.SaveChanges();
-                }
+                // TODO: Add delete logic here
+
+                return RedirectToAction("Index");
             }
-            
-            return RedirectToAction("Index");
+            catch
+            {
+                return View();
+            }
         }
     }
 }

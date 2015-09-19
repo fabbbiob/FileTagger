@@ -147,6 +147,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DropDownListViewModel.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\TagMap.cs" />
@@ -198,12 +199,12 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-    <Content Include="Views\Tag\Index.cshtml" />
-    <Content Include="Views\Tag\Create.cshtml" />
     <Content Include="Views\TagType\Index.cshtml" />
     <Content Include="Views\TagType\Create.cshtml" />
     <Content Include="Views\TagType\Edit.cshtml" />
     <Content Include="Views\TagType\Delete.cshtml" />
+    <Content Include="Views\Tag\Create.cshtml" />
+    <Content Include="Views\Tag\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
