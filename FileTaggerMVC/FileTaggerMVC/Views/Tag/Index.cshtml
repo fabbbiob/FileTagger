@@ -4,7 +4,55 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Html.Partial("Create")
+<script type="text/javascript">
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("button[data-toggle]").on("click", function (e) {
+            $(e.target).closest('.btn-group').children('.dropdown-toggle').dropdown('toggle');
+            
+            $('#myModalContent').load(this.href, function () {
+                $('#myModal').modal({
+                    keyboard: true
+                }, 'show');
+
+                bindForm(this);
+            });
+
+            return false;
+        });
+    });
+
+    function bindForm(dialog) {
+        $('form', dialog).submit(function () {
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: $(this).serialize(),
+                success: function (result) {
+                    if (result.success) {
+                        $('#myModal').modal('hide');
+                        location.reload();
+                    } else {
+                        $('#myModalContent').html(result);
+                        bindForm(dialog);
+                    }
+                }
+            });
+            return false;
+        });
+    }
+</script>
+
+@*@Html.Partial("Create")*@
+
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-md-8">
@@ -44,11 +92,11 @@
     </div>
     <div class="col-md-4">
         <div id="thanks">
-            @*<p><a data-toggle="modal" href="#form-content" class="btn btn-primary btn-large">Add Tag type...</a></p>*@
             <p>
-                <button type="button" class="btn btn-primary btn-large" data-toggle="modal" data-target="#createTagTypeModal">
+                @*<button type="button" class="btn btn-primary btn-large" data-toggle="modal" data-target="#createTagTypeModal">
                     Add Tag type...
-                </button>
+                </button>*@
+                @Html.ActionLink("Add Tag type...", "Create", routeValues: null, htmlAttributes: new { @class = "btn btn-primary", @data_toggle = "modal" })
             </p>
         </div>
         @if (ViewBag.TagTypes.Count == 0)
@@ -62,12 +110,22 @@
                     <th>
                         Tag type
                     </th>
+                    <th></th>
                 </tr>
                 @foreach (FileTaggerMVC.Models.TagType @tagType in ViewBag.TagTypes)
                 {
                     <tr>
                         <td>
                             @tagType.Description
+                        </td>
+                        <td>
+                            @*<button type="button" class="btn btn-primary btn-large" data-toggle="modal" data-target="#createTagTypeModal">
+                                Edit
+                            </button>
+                            <button type="button" class="btn btn-danger btn-large" data-toggle="modal" data-target="#createTagTypeModal">
+                                Delete
+                            </button>*@
+                            @Html.ActionLink("Edit", "Edit", routeValues: new { id = tagType.Id }, htmlAttributes: new { @class = "btn btn-primary", @data_toggle = "modal" })
                         </td>
                     </tr>
                 }

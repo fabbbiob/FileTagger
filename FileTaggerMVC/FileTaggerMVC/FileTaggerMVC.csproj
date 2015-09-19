@@ -143,6 +143,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TagController.cs" />
+    <Compile Include="Controllers\TagTypeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -199,6 +200,10 @@
     <None Include="Project_Readme.html" />
     <Content Include="Views\Tag\Index.cshtml" />
     <Content Include="Views\Tag\Create.cshtml" />
+    <Content Include="Views\TagType\Index.cshtml" />
+    <Content Include="Views\TagType\Create.cshtml" />
+    <Content Include="Views\TagType\Edit.cshtml" />
+    <Content Include="Views\TagType\Delete.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

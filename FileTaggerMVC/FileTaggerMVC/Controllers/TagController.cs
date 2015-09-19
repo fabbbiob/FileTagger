@@ -22,12 +22,13 @@ namespace FileTaggerMVC.Controllers
             return View();
         }
 
-        public ActionResult CreateForm()
+        // GET: Create
+        public ActionResult Create()
         {
             return PartialView("Create");
         }
 
-        //POST: Tag
+        // POST: Create
         [HttpPost]
         public ActionResult Create(TagType tagType)
         {
