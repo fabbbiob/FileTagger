@@ -1,5 +1,4 @@
 ﻿using FileTaggerMVC.Models;
-using FileTaggerMVC.Sqlite;
 using System.Web.Mvc;
 
 namespace FileTaggerMVC.Controllers

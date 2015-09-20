@@ -1,5 +1,7 @@
-﻿using FileTaggerMVC.Models;
-using FileTaggerMVC.Sqlite;
+﻿using FileTaggerMVC.DAL;
+using FileTaggerMVC.ModelBinders;
+using FileTaggerMVC.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -10,41 +12,38 @@ namespace FileTaggerMVC.Controllers
         // GET: Tag
         public ActionResult Index()
         {
-            using (var ctx = new TagsSQLiteContext())
-            {
-                var list = ctx.Tags.ToList();
-                return View(list);
-            }
+            var list = TagDal.GetAll().ToList();
+            return View(list);
         }
 
         // GET: Tag/Create
         public ActionResult Create()
         {
-            using (var ctx = new TagsSQLiteContext())
-            {
-                ViewBag.TagTypes = ctx.TagTypes.ToList();
-                var tag = new Tag();
-                tag.TagTypeViewModel = new DropDownListViewModel();
-                tag.TagTypeViewModel.Items = ctx.TagTypes.Select(tt => new SelectListItem {Text = tt.Description, Value = "1" }).ToList();
-                return View(tag);
-            }
+            var tagTypes = TagTypeDal.GetAll().ToList();
+            ViewBag.TagTypes = tagTypes;
+            var tag = new Tag();
+            tag.TagTypeViewModel = new DropDownListViewModel();
+
+            tag.TagTypeViewModel.Items = new List<SelectListItem>();
+            tag.TagTypeViewModel.Items.Add(new SelectListItem { Text = "None", Value = "-1" });
+            tag.TagTypeViewModel.Items.AddRange(tagTypes.Select(tt => new SelectListItem { Text = tt.Description, Value = tt.Id.ToString() }).ToList());
+
+            return View(tag);
         }
 
         // POST: Tag/Create
         [HttpPost]
-        public ActionResult Create(Tag tag)
+        public ActionResult Create([ModelBinder(typeof(TagModelBinder))]Tag tag)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
+                TagDal.Create(tag);
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
+
+        //TODO edit, delete
 
         // GET: Tag/Edit/5
         public ActionResult Edit(int id)

@@ -1,5 +1,5 @@
-﻿using FileTaggerMVC.Models;
-using FileTaggerMVC.Sqlite;
+﻿using FileTaggerMVC.DAL;
+using FileTaggerMVC.Models;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -10,11 +10,8 @@ namespace FileTaggerMVC.Controllers
         // GET: TagType
         public ActionResult Index()
         {
-            using (var ctx = new TagsSQLiteContext())
-            {
-                var list = ctx.TagTypes.ToList();
-                return View(list);
-            }
+            var list = TagTypeDal.GetAll().ToList();
+            return View(list);
         }
 
         // GET: TagType/Create
@@ -29,12 +26,8 @@ namespace FileTaggerMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (var ctx = new TagsSQLiteContext())
-                {
-                    ctx.TagTypes.Add(tagType);
-                    ctx.SaveChanges();
-                }
-            }
+                TagTypeDal.Create(tagType);
+            }          
 
             return RedirectToAction("Index");
         }
@@ -42,10 +35,7 @@ namespace FileTaggerMVC.Controllers
         // GET: TagType/Edit/5
         public ActionResult Edit(int id)
         {
-            using (var ctx = new TagsSQLiteContext())
-            {
-                return View(ctx.TagTypes.Find(id));
-            }
+            return View(TagTypeDal.Get(id));
         }
 
         // POST: TagType/Edit/5
@@ -54,11 +44,7 @@ namespace FileTaggerMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (var ctx = new TagsSQLiteContext())
-                {
-                    ctx.TagTypes.Find(tagType.Id).Description = tagType.Description;
-                    ctx.SaveChanges();
-                }
+                TagTypeDal.Edit(tagType);
             }
 
             return RedirectToAction("Index");
@@ -67,23 +53,14 @@ namespace FileTaggerMVC.Controllers
         // GET: TagType/Delete/5
         public ActionResult Delete(int id)
         {
-            using (var ctx = new TagsSQLiteContext())
-            {
-                return View(ctx.TagTypes.Find(id));
-            }
+            return View(TagTypeDal.Get(id));
         }
 
         // POST: TagType/Delete/5
         [HttpPost]
         public ActionResult Delete(TagType tagType)
         {
-            using (var ctx = new TagsSQLiteContext())
-            {
-                var toDelete = ctx.TagTypes.Find(tagType.Id);
-
-                ctx.TagTypes.Remove(toDelete);
-                ctx.SaveChanges();
-            }
+            TagTypeDal.Delete(tagType.Id);
 
             return RedirectToAction("Index");
         }

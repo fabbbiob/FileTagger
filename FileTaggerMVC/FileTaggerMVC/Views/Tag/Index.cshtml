@@ -15,6 +15,9 @@
         <th>
             @Html.DisplayNameFor(model => model.Description)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TagType)
+        </th>
         <th></th>
     </tr>
 
@@ -22,6 +25,16 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @if (item.TagType != null)
+            {
+                @item.TagType.Description
+            }
+            else
+            {
+                <i>None</i>
+            }
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

@@ -6,6 +6,6 @@ namespace FileTaggerMVC.Models
     public class DropDownListViewModel
     {
         public string SelectedValue { get; set; }
-        public IEnumerable<SelectListItem> Items { get; set; }
+        public List<SelectListItem> Items { get; set; }
     }
 }
