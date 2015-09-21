@@ -5,11 +5,11 @@ using System.Web.Configuration;
 
 namespace FileTaggerMVC.DAL
 {
-    public class TagTypeDal
+    internal class TagTypeDal
     {
         private readonly static string ConnectionString = WebConfigurationManager.AppSettings["SqliteConnectionString"];
 
-        public static IEnumerable<TagType> GetAll()
+        internal static IEnumerable<TagType> GetAll()
         {
             using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
             {
@@ -32,7 +32,7 @@ namespace FileTaggerMVC.DAL
             }
         }
 
-        public static TagType Get(int id)
+        internal static TagType Get(int id)
         {
             using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
             {
@@ -58,8 +58,8 @@ namespace FileTaggerMVC.DAL
 
             return null;
         }
-        
-        public static void Create(TagType tagType)
+
+        internal static void Create(TagType tagType)
         {
             using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
             {
@@ -74,7 +74,7 @@ namespace FileTaggerMVC.DAL
             }
         }
 
-        public static void Edit(TagType tagType)
+        internal static void Edit(TagType tagType)
         {
             using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
             {
@@ -90,7 +90,7 @@ namespace FileTaggerMVC.DAL
             }
         }
 
-        public static void Delete(int id)
+        internal static void Delete(int id)
         {
             using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
             {

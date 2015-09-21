@@ -20,7 +20,6 @@ namespace FileTaggerMVC.Controllers
         public ActionResult Create()
         {
             var tagTypes = TagTypeDal.GetAll().ToList();
-            ViewBag.TagTypes = tagTypes;
             var tag = new Tag();
             tag.TagTypeViewModel = new DropDownListViewModel();
 
@@ -43,28 +42,33 @@ namespace FileTaggerMVC.Controllers
             return RedirectToAction("Index");
         }
 
-        //TODO edit, delete
-
         // GET: Tag/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var tagTypes = TagTypeDal.GetAll().ToList();
+            var tag = TagDal.Get(id);
+            tag.TagTypeViewModel = new DropDownListViewModel();
+
+            tag.TagTypeViewModel.Items = new List<SelectListItem>();
+            tag.TagTypeViewModel.Items.Add(new SelectListItem { Text = "None", Value = "-1" });
+            tag.TagTypeViewModel.Items.AddRange(tagTypes.Select(tt => new SelectListItem { Text = tt.Description, Value = tt.Id.ToString(), Selected = tt.Id == tag.TagType.Id }).ToList());
+            //tag.TagTypeViewModel.SelectedValue = tag.TagType.Id.ToString();
+
+            //TODO not working
+
+            return View(tag);
         }
 
         // POST: Tag/Edit/5
         [HttpPost]
         public ActionResult Edit(Tag tag)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
+                TagDal.Edit(tag);
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
 
         // GET: Tag/Delete/5
