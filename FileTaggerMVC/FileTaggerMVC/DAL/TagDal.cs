@@ -79,7 +79,7 @@ namespace FileTaggerMVC.DAL
         {
             using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
             {
-                string query = "UPDATE TagType SET Description = @Description, TagType_Id = @TagType_Id where Id = @Id";
+                string query = "UPDATE Tag SET Description = @Description, TagType_Id = @TagType_Id where Id = @Id";
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@Id", tag.Id);

@@ -21,11 +21,7 @@ namespace FileTaggerMVC.DAL
                     {
                         while (dr.Read())
                         {
-                            yield return new TagType
-                            {
-                                Id = dr.GetInt32(0),
-                                Description = dr.GetString(1)
-                            };
+                            yield return Parse(dr);
                         }
                     }
                 }
@@ -46,11 +42,7 @@ namespace FileTaggerMVC.DAL
                     {
                         while (dr.Read())
                         {
-                            return new TagType
-                            {
-                                Id = dr.GetInt32(0),
-                                Description = dr.GetString(1)
-                            };
+                            return Parse(dr);
                         }
                     }
                 }
@@ -103,6 +95,15 @@ namespace FileTaggerMVC.DAL
                     cmd.ExecuteNonQuery();
                 }
             }
+        }
+
+        private static TagType Parse(SQLiteDataReader dr)
+        {
+            return new TagType
+            {
+                Id = dr.GetInt32(0),
+                Description = dr.GetString(1)
+            };
         }
     }
 }

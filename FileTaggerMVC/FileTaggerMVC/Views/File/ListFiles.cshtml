@@ -1,0 +1,34 @@
+﻿@model string
+
+@{
+    ViewBag.Title = "ListFiles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#jstreeDiv').on('changed.jstree', function (e, data) {
+            var i, j, r = [];
+            for (i = 0, j = data.selected.length; i < j; i++) {
+                r.push(data.instance.get_node(data.selected[i]).text);
+            }
+            // TODO
+        }).jstree({
+            "types" : {
+                "leaf": {
+                    "icon" : "glyphicon glyphicon-file"
+                }
+            },
+            "plugins" : [ "types" ],
+            'core': {
+                'data': [
+                   @Html.Raw(@Model)
+                ]
+            }
+        });
+    });
+</script>
+
+<div id="jstreeDiv">
+
+</div>
