@@ -1,17 +1,25 @@
 ﻿@model string
-
 @{
     ViewBag.Title = "ListFiles";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <script type="text/javascript">
     $(function () {
-        $('#jstreeDiv').on('changed.jstree', function (e, data) {
-            var i, j, r = [];
-            for (i = 0, j = data.selected.length; i < j; i++) {
-                r.push(data.instance.get_node(data.selected[i]).text);
+        $('#jstreeDiv').on('select_node.jstree', function (e, data) {
+            /*
+            data =
+            {
+                node : Object,
+                selected : Array,   // the current selection
+                event : Object      // the event (if any) that triggered this select_node
             }
+            */
+            $.ajax({
+                type: "GET",
+                url: "/CreateOrEditFile",
+                data: "my/file/path/a.exe"
+
+            });
             // TODO
         }).jstree({
             "types" : {
@@ -28,7 +36,5 @@
         });
     });
 </script>
-
 <div id="jstreeDiv">
-
 </div>

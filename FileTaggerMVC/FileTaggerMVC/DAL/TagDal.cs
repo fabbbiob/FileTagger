@@ -1,6 +1,7 @@
 ﻿using FileTaggerMVC.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
 using System.Web.Configuration;
 
@@ -39,8 +40,8 @@ namespace FileTaggerMVC.DAL
                 string query = "INSERT INTO Tag(Description, TagType_Id) VALUES (@Description, @TagType_Id)";
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Description", tag.Description);
-                    cmd.Parameters.AddWithValue("@TagType_Id", GetTagTypeId(tag));
+                    cmd.Parameters.Add("@Description", DbType.String).Value = tag.Description;
+                    cmd.Parameters.Add("@TagType_Id", DbType.Int32).Value = GetTagTypeId(tag);
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
@@ -59,7 +60,7 @@ namespace FileTaggerMVC.DAL
                                  WHERE t.Id = @Id";
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Id", id.ToString());
+                    cmd.Parameters.Add("@Id", DbType.Int32).Value = id;
 
                     conn.Open();
                     using (SQLiteDataReader dr = cmd.ExecuteReader())
@@ -82,9 +83,9 @@ namespace FileTaggerMVC.DAL
                 string query = "UPDATE Tag SET Description = @Description, TagType_Id = @TagType_Id where Id = @Id";
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Id", tag.Id);
-                    cmd.Parameters.AddWithValue("@Description", tag.Description);
-                    cmd.Parameters.AddWithValue("@TagType_Id", GetTagTypeId(tag));
+                    cmd.Parameters.Add("@Id", DbType.Int32).Value = tag.Id;
+                    cmd.Parameters.Add("@Description", DbType.String).Value = tag.Description;
+                    cmd.Parameters.Add("@TagType_Id", DbType.Int32).Value = GetTagTypeId(tag);
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
@@ -99,7 +100,7 @@ namespace FileTaggerMVC.DAL
                 string query = "DELETE FROM Tag WHERE Id = @Id";
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.Parameters.Add("@Id", DbType.Int32).Value = id;
 
                     conn.Open();
                     cmd.ExecuteNonQuery();

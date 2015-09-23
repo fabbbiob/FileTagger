@@ -1,5 +1,6 @@
 ﻿using FileTaggerMVC.Models;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
 using System.Web.Configuration;
 
@@ -35,7 +36,7 @@ namespace FileTaggerMVC.DAL
                 string query = "select Id, Description from TagType where Id = @Id";
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Id", id.ToString());
+                    cmd.Parameters.Add("@Id", DbType.Int32).Value = id;
 
                     conn.Open();
                     using (SQLiteDataReader dr = cmd.ExecuteReader())
@@ -58,7 +59,7 @@ namespace FileTaggerMVC.DAL
                 string query = "INSERT INTO TagType(Description) VALUES (@Description)";
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Description", tagType.Description);
+                    cmd.Parameters.Add("@Description", DbType.String).Value = tagType.Description;
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
@@ -73,8 +74,8 @@ namespace FileTaggerMVC.DAL
                 string query = "UPDATE TagType SET Description = @Description where Id = @Id";
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Id", tagType.Id);
-                    cmd.Parameters.AddWithValue("@Description", tagType.Description);
+                    cmd.Parameters.Add("@Id", DbType.Int32).Value = tagType.Id;
+                    cmd.Parameters.Add("@Description", DbType.String).Value = tagType.Description;
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
@@ -89,7 +90,7 @@ namespace FileTaggerMVC.DAL
                 string query = "DELETE FROM TagType WHERE Id = @Id";
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.Parameters.Add("@Id", DbType.Int32).Value = id;
 
                     conn.Open();
                     cmd.ExecuteNonQuery();

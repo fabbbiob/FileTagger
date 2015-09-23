@@ -185,8 +185,7 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Views\TagType\Index.cshtml" />
-    <Content Include="Views\TagType\Create.cshtml" />
-    <Content Include="Views\TagType\Edit.cshtml" />
+    <Content Include="Views\TagType\CreateOrEdit.cshtml" />
     <Content Include="Views\TagType\Delete.cshtml" />
     <Content Include="Views\Tag\Create.cshtml" />
     <Content Include="Views\Tag\Index.cshtml" />

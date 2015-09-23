@@ -28,23 +28,31 @@ namespace FileTaggerMVC.Controllers
             return View("ListFiles", null, json);
         }
 
-        private static void DirSearch(string sDir, JsTreeNodeModel root)
+        //
+        // GET: /File/CreateOrEditFile
+        public ActionResult CreateOrEditFile(string fileName)
+        {
+            // TODO
+            throw new System.NotImplementedException();
+        }
+
+        private static void DirSearch(string folderPath, JsTreeNodeModel root)
         {
             root.children = new List<JsTreeNodeModel>();
 
-            foreach (string f in Directory.GetFiles(sDir))
+            foreach (string fileName in Directory.GetFiles(folderPath))
             {
-                FileInfo fi = new FileInfo(f);
+                FileInfo fi = new FileInfo(fileName);
                 root.children.Add(new JsTreeNodeModel { text = fi.Name, type = "leaf" });
             }
 
-            foreach (string d in Directory.GetDirectories(sDir))
+            foreach (string directoryName in Directory.GetDirectories(folderPath))
             {
-                DirectoryInfo di = new DirectoryInfo(d);
+                DirectoryInfo directoryInfo = new DirectoryInfo(directoryName);
 
                 JsTreeNodeModel node = new JsTreeNodeModel();
-                node.text = di.Name;
-                DirSearch(d, node);
+                node.text = directoryInfo.Name;
+                DirSearch(directoryName, node);
                 root.children.Add(node);
             }
         }
