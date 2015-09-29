@@ -193,6 +193,7 @@
     <Content Include="Views\Tag\Delete.cshtml" />
     <Content Include="Views\File\Index.cshtml" />
     <Content Include="Views\File\ListFiles.cshtml" />
+    <Content Include="Views\File\CreateOrEdit.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

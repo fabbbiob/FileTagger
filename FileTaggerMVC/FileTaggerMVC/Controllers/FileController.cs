@@ -15,64 +15,74 @@ namespace FileTaggerMVC.Controllers
         }
 
         //
-        // GET: /File/ListFiles/
+        // POST: /File/ListFiles/
+        [HttpPost]
         public ActionResult ListFiles(string folderPath)
         {
             JsTreeNodeModel root = new JsTreeNodeModel
             {
-                text = "root"
+                Text = "root"
             };
 
-            DirSearch(folderPath, root);
+            DirectorySearch(folderPath, root);
             string json = JsonConvert.SerializeObject(root);
             return View("ListFiles", null, json);
         }
 
         //
         // GET: /File/CreateOrEditFile
-        public ActionResult CreateOrEditFile(string fileName)
+        public PartialViewResult CreateOrEditFile(string fileName)
         {
             // TODO
-            throw new System.NotImplementedException();
+            return PartialView("CreateOrEdit", new Models.File { FilePath = fileName });
         }
 
-        private static void DirSearch(string folderPath, JsTreeNodeModel root)
+        private static void DirectorySearch(string folderPath, JsTreeNodeModel root)
         {
-            root.children = new List<JsTreeNodeModel>();
+            root.Children = new List<JsTreeNodeModel>();
 
             foreach (string fileName in Directory.GetFiles(folderPath))
             {
-                FileInfo fi = new FileInfo(fileName);
-                root.children.Add(new JsTreeNodeModel { text = fi.Name, type = "leaf" });
+                FileInfo fileInfo = new FileInfo(fileName);
+                root.Children.Add(new JsTreeNodeModel
+                {
+                    Text = fileInfo.Name,
+                    Type = "leaf",
+                    Attr = new JsTreeAttr { DataFilename = fileInfo.FullName }
+                });
             }
 
             foreach (string directoryName in Directory.GetDirectories(folderPath))
             {
                 DirectoryInfo directoryInfo = new DirectoryInfo(directoryName);
 
-                JsTreeNodeModel node = new JsTreeNodeModel();
-                node.text = directoryInfo.Name;
-                DirSearch(directoryName, node);
-                root.children.Add(node);
+                JsTreeNodeModel node = new JsTreeNodeModel
+                {
+                    Text = directoryInfo.Name
+                };
+
+                DirectorySearch(directoryName, node);
+
+                root.Children.Add(node);
             }
         }
-
     }
 
-    public class JsTreeNodeModel
+    internal class JsTreeNodeModel
     {
-        //public string id;
-        public string text;
-        //public string icon;
-        //public JsTreeNoteStateModel state;
-        public List<JsTreeNodeModel> children;
-        public string type;
+        [JsonProperty(PropertyName = "text")]
+        public string Text;
+        [JsonProperty(PropertyName = "children")]
+        public List<JsTreeNodeModel> Children;
+        [JsonProperty(PropertyName = "type")]
+        public string Type;
+        [JsonProperty(PropertyName = "a_attr")]
+        public JsTreeAttr Attr;
     }
 
-    //public class JsTreeNoteStateModel
-    //{
-    //    public bool opened;
-    //    public bool disabled;
-    //    public bool selected;
-    //}
+    internal class JsTreeAttr
+    {
+        [JsonProperty(PropertyName = "data-filename")]
+        public string DataFilename;
+    }
 }

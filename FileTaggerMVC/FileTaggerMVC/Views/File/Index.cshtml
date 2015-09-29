@@ -3,10 +3,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using (Html.BeginForm("ListFiles", "File", System.Web.Mvc.FormMethod.Get))
+@using (Html.BeginForm("ListFiles", "File"))
 {
-    @Html.AntiForgeryToken()
-
     <div class="form-horizontal">
         <div class="row">
             <div class="col-lg-12">
