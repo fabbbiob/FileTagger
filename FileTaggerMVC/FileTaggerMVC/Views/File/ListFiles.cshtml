@@ -8,7 +8,7 @@
         $('#jstreeDiv').on('select_node.jstree', function (e, nodeData) {
             $.ajax({
                 type: "GET",
-                url: "/File/CreateOrEditFile",
+                url: "/File/Details",
                 data: "fileName=" + nodeData.node.a_attr["data-filename"]
 
             }).done(function (dataDone) {

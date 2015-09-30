@@ -2,6 +2,8 @@
 using System.Web.Mvc;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using FileTaggerMVC.Models;
+using FileTaggerMVC.DAL;
 
 namespace FileTaggerMVC.Controllers
 {
@@ -31,10 +33,28 @@ namespace FileTaggerMVC.Controllers
 
         //
         // GET: /File/CreateOrEditFile
-        public PartialViewResult CreateOrEditFile(string fileName)
+        public PartialViewResult Details(string fileName)
         {
-            // TODO
-            return PartialView("CreateOrEdit", new Models.File { FilePath = fileName });
+            var file = FileDal.Get(fileName);
+            if (file != null)
+            {
+                return PartialView("Details", file);
+            }
+            else
+            {
+                return PartialView("CreateLink");
+            }
+        }
+
+        public ActionResult Edit(int id)
+        {
+            return View("CreateOrEdit", FileDal.Get(id));
+        }
+
+        public ActionResult Create()
+        {
+            //TODO
+            return View("CreateOrEdit", new FileTaggerMVC.Models.File { Tags = new LinkedList<Tag>() });
         }
 
         private static void DirectorySearch(string folderPath, JsTreeNodeModel root)

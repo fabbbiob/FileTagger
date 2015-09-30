@@ -1,0 +1,49 @@
+﻿@model FileTaggerMVC.Models.File
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FilePath)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FilePath)
+        </dd>
+
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Tags)
+        </dt>
+
+        <dd>
+            @if (!Model.Tags.Any()) 
+            {
+                <text>No tags.</text>
+            }
+            else
+            {
+                <table>
+                    <tr>
+                        <th>
+                            Tag
+                        </th>
+                    </tr>
+
+                    @foreach(var tag in Model.Tags)
+                    {
+                        <tr>
+                            <td>
+                                @tag.Description
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+</p>

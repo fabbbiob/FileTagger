@@ -129,6 +129,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Controllers\TagTypeController.cs" />
+    <Compile Include="DAL\FileDal.cs" />
     <Compile Include="DAL\TagDal.cs" />
     <Compile Include="DAL\TagTypeDal.cs" />
     <Compile Include="Global.asax.cs">
@@ -194,6 +195,8 @@
     <Content Include="Views\File\Index.cshtml" />
     <Content Include="Views\File\ListFiles.cshtml" />
     <Content Include="Views\File\CreateOrEdit.cshtml" />
+    <Content Include="Views\File\Details.cshtml" />
+    <Content Include="Views\File\CreateLink.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
