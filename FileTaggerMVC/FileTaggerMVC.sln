@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTaggerMVC", "FileTaggerMVC\FileTaggerMVC.csproj", "{C923F4ED-1468-48AB-8DBE-01F629BD5082}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FileTaggerModel", "FileTaggerModel\FileTaggerModel.xproj", "{8A82E7BC-3E3E-4FEF-A58C-031D6CCED97D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{C923F4ED-1468-48AB-8DBE-01F629BD5082}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C923F4ED-1468-48AB-8DBE-01F629BD5082}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C923F4ED-1468-48AB-8DBE-01F629BD5082}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A82E7BC-3E3E-4FEF-A58C-031D6CCED97D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A82E7BC-3E3E-4FEF-A58C-031D6CCED97D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A82E7BC-3E3E-4FEF-A58C-031D6CCED97D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A82E7BC-3E3E-4FEF-A58C-031D6CCED97D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
