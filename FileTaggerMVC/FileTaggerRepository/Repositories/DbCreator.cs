@@ -1,0 +1,75 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SQLite;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace FileTaggerRepository.Repositories
+{
+    public class DbCreator
+    {
+        private static string ConnectionString
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["SqliteConnectionString"];
+            }
+        }
+
+        private const string CreateTables = @"  PRAGMA foreign_keys = ON;
+                                                CREATE TABLE TagType(
+	                                                Id INTEGER PRIMARY KEY,
+	                                                Description TEXT NOT NULL
+                                                );
+
+                                                CREATE TABLE Tag(
+	                                                Id INTEGER PRIMARY KEY,
+	                                                Description TEXT NOT NULL,
+	                                                TagType_Id INTEGER,
+	                                                FOREIGN KEY(TagType_Id) REFERENCES TagType(Id)
+                                                );
+
+                                                CREATE TABLE File(
+	                                                Id INTEGER PRIMARY KEY,
+	                                                FilePath TEXT NOT NULL
+                                                );
+
+                                                CREATE UNIQUE INDEX UniqueFilePathIndex
+                                                on File (FilePath);
+
+                                                CREATE TABLE TagMap(
+	                                                Id INTEGER PRIMARY KEY,
+	                                                File_Id INTEGER NOT NULL,
+	                                                Tag_Id INTEGER NOT NULL,
+	                                                FOREIGN KEY(File_Id) REFERENCES File(Id),
+	                                                FOREIGN KEY(Tag_Id) REFERENCES Tag(Id)
+                                                );";
+
+        public static void CreateDatabase()
+        {
+            Dictionary<string, string> dict = Regex.Matches(ConnectionString, @"\s*(?<key>[^;=]+)\s*=\s*((?<value>[^'][^;]*)|'(?<value>[^']*)')")
+                                                   .Cast<Match>()
+                                                   .ToDictionary(m => m.Groups["key"].Value,
+                                                          m => m.Groups["value"].Value);
+            string dbFileName = (string)dict["Data Source"];
+
+            if (!System.IO.File.Exists(dbFileName))
+            {
+                SQLiteConnection.CreateFile(dbFileName);
+
+                using (var dbConnection = new SQLiteConnection(ConnectionString))
+                {
+                    dbConnection.Open();
+
+                    SQLiteCommand command = new SQLiteCommand(CreateTables, dbConnection);
+                    command.ExecuteNonQuery();
+
+                    dbConnection.Close();
+                }
+            }
+        }
+    }
+}
