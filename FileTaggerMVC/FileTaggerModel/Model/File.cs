@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace FileTaggerModel.Models
+namespace FileTaggerModel.Model
 {
-    public class File
+    public class File : IEntity
     {
         public int Id { get; set; }
         public string FilePath { get; set; }

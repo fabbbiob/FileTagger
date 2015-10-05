@@ -2,51 +2,57 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SQLite;
+using FileTaggerModel;
 
-namespace FileTaggerRepository
+namespace FileTaggerRepository.Repositories.Abstract
 {
-    public abstract class RepositoryBase<T> : IRepository<T> where T : class
+    public abstract class RepositoryBase<T> : IRepository<T> where T : class, IEntity
     {
-        private static string ConnectionString 
-        {
-            get 
-            { 
-                return ConfigurationManager.AppSettings["SqliteConnectionString"]; 
-            }
-        }
+        private static string ConnectionString => ConfigurationManager.AppSettings["SqliteConnectionString"];
 
         protected abstract string AddQuery { get; }
         protected abstract void AddCommandBuilder(SQLiteCommand cmd, T entity);
         public void Add(T entity)
         {
-            ExecuteNonQuery(AddQuery, AddCommandBuilder, entity);
+            entity.Id = (int)(long)ExecuteQuery(AddQuery, AddCommandBuilder, entity);
         }
 
         protected abstract string UpdateQuery { get; }
         protected abstract void UpdateCommandBuilder(SQLiteCommand cmd, T entity);
         public void Update(T entity)
         {
-            ExecuteNonQuery(UpdateQuery, UpdateCommandBuilder, entity);
+            ExecuteQuery(UpdateQuery, UpdateCommandBuilder, entity);
         }
 
         protected abstract string DeleteQuery { get; }
         protected abstract void DeleteCommandBuilder(SQLiteCommand cmd, T entity);
         public void Delete(T entity)
         {
-            ExecuteNonQuery(DeleteQuery, DeleteCommandBuilder, entity);
+            ExecuteQuery(DeleteQuery, DeleteCommandBuilder, entity);
         }
 
-        private void ExecuteNonQuery(string query, Action<SQLiteCommand, T> commandBuilder, T entity) 
+        private object ExecuteQuery(string query, Action<SQLiteCommand, T> commandBuilder, T entity) 
         {
-            using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
+            SQLiteConnection conn = null;
+            SQLiteCommand cmd = null;
+            try
             {
-                using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
-                {
-                    commandBuilder(cmd, entity);
+                conn = new SQLiteConnection(ConnectionString);
+                cmd = new SQLiteCommand(query, conn);
 
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                }
+                commandBuilder(cmd, entity);
+
+                conn.Open();
+                return cmd.ExecuteScalar();
+            }
+            finally
+            {
+                cmd?.Dispose();
+
+                conn?.Close();
+                conn?.Dispose();
+
+                SQLiteConnection.ClearAllPools();
             }
         }
 
@@ -54,21 +60,35 @@ namespace FileTaggerRepository
         protected abstract void GetByIdCommandBuilder(SQLiteCommand cmd, int id);
         public T GetById(int id)
         {
-            using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
+            SQLiteConnection conn = null;
+            SQLiteCommand cmd = null;
+            SQLiteDataReader dr = null;
+            try
             {
-                using (SQLiteCommand cmd = new SQLiteCommand(GetByIdQuery, conn))
-                {
-                    GetByIdCommandBuilder(cmd, id);
+                conn = new SQLiteConnection(ConnectionString);
+                cmd = new SQLiteCommand(GetByIdQuery, conn);
 
-                    conn.Open();
-                    using (SQLiteDataReader dr = cmd.ExecuteReader())
-                    {
-                        while (dr.Read())
-                        {
-                            return Parse(dr);
-                        }
-                    }
+                GetByIdCommandBuilder(cmd, id);
+
+                conn.Open();
+                dr = cmd.ExecuteReader();
+                
+                while (dr.Read())
+                {
+                    return Parse(dr);
                 }
+            }
+            finally
+            {
+                dr?.Close();
+                dr?.Dispose();
+
+                cmd?.Dispose();
+
+                conn?.Close();
+                conn?.Dispose();
+
+                SQLiteConnection.ClearAllPools();
             }
 
             return default(T);
@@ -77,19 +97,33 @@ namespace FileTaggerRepository
         protected abstract string GetAllQuery { get; }
         public IEnumerable<T> GetAll()
         {
-            using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
+            SQLiteConnection conn = null;
+            SQLiteCommand cmd = null;
+            SQLiteDataReader dr = null;
+            try
             {
-                using (SQLiteCommand cmd = new SQLiteCommand(GetAllQuery, conn))
+                conn = new SQLiteConnection(ConnectionString);
+                cmd = new SQLiteCommand(GetAllQuery, conn);
+                
+                conn.Open();
+                dr = cmd.ExecuteReader();
+
+                while (dr.Read())
                 {
-                    conn.Open();
-                    using (SQLiteDataReader dr = cmd.ExecuteReader())
-                    {
-                        while (dr.Read())
-                        {
-                            yield return Parse(dr);
-                        }
-                    }
+                    yield return Parse(dr);
                 }
+            }
+            finally
+            {
+                dr?.Close();
+                dr?.Dispose();
+
+                cmd?.Dispose();
+                
+                conn?.Close();
+                conn?.Dispose();
+
+                SQLiteConnection.ClearAllPools();
             }
         }
 

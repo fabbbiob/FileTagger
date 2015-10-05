@@ -3,21 +3,14 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SQLite;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace FileTaggerRepository.Repositories
 {
     public class DbCreator
     {
-        private static string ConnectionString
-        {
-            get
-            {
-                return ConfigurationManager.AppSettings["SqliteConnectionString"];
-            }
-        }
+        private static string ConnectionString => ConfigurationManager.AppSettings["SqliteConnectionString"];
 
         private const string CreateTables = @"  PRAGMA foreign_keys = ON;
                                                 CREATE TABLE TagType(
@@ -48,15 +41,18 @@ namespace FileTaggerRepository.Repositories
 	                                                FOREIGN KEY(Tag_Id) REFERENCES Tag(Id)
                                                 );";
 
+
+        private static Dictionary<string, string> ConnectionStringParameters => 
+            Regex.Matches(ConnectionString, @"\s*(?<key>[^;=]+)\s*=\s*((?<value>[^'][^;]*)|'(?<value>[^']*)')")
+                 .Cast<Match>()
+                 .ToDictionary(m => m.Groups["key"].Value,
+                               m => m.Groups["value"].Value);
+
         public static void CreateDatabase()
         {
-            Dictionary<string, string> dict = Regex.Matches(ConnectionString, @"\s*(?<key>[^;=]+)\s*=\s*((?<value>[^'][^;]*)|'(?<value>[^']*)')")
-                                                   .Cast<Match>()
-                                                   .ToDictionary(m => m.Groups["key"].Value,
-                                                          m => m.Groups["value"].Value);
-            string dbFileName = (string)dict["Data Source"];
+            string dbFileName = ConnectionStringParameters["Data Source"];
 
-            if (!System.IO.File.Exists(dbFileName))
+            if (!File.Exists(dbFileName))
             {
                 SQLiteConnection.CreateFile(dbFileName);
 
@@ -70,6 +66,11 @@ namespace FileTaggerRepository.Repositories
                     dbConnection.Close();
                 }
             }
+        }
+
+        public static void DeleteDatabase()
+        {
+            File.Delete(ConnectionStringParameters["Data Source"]);
         }
     }
 }

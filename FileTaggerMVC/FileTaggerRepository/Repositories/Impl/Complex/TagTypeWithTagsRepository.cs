@@ -1,23 +1,18 @@
-﻿using FileTaggerModel.Models;
+﻿using FileTaggerModel.Model;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using FileTaggerRepository.Repositories.Impl.Simple;
 
-namespace FileTaggerRepository.Repositories.Impl
+namespace FileTaggerRepository.Repositories.Impl.Complex
 {
     public class TagTypeWithTagsRepository : TagTypeRepository
     {
-        protected override string GetByIdQuery
-        {
-            get
-            {
-                return @"SELECT tt.Id, tt.Description FROM TagType AS tt WHERE Id = @Id
-                         
+        protected override string GetByIdQuery => 
+                       @"SELECT tt.Id, tt.Description FROM TagType AS tt WHERE Id = @Id
                          SELECT t.Id, t.Description 
                          FROM TagType AS tt 
                          INNER JOIN TAG AS T ON tt.Id = t.TagType_Id 
                          WHERE Id = @Id";
-            }
-        }
 
         protected override TagType Parse(SQLiteDataReader dr)
         {

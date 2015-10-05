@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTaggerModel", "FileTagg
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTaggerRepository", "FileTaggerRepository\FileTaggerRepository.csproj", "{B497D11E-E0C2-425D-8B1A-6E2E292717E7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{46E8A753-DCB4-461A-9966-6757297B8549}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTaggerRepositoryTests", "FileTaggerRepositoryTests\FileTaggerRepositoryTests.csproj", "{6C6DF586-3A79-47E4-B514-67644C9C4807}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,8 +31,15 @@ Global
 		{B497D11E-E0C2-425D-8B1A-6E2E292717E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B497D11E-E0C2-425D-8B1A-6E2E292717E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B497D11E-E0C2-425D-8B1A-6E2E292717E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6C6DF586-3A79-47E4-B514-67644C9C4807} = {46E8A753-DCB4-461A-9966-6757297B8549}
 	EndGlobalSection
 EndGlobal

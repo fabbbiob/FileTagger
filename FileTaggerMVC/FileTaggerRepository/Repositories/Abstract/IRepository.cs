@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FileTaggerRepository
+namespace FileTaggerRepository.Repositories.Abstract
 {
     interface IRepository<T> where T : class
     {
