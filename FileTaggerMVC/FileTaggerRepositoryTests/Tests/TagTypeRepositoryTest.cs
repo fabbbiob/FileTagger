@@ -82,7 +82,7 @@ namespace FileTaggerRepositoryTests.Tests
         public void CanGetAllTagTypes()
         {
             TagTypeRepository repo = new TagTypeRepository();
-            TagType tagType1 = new TagType {Description = "tt1"};
+            TagType tagType1 = new TagType { Description = "tt1" };
             TagType tagType2 = new TagType { Description = "tt2" };
             repo.Add(tagType1);
             repo.Add(tagType2);
