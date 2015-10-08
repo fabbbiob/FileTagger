@@ -1,7 +1,7 @@
 ﻿using FileTaggerRepository.Repositories;
 using NUnit.Framework;
 
-namespace FileTaggerRepositoryTests
+namespace FileTaggerRepositoryTests.Tests
 {
     [TestFixture]
     public class DbCreatorTest

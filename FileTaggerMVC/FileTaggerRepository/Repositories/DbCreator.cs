@@ -67,10 +67,5 @@ namespace FileTaggerRepository.Repositories
                 }
             }
         }
-
-        public static void DeleteDatabase()
-        {
-            File.Delete(ConnectionStringParameters["Data Source"]);
-        }
     }
 }

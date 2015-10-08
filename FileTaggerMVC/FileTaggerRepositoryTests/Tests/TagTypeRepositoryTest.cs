@@ -5,7 +5,7 @@ using FileTaggerRepository.Repositories;
 using FileTaggerRepository.Repositories.Impl.Simple;
 using NUnit.Framework;
 
-namespace FileTaggerRepositoryTests.TagTypeTests
+namespace FileTaggerRepositoryTests.Tests
 {
     [TestFixture]
     public class TagTypeRepositoryTest
@@ -13,7 +13,6 @@ namespace FileTaggerRepositoryTests.TagTypeTests
         [TestFixtureSetUp]
         public void Setup()
         {
-            DbCreator.DeleteDatabase();
             DbCreator.CreateDatabase();
         }
 
@@ -89,9 +88,9 @@ namespace FileTaggerRepositoryTests.TagTypeTests
             repo.Add(tagType2);
 
             TagType[] tagTypes = repo.GetAll().ToArray();
-            
-            Assert.AreEqual(tagType1, tagTypes[0]);
-            Assert.AreEqual(tagType2, tagTypes[1]);
+
+            Assert.True(tagTypes.Contains(tagType1));
+            Assert.True(tagTypes.Contains(tagType2));
         }
     }
 }

@@ -7,8 +7,7 @@ namespace FileTaggerRepository.Repositories.Impl.Simple
 {
     public class TagTypeRepository : RepositoryBase<TagType>
     {
-        protected override string AddQuery => @"INSERT INTO TagType(Description) VALUES (@Description);
-                                                SELECT last_insert_rowid() FROM TagType";
+        protected override string AddQuery => @"INSERT INTO TagType(Description) VALUES (@Description)";
 
         protected override void AddCommandBuilder(SQLiteCommand cmd, TagType entity)
         {

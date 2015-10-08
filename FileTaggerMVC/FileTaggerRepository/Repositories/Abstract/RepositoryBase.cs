@@ -14,7 +14,7 @@ namespace FileTaggerRepository.Repositories.Abstract
         protected abstract void AddCommandBuilder(SQLiteCommand cmd, T entity);
         public void Add(T entity)
         {
-            entity.Id = (int)(long)ExecuteQuery(AddQuery, AddCommandBuilder, entity);
+            entity.Id = ExecuteQuery(AddQuery, AddCommandBuilder, entity);
         }
 
         protected abstract string UpdateQuery { get; }
@@ -31,7 +31,7 @@ namespace FileTaggerRepository.Repositories.Abstract
             ExecuteQuery(DeleteQuery, DeleteCommandBuilder, entity);
         }
 
-        private object ExecuteQuery(string query, Action<SQLiteCommand, T> commandBuilder, T entity) 
+        private int ExecuteQuery(string query, Action<SQLiteCommand, T> commandBuilder, T entity) 
         {
             SQLiteConnection conn = null;
             SQLiteCommand cmd = null;
@@ -41,9 +41,9 @@ namespace FileTaggerRepository.Repositories.Abstract
                 cmd = new SQLiteCommand(query, conn);
 
                 commandBuilder(cmd, entity);
-
                 conn.Open();
-                return cmd.ExecuteScalar();
+                cmd.ExecuteNonQuery();
+                return (int)conn.LastInsertRowId;
             }
             finally
             {

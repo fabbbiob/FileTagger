@@ -57,9 +57,10 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="DbCreatorTest.cs" />
+    <Compile Include="Tests\DbCreatorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TagTypeTests\TagTypeRepositoryTest.cs" />
+    <Compile Include="Tests\TagRepositoryTest.cs" />
+    <Compile Include="Tests\TagTypeRepositoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -77,6 +78,7 @@
       <Name>FileTaggerRepository</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
