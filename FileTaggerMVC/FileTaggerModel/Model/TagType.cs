@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace FileTaggerModel.Model
 {
@@ -16,7 +17,27 @@ namespace FileTaggerModel.Model
             }
 
             TagType other = (TagType)obj;
-            return Id == other.Id;
+            if (Id != other.Id || Description != other.Description)
+            {
+                return false;
+            }
+
+            if ((Tags != null && other.Tags == null) || (Tags == null && other.Tags != null))
+            {
+                return false;
+            }
+
+            if(Tags != null && other.Tags != null)
+            { 
+                foreach (var elem in Tags.Zip(other.Tags, (a, b) => new { First = a, Second = b }))
+                {
+                    if (!elem.First.Equals(elem.Second))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         public override int GetHashCode()

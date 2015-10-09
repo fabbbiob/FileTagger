@@ -8,11 +8,11 @@ namespace FileTaggerRepository.Repositories.Impl.Complex
     public class TagTypeWithTagsRepository : TagTypeRepository
     {
         protected override string GetByIdQuery => 
-                       @"SELECT tt.Id, tt.Description FROM TagType AS tt WHERE Id = @Id
+                       @"SELECT tt.Id, tt.Description FROM TagType AS tt WHERE tt.Id = @Id;
                          SELECT t.Id, t.Description 
                          FROM TagType AS tt 
                          INNER JOIN TAG AS T ON tt.Id = t.TagType_Id 
-                         WHERE Id = @Id";
+                         WHERE tt.Id = @Id";
 
         protected override TagType Parse(SQLiteDataReader dr)
         {

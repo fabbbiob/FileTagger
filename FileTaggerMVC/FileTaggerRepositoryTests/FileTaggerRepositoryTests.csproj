@@ -62,6 +62,7 @@
     <Compile Include="Tests\FileRepositoryTest.cs" />
     <Compile Include="Tests\TagRepositoryTest.cs" />
     <Compile Include="Tests\TagTypeRepositoryTest.cs" />
+    <Compile Include="Tests\TagTypeWithTagsRepositoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
