@@ -12,7 +12,7 @@ namespace FileTaggerRepository.Repositories.Abstract
 
         protected abstract string AddQuery { get; }
         protected abstract void AddCommandBuilder(SQLiteCommand cmd, T entity);
-        public void Add(T entity)
+        public virtual void Add(T entity)
         {
             entity.Id = ExecuteQuery(AddQuery, AddCommandBuilder, entity);
         }
@@ -94,6 +94,41 @@ namespace FileTaggerRepository.Repositories.Abstract
             return default(T);
         }
 
+        protected abstract string GetByIdWithReferencesQuery { get; }
+
+        public T GetByIdWithReferences(int id)
+        {
+            SQLiteConnection conn = null;
+            SQLiteCommand cmd = null;
+            SQLiteDataReader dr = null;
+            try
+            {
+                conn = new SQLiteConnection(ConnectionString);
+                cmd = new SQLiteCommand(GetByIdWithReferencesQuery, conn);
+
+                GetByIdCommandBuilder(cmd, id);
+
+                conn.Open();
+                dr = cmd.ExecuteReader();
+
+                return ParseWithReferences(dr);
+            }
+            finally
+            {
+                dr?.Close();
+                dr?.Dispose();
+
+                cmd?.Dispose();
+
+                conn?.Close();
+                conn?.Dispose();
+
+                SQLiteConnection.ClearAllPools();
+            }
+
+            return default(T);
+        }
+
         protected abstract string GetAllQuery { get; }
         public IEnumerable<T> GetAll()
         {
@@ -128,5 +163,6 @@ namespace FileTaggerRepository.Repositories.Abstract
         }
 
         protected abstract T Parse(SQLiteDataReader dr);
+        protected abstract T ParseWithReferences(SQLiteDataReader dr);
     }
 }

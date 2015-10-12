@@ -2,7 +2,7 @@
 using System.Linq;
 using FileTaggerModel.Model;
 using FileTaggerRepository.Repositories;
-using FileTaggerRepository.Repositories.Impl.Simple;
+using FileTaggerRepository.Repositories.Impl;
 using NUnit.Framework;
 
 namespace FileTaggerRepositoryTests.Tests

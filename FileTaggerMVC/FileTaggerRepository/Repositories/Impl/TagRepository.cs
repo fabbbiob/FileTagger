@@ -1,10 +1,11 @@
 ﻿using FileTaggerModel.Model;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using FileTaggerRepository.Repositories.Abstract;
 
-namespace FileTaggerRepository.Repositories.Impl.Simple
+namespace FileTaggerRepository.Repositories.Impl
 {
     public class TagRepository : RepositoryBase<Tag>
     {
@@ -71,6 +72,38 @@ namespace FileTaggerRepository.Repositories.Impl.Simple
                     Description = dr.GetString(3)
                 };
             }
+
+            return tag;
+        }
+
+        protected override string GetByIdWithReferencesQuery =>
+                        @"SELECT t.Id, t.Description
+                          FROM Tag AS t
+                          WHERE t.Id = @Id;
+                          SELECT f.Id, f.FilePath
+                          FROM File AS f
+                          INNER JOIN TagMap AS tm
+                          ON tm.File_Id = f.Id
+                          WHERE tm.Tag_Id = @Id";
+
+        protected override Tag ParseWithReferences(SQLiteDataReader dr)
+        {
+            if (!dr.Read()) return null;
+            Tag tag = Parse(dr);
+
+            LinkedList<File> files = new LinkedList<File>();
+            dr.NextResult();
+
+            while (dr.Read())
+            {
+                files.AddLast(new File
+                {
+                    Id = dr.GetInt32(0),
+                    FilePath = dr.GetString(1)
+                });
+            }
+
+            tag.Files = files;
 
             return tag;
         }

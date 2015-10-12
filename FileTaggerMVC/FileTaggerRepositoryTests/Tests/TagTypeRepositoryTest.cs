@@ -2,7 +2,7 @@
 using System.Linq;
 using FileTaggerModel.Model;
 using FileTaggerRepository.Repositories;
-using FileTaggerRepository.Repositories.Impl.Simple;
+using FileTaggerRepository.Repositories.Impl;
 using NUnit.Framework;
 
 namespace FileTaggerRepositoryTests.Tests
@@ -34,7 +34,7 @@ namespace FileTaggerRepositoryTests.Tests
         }
 
         [Test]
-        public void CanGetTagType()
+        public void CanGetTagTypeNoReferences()
         {
             TagTypeRepository repo = new TagTypeRepository();
             TagType tagType = new TagType
@@ -46,6 +46,12 @@ namespace FileTaggerRepositoryTests.Tests
             Assert.AreEqual(tagType, repo.GetById(tagType.Id));
         }
 
+        [Test]
+        public void CanGetTagTypeWithReferences()
+        {
+            //TODO
+        }
+        
         [Test]
         public void CanUpdateTagType()
         {

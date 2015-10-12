@@ -46,12 +46,9 @@
     <Compile Include="Repositories\Abstract\IRepository.cs" />
     <Compile Include="Repositories\Abstract\RepositoryBase.cs" />
     <Compile Include="Repositories\DbCreator.cs" />
-    <Compile Include="Repositories\Impl\Simple\FileRepository.cs" />
-    <Compile Include="Repositories\Impl\Complex\FileWithTagsRepository.cs" />
-    <Compile Include="Repositories\Impl\Simple\TagRepository.cs" />
-    <Compile Include="Repositories\Impl\Simple\TagTypeRepository.cs" />
-    <Compile Include="Repositories\Impl\Complex\TagTypeWithTagsRepository.cs" />
-    <Compile Include="Repositories\Impl\Complex\TagWithFilesRepository.cs" />
+    <Compile Include="Repositories\Impl\FileRepository.cs" />
+    <Compile Include="Repositories\Impl\TagRepository.cs" />
+    <Compile Include="Repositories\Impl\TagTypeRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FileTaggerModel\FileTaggerModel.csproj">

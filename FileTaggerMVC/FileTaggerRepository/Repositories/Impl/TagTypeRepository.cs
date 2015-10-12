@@ -1,9 +1,10 @@
-﻿using FileTaggerModel.Model;
+﻿using System.Collections.Generic;
+using FileTaggerModel.Model;
 using System.Data;
 using System.Data.SQLite;
 using FileTaggerRepository.Repositories.Abstract;
 
-namespace FileTaggerRepository.Repositories.Impl.Simple
+namespace FileTaggerRepository.Repositories.Impl
 {
     public class TagTypeRepository : RepositoryBase<TagType>
     {
@@ -45,6 +46,39 @@ namespace FileTaggerRepository.Repositories.Impl.Simple
                 Id = dr.GetInt32(0),
                 Description = dr.GetString(1)
             };
+        }
+
+        protected override string GetByIdWithReferencesQuery =>
+                       @"SELECT tt.Id, tt.Description 
+                         FROM TagType AS tt 
+                         WHERE tt.Id = @Id;
+                         SELECT t.Id, t.Description 
+                         FROM TagType AS tt 
+                         INNER JOIN TAG AS T ON tt.Id = t.TagType_Id 
+                         WHERE tt.Id = @Id";
+
+        protected override TagType ParseWithReferences(SQLiteDataReader dr)
+        {
+            if (!dr.Read()) return null;
+
+            TagType tagType = Parse(dr);
+
+            LinkedList<Tag> tags = new LinkedList<Tag>();
+            dr.NextResult();
+
+            while (dr.Read())
+            {
+                tags.AddLast(new Tag
+                {
+                    Id = dr.GetInt32(0),
+                    Description = dr.GetString(1),
+                    TagType = tagType
+                });
+            }
+
+            tagType.Tags = tags;
+
+            return tagType;
         }
     }
 }

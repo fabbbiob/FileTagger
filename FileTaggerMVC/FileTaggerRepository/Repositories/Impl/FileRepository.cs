@@ -3,11 +3,11 @@ using System.Data;
 using System.Data.SQLite;
 using FileTaggerRepository.Repositories.Abstract;
 
-namespace FileTaggerRepository.Repositories.Impl.Simple
+namespace FileTaggerRepository.Repositories.Impl
 {
     public class FileRepository : RepositoryBase<File>
     {
-        protected override string AddQuery => "INSERT INTO File(FilePath) VALUES(@FilePath)";
+        protected override string AddQuery => "INSERT INTO File(FilePath) VALUES(@FilePath);";
 
         protected override void AddCommandBuilder(SQLiteCommand cmd, File entity)
         {
@@ -45,6 +45,16 @@ namespace FileTaggerRepository.Repositories.Impl.Simple
                 Id = dr.GetInt32(0),
                 FilePath = dr.GetString(1)
             };
+        }
+
+        //TODO
+        protected override string GetByIdWithReferencesQuery => "";
+
+        //TODO
+        protected override File ParseWithReferences(SQLiteDataReader dr)
+        {
+            if (!dr.Read()) return null;
+            throw new System.NotImplementedException();
         }
     }
 }

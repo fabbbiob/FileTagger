@@ -1,6 +1,5 @@
 ﻿using FileTaggerModel.Model;
-using FileTaggerRepository.Repositories.Impl.Simple;
-using FileTaggerRepository.Repositories.Impl.Complex;
+using FileTaggerRepository.Repositories.Impl;
 using NUnit.Framework;
 
 namespace FileTaggerRepositoryTests.Tests
@@ -34,9 +33,8 @@ namespace FileTaggerRepositoryTests.Tests
             tagRepository.Add(tag2);
 
             tagType.Tags = new[] {tag1, tag2};
-
-            TagTypeWithTagsRepository tagTypeWithTagsRepository = new TagTypeWithTagsRepository();
-            Assert.AreEqual(tagType, tagTypeWithTagsRepository.GetById(tagType.Id));
+            
+            Assert.AreEqual(tagType, tagTypeRepository.GetByIdWithReferences(tagType.Id));
         }
     }
 }
