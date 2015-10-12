@@ -31,7 +31,7 @@ namespace FileTaggerRepository.Repositories.Abstract
             ExecuteQuery(DeleteQuery, DeleteCommandBuilder, entity);
         }
 
-        private int ExecuteQuery(string query, Action<SQLiteCommand, T> commandBuilder, T entity) 
+        protected int ExecuteQuery(string query, Action<SQLiteCommand, T> commandBuilder, T entity) 
         {
             SQLiteConnection conn = null;
             SQLiteCommand cmd = null;

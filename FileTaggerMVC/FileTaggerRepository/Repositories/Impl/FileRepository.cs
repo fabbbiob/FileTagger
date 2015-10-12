@@ -1,17 +1,48 @@
-﻿using FileTaggerModel.Model;
+﻿using System.Collections.Generic;
+using FileTaggerModel.Model;
 using System.Data;
 using System.Data.SQLite;
+using System.Text;
 using FileTaggerRepository.Repositories.Abstract;
 
 namespace FileTaggerRepository.Repositories.Impl
 {
-    public class FileRepository : RepositoryBase<File>
+    public class FileRepository : RepositoryBaseWithReferences<File>
     {
         protected override string AddQuery => "INSERT INTO File(FilePath) VALUES(@FilePath);";
 
         protected override void AddCommandBuilder(SQLiteCommand cmd, File entity)
         {
             cmd.Parameters.Add("@FilePath", DbType.String).Value = entity.FilePath;
+        }
+
+        protected override string AddWithReferencesQuery(File entity)
+        {
+            StringBuilder sb = new StringBuilder();
+            int i = 0;
+            IEnumerator<Tag> tagsEnumerator = entity.Tags.GetEnumerator();
+            while(tagsEnumerator.MoveNext())
+            {
+                sb.Append("INSERT INTO TagMap(File_Id, Tag_Id) VALUES(");
+                sb.Append("(SELECT last_insert_rowid() FROM File)");
+                sb.Append(", @Tag_Id");
+                sb.Append(i);
+                sb.Append(");");
+                i++;
+            }
+
+            return AddQuery + sb;
+        }
+
+        protected override void AddWithReferencesCommandBuilder(SQLiteCommand cmd, File entity)
+        {
+            AddCommandBuilder(cmd, entity);
+            int i = 0;
+            foreach (var tag in entity.Tags)
+            {
+                cmd.Parameters.Add("@Tag_Id" + i, DbType.String).Value = tag.Id;
+                i++;
+            }
         }
 
         protected override string UpdateQuery => "UPDATE FILE SET FilePath = @FilePath WHERE Id = @Id";
