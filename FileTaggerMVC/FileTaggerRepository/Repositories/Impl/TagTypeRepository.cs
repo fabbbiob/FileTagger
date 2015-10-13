@@ -8,36 +8,37 @@ namespace FileTaggerRepository.Repositories.Impl
 {
     public class TagTypeRepository : RepositoryBase<TagType>
     {
-        protected override string AddQuery => @"INSERT INTO TagType(Description) VALUES (@Description)";
+        protected override string AddQuery => @"INSERT INTO TagType(Description) VALUES (@Description);
+                                                SELECT last_insert_rowid() FROM TagType;";
 
-        protected override void AddCommandBuilder(SQLiteCommand cmd, TagType entity)
+        protected override void AddCommandBinder(SQLiteCommand cmd, TagType entity)
         {
             cmd.Parameters.Add("@Description", DbType.String).Value = entity.Description;
         }
 
-        protected override string UpdateQuery => "UPDATE TagType SET Description = @Description where Id = @Id";
+        protected override string UpdateQuery => "UPDATE TagType SET Description = @Description where Id = @Id;";
 
-        protected override void UpdateCommandBuilder(SQLiteCommand cmd, TagType entity)
+        protected override void UpdateCommandBinder(SQLiteCommand cmd, TagType entity)
         {
             cmd.Parameters.Add("@Id", DbType.Int32).Value = entity.Id;
             cmd.Parameters.Add("@Description", DbType.String).Value = entity.Description;
         }
 
-        protected override string DeleteQuery => "DELETE FROM TagType WHERE Id = @Id";
+        protected override string DeleteQuery => "DELETE FROM TagType WHERE Id = @Id;";
 
-        protected override void DeleteCommandBuilder(SQLiteCommand cmd, TagType entity)
+        protected override void DeleteCommandBinder(SQLiteCommand cmd, TagType entity)
         {
             cmd.Parameters.Add("@Id", DbType.Int32).Value = entity.Id;
         }
 
-        protected override string GetByIdQuery => "SELECT Id, Description FROM TagType WHERE Id = @Id";
+        protected override string GetByIdQuery => "SELECT Id, Description FROM TagType WHERE Id = @Id;";
 
-        protected override void GetByIdCommandBuilder(SQLiteCommand cmd, int id)
+        protected override void GetByIdCommandBinder(SQLiteCommand cmd, int id)
         {
             cmd.Parameters.Add("@Id", DbType.Int32).Value = id;
         }
 
-        protected override string GetAllQuery => "SELECT Id, Description FROM TagType";
+        protected override string GetAllQuery => "SELECT Id, Description FROM TagType;";
 
         protected override TagType Parse(SQLiteDataReader dr)
         {
@@ -55,7 +56,7 @@ namespace FileTaggerRepository.Repositories.Impl
                          SELECT t.Id, t.Description 
                          FROM TagType AS tt 
                          INNER JOIN TAG AS T ON tt.Id = t.TagType_Id 
-                         WHERE tt.Id = @Id";
+                         WHERE tt.Id = @Id;";
 
         protected override TagType ParseWithReferences(SQLiteDataReader dr)
         {

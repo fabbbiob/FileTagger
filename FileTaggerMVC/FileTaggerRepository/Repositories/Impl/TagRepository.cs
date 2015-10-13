@@ -10,9 +10,10 @@ namespace FileTaggerRepository.Repositories.Impl
     public class TagRepository : RepositoryBase<Tag>
     {
         protected override string AddQuery => @"INSERT INTO Tag(Description, TagType_Id) 
-                                                VALUES (@Description, @TagType_Id)";
+                                                VALUES (@Description, @TagType_Id);
+                                                SELECT last_insert_rowid() FROM Tag;";
 
-        protected override void AddCommandBuilder(SQLiteCommand cmd, Tag entity)
+        protected override void AddCommandBinder(SQLiteCommand cmd, Tag entity)
         {
             cmd.Parameters.Add("@Description", DbType.String).Value = entity.Description;
             cmd.Parameters.Add("@TagType_Id", DbType.Int32).Value = GetTagTypeId(entity);
@@ -21,18 +22,18 @@ namespace FileTaggerRepository.Repositories.Impl
         protected override string UpdateQuery => @"UPDATE Tag 
                                                    SET Description = @Description, 
                                                    TagType_Id = @TagType_Id 
-                                                   WHERE Id = @Id";
+                                                   WHERE Id = @Id;";
 
-        protected override void UpdateCommandBuilder(SQLiteCommand cmd, Tag entity)
+        protected override void UpdateCommandBinder(SQLiteCommand cmd, Tag entity)
         {
             cmd.Parameters.Add("@Id", DbType.Int32).Value = entity.Id;
             cmd.Parameters.Add("@Description", DbType.String).Value = entity.Description;
             cmd.Parameters.Add("@TagType_Id", DbType.Int32).Value = GetTagTypeId(entity);
         }
 
-        protected override string DeleteQuery => "DELETE FROM Tag WHERE Id = @Id";
+        protected override string DeleteQuery => "DELETE FROM Tag WHERE Id = @Id;";
 
-        protected override void DeleteCommandBuilder(SQLiteCommand cmd, Tag entity)
+        protected override void DeleteCommandBinder(SQLiteCommand cmd, Tag entity)
         {
             cmd.Parameters.Add("@Id", DbType.Int32).Value = entity.Id;
         }
@@ -42,9 +43,9 @@ namespace FileTaggerRepository.Repositories.Impl
                          FROM Tag as t
                          LEFT JOIN TagType AS tt
                             ON t.TagType_Id = tt.Id 
-                         WHERE t.Id = @Id";
+                         WHERE t.Id = @Id;";
 
-        protected override void GetByIdCommandBuilder(SQLiteCommand cmd, int id)
+        protected override void GetByIdCommandBinder(SQLiteCommand cmd, int id)
         {
             cmd.Parameters.Add("@Id", DbType.Int32).Value = id;
         }
@@ -53,7 +54,7 @@ namespace FileTaggerRepository.Repositories.Impl
                        @"SELECT t.Id, t.Description, tt.Id, tt.Description 
                          FROM Tag as t
                          LEFT JOIN TagType AS tt
-                            ON t.TagType_Id = tt.Id";
+                            ON t.TagType_Id = tt.Id;";
 
         protected override Tag Parse(SQLiteDataReader dr)
         {
@@ -84,7 +85,7 @@ namespace FileTaggerRepository.Repositories.Impl
                           FROM File AS f
                           INNER JOIN TagMap AS tm
                           ON tm.File_Id = f.Id
-                          WHERE tm.Tag_Id = @Id";
+                          WHERE tm.Tag_Id = @Id;";
 
         protected override Tag ParseWithReferences(SQLiteDataReader dr)
         {

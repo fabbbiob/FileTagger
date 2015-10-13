@@ -11,27 +11,30 @@ namespace FileTaggerRepository.Repositories.Abstract
         private static string ConnectionString => ConfigurationManager.AppSettings["SqliteConnectionString"];
 
         protected abstract string AddQuery { get; }
-        protected abstract void AddCommandBuilder(SQLiteCommand cmd, T entity);
+        protected abstract void AddCommandBinder(SQLiteCommand cmd, T entity);
         public virtual void Add(T entity)
         {
-            entity.Id = ExecuteQuery(AddQuery, AddCommandBuilder, entity);
+            ExecuteQuery(AddQuery, AddCommandBinder, entity, cmd => { entity.Id = (int) (long) cmd.ExecuteScalar(); });
         }
 
         protected abstract string UpdateQuery { get; }
-        protected abstract void UpdateCommandBuilder(SQLiteCommand cmd, T entity);
+        protected abstract void UpdateCommandBinder(SQLiteCommand cmd, T entity);
         public void Update(T entity)
         {
-            ExecuteQuery(UpdateQuery, UpdateCommandBuilder, entity);
+            ExecuteQuery(UpdateQuery, UpdateCommandBinder, entity, cmd => cmd.ExecuteNonQuery());
         }
 
         protected abstract string DeleteQuery { get; }
-        protected abstract void DeleteCommandBuilder(SQLiteCommand cmd, T entity);
+        protected abstract void DeleteCommandBinder(SQLiteCommand cmd, T entity);
         public void Delete(T entity)
         {
-            ExecuteQuery(DeleteQuery, DeleteCommandBuilder, entity);
+            ExecuteQuery(DeleteQuery, DeleteCommandBinder, entity, cmd => cmd.ExecuteNonQuery());
         }
 
-        protected int ExecuteQuery(string query, Action<SQLiteCommand, T> commandBuilder, T entity) 
+        protected void ExecuteQuery(string query, 
+                                    Action<SQLiteCommand, T> commandBinder, 
+                                    T entity, 
+                                    Action<SQLiteCommand> execute) 
         {
             SQLiteConnection conn = null;
             SQLiteCommand cmd = null;
@@ -40,10 +43,9 @@ namespace FileTaggerRepository.Repositories.Abstract
                 conn = new SQLiteConnection(ConnectionString);
                 cmd = new SQLiteCommand(query, conn);
 
-                commandBuilder(cmd, entity);
+                commandBinder(cmd, entity);
                 conn.Open();
-                cmd.ExecuteNonQuery();
-                return (int)conn.LastInsertRowId;
+                execute(cmd);
             }
             finally
             {
@@ -57,7 +59,7 @@ namespace FileTaggerRepository.Repositories.Abstract
         }
 
         protected abstract string GetByIdQuery { get; }
-        protected abstract void GetByIdCommandBuilder(SQLiteCommand cmd, int id);
+        protected abstract void GetByIdCommandBinder(SQLiteCommand cmd, int id);
         public T GetById(int id)
         {
             SQLiteConnection conn = null;
@@ -68,7 +70,7 @@ namespace FileTaggerRepository.Repositories.Abstract
                 conn = new SQLiteConnection(ConnectionString);
                 cmd = new SQLiteCommand(GetByIdQuery, conn);
 
-                GetByIdCommandBuilder(cmd, id);
+                GetByIdCommandBinder(cmd, id);
 
                 conn.Open();
                 dr = cmd.ExecuteReader();
@@ -106,7 +108,7 @@ namespace FileTaggerRepository.Repositories.Abstract
                 conn = new SQLiteConnection(ConnectionString);
                 cmd = new SQLiteCommand(GetByIdWithReferencesQuery, conn);
 
-                GetByIdCommandBuilder(cmd, id);
+                GetByIdCommandBinder(cmd, id);
 
                 conn.Open();
                 dr = cmd.ExecuteReader();
@@ -125,8 +127,6 @@ namespace FileTaggerRepository.Repositories.Abstract
 
                 SQLiteConnection.ClearAllPools();
             }
-
-            return default(T);
         }
 
         protected abstract string GetAllQuery { get; }

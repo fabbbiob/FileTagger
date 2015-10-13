@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace FileTaggerRepositoryTests.Tests
 {
-    [TestFixture]
+    //[TestFixture]
     public class TagWithFilesRepositoryTest
     {
         //[Test]

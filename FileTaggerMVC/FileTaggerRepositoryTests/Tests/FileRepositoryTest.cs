@@ -73,6 +73,7 @@ namespace FileTaggerRepositoryTests.Tests
             repo.Add(file);
 
             file.FilePath = Guid.NewGuid().ToString();
+            repo.Update(file);
 
             Assert.AreEqual(file, repo.GetById(file.Id));
         }
@@ -105,6 +106,26 @@ namespace FileTaggerRepositoryTests.Tests
 
             Assert.True(files.Contains(file1));
             Assert.True(files.Contains(file2));
+        }
+
+        [Test]
+        public void CanAddFileWithTags()
+        {
+            TagRepository tagRepository = new TagRepository();
+            Tag tag1 = new Tag { Description = Guid.NewGuid().ToString() };
+            tagRepository.Add(tag1);
+            Tag tag2 = new Tag { Description = Guid.NewGuid().ToString() };
+            tagRepository.Add(tag2);
+
+            FileRepository fileRepository = new FileRepository();
+            File file = new File
+            {
+                FilePath = Guid.NewGuid().ToString(),
+                Tags = new [] { tag1, tag2 }
+            };
+            fileRepository.AddWithReferences(file);
+
+            Assert.AreEqual(file, fileRepository.GetByIdWithReferences(file.Id));
         }
     }
 }

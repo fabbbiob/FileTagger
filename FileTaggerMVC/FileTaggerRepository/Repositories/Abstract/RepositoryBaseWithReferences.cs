@@ -10,8 +10,10 @@ namespace FileTaggerRepository.Repositories.Abstract
         protected abstract void AddWithReferencesCommandBuilder(SQLiteCommand cmd, T entity);
         public void AddWithReferences(T entity)
         {
-            //TODO Id
-            entity.Id = ExecuteQuery(AddWithReferencesQuery(entity), AddWithReferencesCommandBuilder, entity);
+            ExecuteQuery(AddWithReferencesQuery(entity), 
+                         AddWithReferencesCommandBuilder, 
+                         entity, 
+                         cmd => { entity.Id = (int)(long)cmd.ExecuteScalar();});
         }
     }
 }
