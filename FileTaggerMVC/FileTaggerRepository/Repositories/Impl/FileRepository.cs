@@ -69,7 +69,7 @@ namespace FileTaggerRepository.Repositories.Impl
             cmd.Parameters.Add("@Id", DbType.Int32).Value = id;
         }
 
-        protected override string GetAllQuery => "SELECT Id, Description FROM TagType;";
+        protected override string GetAllQuery => "SELECT Id, FilePath FROM File;";
 
         protected override File Parse(SQLiteDataReader dr)
         {
