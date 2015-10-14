@@ -21,7 +21,7 @@ namespace FileTaggerMVC.ModelBinders
                 int idTagType;
                 if (int.TryParse(idTagTypeString, out idTagType))
                 {
-                    return new Tag
+                    return new TagViewModel
                     {
                         Description = description,
                         TagTypeId = idTagType

@@ -1,9 +1,9 @@
-﻿@model FileTaggerMVC.Models.TagType
+﻿@model FileTaggerMVC.Models.TagTypeViewModel
 @{
     ViewBag.Title = "Crete or Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@using (Html.BeginForm("CreateOrEdit", "TagType"))
+@using (Html.BeginForm((string)ViewBag.Action, "TagType"))
 {
     <div class="form-horizontal">
         <h4>TagType</h4>

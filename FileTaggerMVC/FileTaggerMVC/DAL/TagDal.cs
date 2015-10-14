@@ -11,7 +11,7 @@ namespace FileTaggerMVC.DAL
     {
         private readonly static string ConnectionString = WebConfigurationManager.AppSettings["SqliteConnectionString"];
 
-        internal static IEnumerable<Tag> GetAll()
+        internal static IEnumerable<TagViewModel> GetAll()
         {
             using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
             {
@@ -33,7 +33,7 @@ namespace FileTaggerMVC.DAL
             }
         }
 
-        internal static void Create(Tag tag)
+        internal static void Create(TagViewModel tag)
         {
             using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
             {
@@ -49,7 +49,7 @@ namespace FileTaggerMVC.DAL
             }
         }
 
-        internal static Tag Get(int id)
+        internal static TagViewModel Get(int id)
         {
             using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
             {
@@ -76,7 +76,7 @@ namespace FileTaggerMVC.DAL
             return null;
         }
 
-        internal static void Edit(Tag tag)
+        internal static void Edit(TagViewModel tag)
         {
             using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
             {
@@ -108,9 +108,9 @@ namespace FileTaggerMVC.DAL
             }
         }
 
-        private static Tag Parse(SQLiteDataReader dr)
+        private static TagViewModel Parse(SQLiteDataReader dr)
         {
-            var tag = new Tag
+            var tag = new TagViewModel
             {
                 Id = dr.GetInt32(0),
                 Description = dr.GetString(1)
@@ -119,7 +119,7 @@ namespace FileTaggerMVC.DAL
             var idTagTypeObj = dr.GetValue(2);
             if (idTagTypeObj != DBNull.Value)
             {
-                tag.TagType = new TagType
+                tag.TagType = new TagTypeViewModel
                 {
                     Id = dr.GetInt32(2),
                     Description = dr.GetString(3)
@@ -129,7 +129,7 @@ namespace FileTaggerMVC.DAL
             return tag;
         }
 
-        private static object GetTagTypeId(Tag tag)
+        private static object GetTagTypeId(TagViewModel tag)
         {
             if (tag.TagTypeId != -1)
             {

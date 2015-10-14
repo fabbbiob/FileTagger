@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FileTaggerMVC.Models
 {
-    public class Tag
+    public class TagViewModel
     {
         public int Id { get; set; }
         public string Description { get; set; }
         [Display(Name = "Tag Type")]
-        public TagType TagType { get; set; }
+        public TagTypeViewModel TagType { get; set; }
 
         [NotMapped, Display(Name = "Tag Type")]
         public DropDownListViewModel TagTypeViewModel { get; set; }

@@ -54,7 +54,7 @@ namespace FileTaggerMVC.Controllers
         public ActionResult Create()
         {
             //TODO
-            return View("CreateOrEdit", new FileTaggerMVC.Models.File());
+            return View("CreateOrEdit", new FileTaggerMVC.Models.FileViewModel());
         }
 
         private static void DirectorySearch(string folderPath, JsTreeNodeModel root)

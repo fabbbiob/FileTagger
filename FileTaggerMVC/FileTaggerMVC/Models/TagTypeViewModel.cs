@@ -2,7 +2,7 @@
 
 namespace FileTaggerMVC.Models
 {
-    public class TagType
+    public class TagTypeViewModel
     {
         public int Id { get; set; }
         [Required]

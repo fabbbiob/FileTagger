@@ -10,7 +10,7 @@ namespace FileTaggerMVC.DAL
     {
         private readonly static string ConnectionString = WebConfigurationManager.AppSettings["SqliteConnectionString"];
 
-        internal static IEnumerable<TagType> GetAll()
+        internal static IEnumerable<TagTypeViewModel> GetAll()
         {
             using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
             {
@@ -29,7 +29,7 @@ namespace FileTaggerMVC.DAL
             }
         }
 
-        internal static TagType Get(int id)
+        internal static TagTypeViewModel Get(int id)
         {
             using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
             {
@@ -52,7 +52,7 @@ namespace FileTaggerMVC.DAL
             return null;
         }
 
-        internal static void Create(TagType tagType)
+        internal static void Create(TagTypeViewModel tagType)
         {
             using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
             {
@@ -67,7 +67,7 @@ namespace FileTaggerMVC.DAL
             }
         }
 
-        internal static void Edit(TagType tagType)
+        internal static void Edit(TagTypeViewModel tagType)
         {
             using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
             {
@@ -98,9 +98,9 @@ namespace FileTaggerMVC.DAL
             }
         }
 
-        private static TagType Parse(SQLiteDataReader dr)
+        private static TagTypeViewModel Parse(SQLiteDataReader dr)
         {
-            return new TagType
+            return new TagTypeViewModel
             {
                 Id = dr.GetInt32(0),
                 Description = dr.GetString(1)
