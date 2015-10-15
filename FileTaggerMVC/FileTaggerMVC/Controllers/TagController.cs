@@ -1,4 +1,5 @@
-﻿using FileTaggerModel.Model;
+﻿using AutoMapper;
+using FileTaggerModel.Model;
 using FileTaggerMVC.ModelBinders;
 using FileTaggerMVC.Models;
 using FileTaggerRepository.Repositories.Impl;
@@ -14,28 +15,7 @@ namespace FileTaggerMVC.Controllers
         public ActionResult Index()
         {
             List<Tag> list = new TagRepository().GetAll().ToList();
-            //TODO user AutoMapper
-            List<TagViewModel> viewModelList = new List<TagViewModel>();
-            foreach (Tag tag in list)
-            {
-                TagViewModel tagViewModel = new TagViewModel
-                {
-                    Id = tag.Id,
-                    Description = tag.Description
-                };
-
-                if (tag.TagType != null)
-                {
-                    tagViewModel.TagType = new TagTypeViewModel
-                    {
-                        Id = tag.TagType.Id,
-                        Description = tag.TagType.Description
-                    };
-                }
-
-                viewModelList.Add(tagViewModel);
-            }
-
+            List<TagViewModel> viewModelList = Mapper.Map<IEnumerable<Tag>, IEnumerable<TagViewModel>>(list).ToList();
             return View(viewModelList);
         }
 
@@ -44,7 +24,6 @@ namespace FileTaggerMVC.Controllers
         {
             TagViewModel tag = new TagViewModel();
             LoadTagTypes(tag);
-
             return View(tag);
         }
 
@@ -54,18 +33,7 @@ namespace FileTaggerMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                //TODO user AutoMapper
-                Tag tag = new Tag
-                {
-                    Description = tagViewModel.Description,
-                };
-                if (tagViewModel.TagTypeId != null)
-                {
-                    tag.TagType = new TagType
-                    {
-                        Id = tagViewModel.TagTypeId
-                    };
-                }
+                Tag tag = Mapper.Map<TagViewModel, Tag>(tagViewModel);
                 new TagRepository().Add(tag);
             }
 
@@ -76,13 +44,7 @@ namespace FileTaggerMVC.Controllers
         public ActionResult Edit(int id)
         {    
             Tag tag = new TagRepository().GetById(id);
-            //TODO user AutoMapper
-            TagViewModel tagViewModel = new TagViewModel
-            {
-                Id = tag.Id,
-                Description = tag.Description,
-                TagTypeId = tag.TagType == null ? -1 : tag.TagType.Id
-            };
+            TagViewModel tagViewModel = Mapper.Map<Tag, TagViewModel>(tag);
 
             //TODO remove this
             LoadTagTypes(tagViewModel);
@@ -96,21 +58,7 @@ namespace FileTaggerMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                //TODO user AutoMapper
-                Tag tag = new Tag
-                {
-                    Id = tagViewModel.Id,
-                    Description = tagViewModel.Description
-                };
-
-                if (tagViewModel.TagTypeId != null)
-                {
-                    tag.TagType = new TagType
-                    {
-                        Id = tagViewModel.TagTypeId
-                    };
-                }
-
+                Tag tag = Mapper.Map<TagViewModel, Tag>(tagViewModel);
                 new TagRepository().Update(tag);
             }
 
@@ -121,13 +69,7 @@ namespace FileTaggerMVC.Controllers
         public ActionResult Delete(int id)
         {
             Tag tag = new TagRepository().GetById(id);
-            //TODO user AutoMapper
-            TagViewModel tagViewModel = new TagViewModel
-            {
-                Id = tag.Id,
-                Description = tag.Description,
-                TagTypeId = tag.TagType == null ? -1 : tag.TagType.Id
-            };
+            TagViewModel tagViewModel = Mapper.Map<Tag, TagViewModel>(tag);
             return View(tagViewModel);
         }
 
@@ -135,11 +77,7 @@ namespace FileTaggerMVC.Controllers
         [HttpPost]
         public ActionResult Delete(TagViewModel tagViewModel)
         {
-            //TODO user AutoMapper
-            Tag tag = new Tag
-            {
-                Id = tagViewModel.Id
-            };
+            Tag tag = Mapper.Map<TagViewModel, Tag>(tagViewModel);
             new TagRepository().Delete(tag);
 
             return RedirectToAction("Index");
@@ -148,16 +86,8 @@ namespace FileTaggerMVC.Controllers
         private static void LoadTagTypes(TagViewModel tag)
         {
             List<TagType> tagTypes = new TagTypeRepository().GetAll().ToList();
-            //TODO user AutoMapper
-            List<TagTypeViewModel> viewModelList = new List<TagTypeViewModel>();
-            foreach (TagType tagType in tagTypes)
-            {
-                viewModelList.Add(new TagTypeViewModel
-                {
-                    Id = tagType.Id,
-                    Description = tagType.Description
-                });
-            }
+            List<TagTypeViewModel> viewModelList = 
+                Mapper.Map<IEnumerable<TagType>, IEnumerable<TagTypeViewModel>>(tagTypes).ToList();
 
             tag.TagTypeViewModel = new DropDownListViewModel();
             tag.TagTypeViewModel.Items = new List<SelectListItem>();

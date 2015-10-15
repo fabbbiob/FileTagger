@@ -17,7 +17,8 @@ namespace FileTaggerMVC.AutoMapper
         protected override void Configure()
         {
             Mapper.CreateMap<TagTypeViewModel, TagType>();
-            Mapper.CreateMap<TagViewModel, Tag>();
+            Mapper.CreateMap<TagViewModel, Tag>()
+                .ConvertUsing<TagEntityConverter>();
         }
     }
 }

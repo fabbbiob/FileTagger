@@ -13,10 +13,9 @@ namespace FileTaggerMVC.Controllers
         // GET: TagType
         public ActionResult Index()
         {
-            List<TagType> list = new TagTypeRepository().GetAll()
-                                                        .ToList();
-            List<TagTypeViewModel> viewModelList = Mapper.Map<IEnumerable<TagType>, IEnumerable<TagTypeViewModel>>(list)
-                                                         .ToList();
+            List<TagType> list = new TagTypeRepository().GetAll().ToList();
+            List<TagTypeViewModel> viewModelList = 
+                Mapper.Map<IEnumerable<TagType>, IEnumerable<TagTypeViewModel>>(list).ToList();
             return View(viewModelList);
         }
 
