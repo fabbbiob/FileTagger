@@ -99,6 +99,7 @@ namespace FileTaggerMVC.Controllers
                 //TODO user AutoMapper
                 Tag tag = new Tag
                 {
+                    Id = tagViewModel.Id,
                     Description = tagViewModel.Description
                 };
 
@@ -119,7 +120,15 @@ namespace FileTaggerMVC.Controllers
         // GET: Tag/Delete/5
         public ActionResult Delete(int id)
         {
-            return View(new TagRepository().GetById(id));
+            Tag tag = new TagRepository().GetById(id);
+            //TODO user AutoMapper
+            TagViewModel tagViewModel = new TagViewModel
+            {
+                Id = tag.Id,
+                Description = tag.Description,
+                TagTypeId = tag.TagType == null ? -1 : tag.TagType.Id
+            };
+            return View(tagViewModel);
         }
 
         // POST: Tag/Delete/5
@@ -129,12 +138,7 @@ namespace FileTaggerMVC.Controllers
             //TODO user AutoMapper
             Tag tag = new Tag
             {
-                Description = tagViewModel.Description,
-                TagType = new TagType
-                {
-                    Id = tagViewModel.TagType.Id,
-                    Description = tagViewModel.TagType.Description
-                }
+                Id = tagViewModel.Id
             };
             new TagRepository().Delete(tag);
 
