@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Data.SQLite;
-using System.Text.RegularExpressions;
-using System.Web.Configuration;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using System.Linq;
 using FileTaggerRepository.Repositories;
+using FileTaggerMVC.AutoMapper;
 
 namespace FileTaggerMVC
 {
@@ -20,6 +16,7 @@ namespace FileTaggerMVC
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             DbCreator.CreateDatabase();
+            AutoMapperConfiguration.Configure();
         }
     }
 }

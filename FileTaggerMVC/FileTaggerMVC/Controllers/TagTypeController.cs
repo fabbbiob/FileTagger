@@ -1,4 +1,5 @@
-﻿using FileTaggerModel.Model;
+﻿using AutoMapper;
+using FileTaggerModel.Model;
 using FileTaggerMVC.Models;
 using FileTaggerRepository.Repositories.Impl;
 using System.Collections.Generic;
@@ -12,19 +13,10 @@ namespace FileTaggerMVC.Controllers
         // GET: TagType
         public ActionResult Index()
         {
-            List<TagType> list = new TagTypeRepository().GetAll().ToList();
-
-            //TODO user AutoMapper
-            List<TagTypeViewModel> viewModelList = new List<TagTypeViewModel>();
-            foreach (TagType tagType in list)
-            {
-                viewModelList.Add(new TagTypeViewModel
-                {
-                    Id = tagType.Id,
-                    Description = tagType.Description
-                });
-            }
-
+            List<TagType> list = new TagTypeRepository().GetAll()
+                                                        .ToList();
+            List<TagTypeViewModel> viewModelList = Mapper.Map<IEnumerable<TagType>, IEnumerable<TagTypeViewModel>>(list)
+                                                         .ToList();
             return View(viewModelList);
         }
 
@@ -41,11 +33,7 @@ namespace FileTaggerMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                //TODO use AutoMapper
-                TagType tagType = new TagType
-                {
-                    Description = tagTypeViewModel.Description
-                };
+                TagType tagType = Mapper.Map<TagTypeViewModel, TagType>(tagTypeViewModel);
                 new TagTypeRepository().Add(tagType);
             }          
 
@@ -56,13 +44,10 @@ namespace FileTaggerMVC.Controllers
         public ActionResult Edit(int id)
         {
             TagType tagType = new TagTypeRepository().GetById(id);
-            //TODO use AutoMapper
+            TagTypeViewModel tagTypeViewModel = Mapper.Map<TagType, TagTypeViewModel>(tagType);
+
             ViewBag.Action = "Edit";
-            return View("CreateOrEdit", new TagTypeViewModel
-            {
-                Id = tagType.Id,
-                Description = tagType.Description
-            });
+            return View("CreateOrEdit", tagTypeViewModel);
         }
 
         // POST: TagType/Edit/5
@@ -71,12 +56,7 @@ namespace FileTaggerMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                //TODO use AutoMapper
-                TagType tagType = new TagType
-                {
-                    Id = tagTypeViewModel.Id,
-                    Description = tagTypeViewModel.Description
-                };
+                TagType tagType = Mapper.Map<TagTypeViewModel, TagType>(tagTypeViewModel);
                 new TagTypeRepository().Update(tagType);
             }
 
@@ -87,26 +67,16 @@ namespace FileTaggerMVC.Controllers
         public ActionResult Delete(int id)
         {
             TagType tagType = new TagTypeRepository().GetById(id);
-            //TODO use AutoMapper
-            return View("Delete", new TagTypeViewModel
-            {
-                Id = tagType.Id,
-                Description = tagType.Description
-            });
+            TagTypeViewModel tagTypeViewModel = Mapper.Map<TagType, TagTypeViewModel>(tagType);
+            return View("Delete", tagTypeViewModel);
         }
 
         // POST: TagType/Delete/5
         [HttpPost]
         public ActionResult Delete(TagTypeViewModel tagTypeViewModel)
         {
-            //TODO use AutoMapper
-            TagType tagType = new TagType
-            {
-                Id = tagTypeViewModel.Id,
-                Description = tagTypeViewModel.Description
-            };
+            TagType tagType = Mapper.Map<TagTypeViewModel, TagType>(tagTypeViewModel);
             new TagTypeRepository().Delete(tagType);
-
             return RedirectToAction("Index");
         }
     }
