@@ -9,26 +9,37 @@ using NUnit.Framework;
 
 namespace FileTaggerRepositoryTests.Tests
 {
-    //[TestFixture]
+    [TestFixture]
     public class TagWithFilesRepositoryTest
     {
-        //[Test]
+        [Test]
         public void CanGetTagWithFiles()
         {
+            TagRepository tagRepository = new TagRepository();
+            Tag tag = new Tag
+            {
+                Description = "tag"
+            };
+            tagRepository.Add(tag);
+
             FileRepository fileRepository = new FileRepository();
             File file1 = new File
             {
-                FilePath = "file1"
+                FilePath = Guid.NewGuid().ToString(),
+                Tags = new[] { tag }
             };
             fileRepository.Add(file1);
 
             File file2 = new File
             {
-                FilePath = "file2"
+                FilePath = Guid.NewGuid().ToString(),
+                Tags = new[] { tag }
             };
             fileRepository.Add(file2);
 
-            //TODO
+            tag.Files = new[] { file1, file2 };
+
+            Assert.AreEqual(tag, tagRepository.GetByIdWithReferences(tag.Id));
         }
     }
 }

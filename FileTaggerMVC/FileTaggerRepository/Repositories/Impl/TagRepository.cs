@@ -78,10 +78,8 @@ namespace FileTaggerRepository.Repositories.Impl
         }
 
         protected override string GetByIdWithReferencesQuery =>
-                        @"SELECT t.Id, t.Description
-                          FROM Tag AS t
-                          WHERE t.Id = @Id;
-                          SELECT f.Id, f.FilePath
+                        GetByIdQuery +
+                        @"SELECT f.Id, f.FilePath
                           FROM File AS f
                           INNER JOIN TagMap AS tm
                           ON tm.File_Id = f.Id

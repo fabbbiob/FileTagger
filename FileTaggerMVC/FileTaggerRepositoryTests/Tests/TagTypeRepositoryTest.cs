@@ -49,7 +49,24 @@ namespace FileTaggerRepositoryTests.Tests
         [Test]
         public void CanGetTagTypeWithReferences()
         {
-            //TODO
+            TagTypeRepository tagTypeRepo = new TagTypeRepository();
+            TagRepository tagRepo = new TagRepository();
+
+            TagType tagType = new TagType
+            {
+                Description = "tag type"
+            };
+            tagTypeRepo.Add(tagType);
+
+            Tag tag = new Tag
+            {
+                Description = "tag",
+                TagType = tagType
+            };
+            tagType.Tags = new[] { tag };
+            tagRepo.Add(tag);
+
+            Assert.AreEqual(tagType, tagTypeRepo.GetByIdWithReferences(tagType.Id));
         }
         
         [Test]
