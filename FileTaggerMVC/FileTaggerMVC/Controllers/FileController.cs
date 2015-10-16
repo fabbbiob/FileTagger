@@ -1,9 +1,13 @@
 ﻿using System.IO;
 using System.Web.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using FileTaggerMVC.Models;
 using FileTaggerMVC.DAL;
+using FileTaggerModel.Model;
+using FileTaggerRepository.Repositories.Impl;
+using AutoMapper;
 
 namespace FileTaggerMVC.Controllers
 {
@@ -54,6 +58,8 @@ namespace FileTaggerMVC.Controllers
         public ActionResult Create()
         {
             //TODO
+            FileViewModel fileViewModel = new FileViewModel();
+            LoadTagTypes(fileViewModel);
             return View("CreateOrEdit", new FileViewModel());
         }
 
@@ -85,6 +91,23 @@ namespace FileTaggerMVC.Controllers
 
                 root.Children.Add(node);
             }
+        }
+        
+        private static void LoadTagTypes(FileViewModel fileViewModel)
+        {
+            List<TagType> tagTypes = new TagTypeRepository().GetAll().ToList();
+            List<TagTypeViewModel> viewModelList =
+                Mapper.Map<IEnumerable<TagType>, IEnumerable<TagTypeViewModel>>(tagTypes).ToList();
+
+            //tag.TagTypeViewModel = new DropDownListViewModel();
+            //tag.TagTypeViewModel.Items = new List<SelectListItem>();
+            //tag.TagTypeViewModel.Items.Add(new SelectListItem { Text = "None", Value = "-1" });
+            //tag.TagTypeViewModel.Items.AddRange(viewModelList
+            //                                        .Select(tt => new SelectListItem
+            //                                        {
+            //                                            Text = tt.Description,
+            //                                            Value = tt.Id.ToString()
+            //                                        }).ToList());
         }
     }
 

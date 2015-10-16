@@ -6,6 +6,9 @@ namespace FileTaggerMVC.Models
     {
         public int Id { get; set; }
         public string FilePath { get; set; }
-        public IEnumerable<TagViewModel> Tags { get; set; }
+        //public IEnumerable<TagViewModel> Tags { get; set; }
+
+        public IEnumerable<TagViewModel> AssociatedTags { get; set; }
+        public IEnumerable<TagViewModel> NonAssociatedTags { get; set; }
     }
 }
