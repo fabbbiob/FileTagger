@@ -1,6 +1,6 @@
 ﻿@model FileTaggerMVC.Models.FileViewModel
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm((string)ViewBag.Action, "File")) 
 {
     <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -9,6 +9,14 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.FilePath, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.FilePath, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Tags, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Tags[]", Model.Tags, new { @class = "form-control", multiple = "multiple" })
+                @Html.ValidationMessageFor(model => model.Tags, "", new { @class = "text-danger" })
             </div>
         </div>
 

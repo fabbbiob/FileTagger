@@ -29,7 +29,7 @@ namespace FileTaggerMVC.Controllers
 
         // POST: Tag/Create
         [HttpPost]
-        public ActionResult Create([ModelBinder(typeof(TagModelBinder))]TagViewModel tagViewModel)
+        public ActionResult Create([ModelBinder(typeof(TagViewModelModelBinder))]TagViewModel tagViewModel)
         {
             if (ModelState.IsValid)
             {

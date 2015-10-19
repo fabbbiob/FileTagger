@@ -8,6 +8,7 @@ using FileTaggerMVC.DAL;
 using FileTaggerModel.Model;
 using FileTaggerRepository.Repositories.Impl;
 using AutoMapper;
+using FileTaggerMVC.ModelBinders;
 
 namespace FileTaggerMVC.Controllers
 {
@@ -39,7 +40,7 @@ namespace FileTaggerMVC.Controllers
         // GET: /File/CreateOrEditFile
         public PartialViewResult Details(string fileName)
         {
-            var file = FileDal.Get(fileName);
+            FileTaggerModel.Model.File file = new FileRepository().Get("FilePath", fileName).First();
             if (file != null)
             {
                 return PartialView("Details", file);
@@ -52,15 +53,29 @@ namespace FileTaggerMVC.Controllers
 
         public ActionResult Edit(int id)
         {
+            ViewBag.Action = "Edit";
             return View("CreateOrEdit", FileDal.Get(id));
         }
 
         public ActionResult Create()
         {
-            //TODO
             FileViewModel fileViewModel = new FileViewModel();
             LoadTagTypes(fileViewModel);
-            return View("CreateOrEdit", new FileViewModel());
+
+            ViewBag.Action = "Create";
+            return View("CreateOrEdit", fileViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Create([ModelBinder(typeof(FileViewModelBinder))]FileViewModel fileViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                FileTaggerModel.Model.File file = Mapper.Map<FileViewModel, FileTaggerModel.Model.File>(fileViewModel);
+                new FileRepository().Add(file);
+            }
+
+            return RedirectToAction("Index");
         }
 
         private static void DirectorySearch(string folderPath, JsTreeNodeModel root)
@@ -95,19 +110,8 @@ namespace FileTaggerMVC.Controllers
         
         private static void LoadTagTypes(FileViewModel fileViewModel)
         {
-            List<TagType> tagTypes = new TagTypeRepository().GetAll().ToList();
-            List<TagTypeViewModel> viewModelList =
-                Mapper.Map<IEnumerable<TagType>, IEnumerable<TagTypeViewModel>>(tagTypes).ToList();
-
-            //tag.TagTypeViewModel = new DropDownListViewModel();
-            //tag.TagTypeViewModel.Items = new List<SelectListItem>();
-            //tag.TagTypeViewModel.Items.Add(new SelectListItem { Text = "None", Value = "-1" });
-            //tag.TagTypeViewModel.Items.AddRange(viewModelList
-            //                                        .Select(tt => new SelectListItem
-            //                                        {
-            //                                            Text = tt.Description,
-            //                                            Value = tt.Id.ToString()
-            //                                        }).ToList());
+            List<Tag> tags = new TagRepository().GetAll().ToList();
+            fileViewModel.Tags = new MultiSelectList(tags, "Id", "Description");
         }
     }
 

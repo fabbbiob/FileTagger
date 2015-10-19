@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SQLite;
 using FileTaggerModel;
+using System.Data;
 
 namespace FileTaggerRepository.Repositories.Abstract
 {
@@ -114,6 +115,43 @@ namespace FileTaggerRepository.Repositories.Abstract
                 dr = cmd.ExecuteReader();
 
                 return ParseWithReferences(dr);
+            }
+            finally
+            {
+                dr?.Close();
+                dr?.Dispose();
+
+                cmd?.Dispose();
+
+                conn?.Close();
+                conn?.Dispose();
+
+                SQLiteConnection.ClearAllPools();
+            }
+        }
+
+        //TODO refactor
+        protected virtual string GetByWhereQuery { get; }
+        public IEnumerable<T> Get(string prop, string whereClause)
+        {
+            SQLiteConnection conn = null;
+            SQLiteCommand cmd = null;
+            SQLiteDataReader dr = null;
+            try
+            {
+                conn = new SQLiteConnection(ConnectionString);
+                cmd = new SQLiteCommand(GetByWhereQuery, conn);
+
+                cmd.Parameters.Add("@Prop", DbType.String).Value = prop;
+                cmd.Parameters.Add("@Where", DbType.String).Value = whereClause;
+
+                conn.Open();
+                dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    yield return Parse(dr);
+                }
             }
             finally
             {

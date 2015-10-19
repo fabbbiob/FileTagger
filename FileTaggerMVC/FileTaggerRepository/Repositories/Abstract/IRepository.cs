@@ -9,6 +9,7 @@ namespace FileTaggerRepository.Repositories.Abstract
         void Delete(T entity);
         T GetById(int id);
         T GetByIdWithReferences(int id);
+        IEnumerable<T> Get(string prop, string whereClause);
         IEnumerable<T> GetAll();
     }
 }
