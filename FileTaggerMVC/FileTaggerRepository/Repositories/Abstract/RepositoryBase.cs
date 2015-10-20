@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data.SQLite;
 using FileTaggerModel;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace FileTaggerRepository.Repositories.Abstract
 {
@@ -140,10 +141,16 @@ namespace FileTaggerRepository.Repositories.Abstract
             try
             {
                 conn = new SQLiteConnection(ConnectionString);
-                cmd = new SQLiteCommand(GetByWhereQuery, conn);
 
-                cmd.Parameters.Add("@Prop", DbType.String).Value = prop;
-                cmd.Parameters.Add("@Where", DbType.String).Value = whereClause;
+                string query = GetByWhereQuery;
+                query = query.Replace("@Prop", prop);
+                query = query.Replace("@Where", whereClause);
+                cmd = new SQLiteCommand(query, conn);
+
+                //cmd = new SQLiteCommand(GetByWhereQuery, conn);
+
+                //cmd.Parameters.Add("@Prop", DbType.String).Value = prop;
+                //cmd.Parameters.Add("@Where", DbType.String).Value = whereClause;
 
                 conn.Open();
                 dr = cmd.ExecuteReader();

@@ -90,7 +90,7 @@ namespace FileTaggerRepository.Repositories.Impl
                                                     ON t.TagType_Id = tt.Id 
                                                   WHERE tm.File_Id = @Id";
 
-        protected override string GetByWhereQuery => "SELECT Id, FilePath FROM File WHERE @Prop = @Where;";
+        protected override string GetByWhereQuery => "SELECT Id, FilePath FROM File WHERE @Prop = '@Where';";
 
         //TODO
         protected override File ParseWithReferences(SQLiteDataReader dr)

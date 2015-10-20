@@ -40,10 +40,11 @@ namespace FileTaggerMVC.Controllers
         // GET: /File/CreateOrEditFile
         public PartialViewResult Details(string fileName)
         {
-            FileTaggerModel.Model.File file = new FileRepository().Get("FilePath", fileName).First();
+            TempData["fileName"] = fileName;
+            FileTaggerModel.Model.File file = new FileRepository().Get("FilePath", fileName).FirstOrDefault();
             if (file != null)
             {
-                return PartialView("Details", file);
+                return PartialView("Details", Mapper.Map<FileTaggerModel.Model.File, FileViewModel>(file));
             }
             else
             {
@@ -53,13 +54,19 @@ namespace FileTaggerMVC.Controllers
 
         public ActionResult Edit(int id)
         {
+            FileTaggerModel.Model.File file = new FileRepository().Get("FilePath", (string)TempData["fileName"]).FirstOrDefault();
+            FileViewModel fileViewMode = Mapper.Map<FileTaggerModel.Model.File, FileViewModel>(file); 
+
             ViewBag.Action = "Edit";
-            return View("CreateOrEdit", FileDal.Get(id));
+            return View("CreateOrEdit", fileViewMode);
         }
 
         public ActionResult Create()
         {
-            FileViewModel fileViewModel = new FileViewModel();
+            FileViewModel fileViewModel = new FileViewModel
+            {
+                FilePath = (string)TempData["fileName"]
+            };
             LoadTagTypes(fileViewModel);
 
             ViewBag.Action = "Create";

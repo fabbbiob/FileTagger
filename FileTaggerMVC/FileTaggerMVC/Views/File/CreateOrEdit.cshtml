@@ -7,7 +7,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.FilePath, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.FilePath, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DisplayFor(model => model.FilePath, new { @class = "form-control" })
+                @Html.HiddenFor(model => model.FilePath)
                 @Html.ValidationMessageFor(model => model.FilePath, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -15,7 +16,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Tags, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Tags[]", Model.Tags, new { @class = "form-control", multiple = "multiple" })
+                @Html.DropDownList("Tags", Model.Tags, new { @class = "form-control", multiple = "multiple" })
                 @Html.ValidationMessageFor(model => model.Tags, "", new { @class = "text-danger" })
             </div>
         </div>

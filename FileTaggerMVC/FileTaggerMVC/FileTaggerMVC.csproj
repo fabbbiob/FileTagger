@@ -146,7 +146,7 @@
     <Compile Include="ModelBinders\FileViewModelBinder.cs" />
     <Compile Include="ModelBinders\TagViewModelModelBinder.cs" />
     <Compile Include="Models\DropDownListViewModel.cs" />
-    <Compile Include="Models\File.cs" />
+    <Compile Include="Models\FileViewModel.cs" />
     <Compile Include="Models\TagViewModel.cs" />
     <Compile Include="Models\TagTypeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

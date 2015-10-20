@@ -1,4 +1,4 @@
-﻿@model FileTaggerMVC.Models.File
+﻿@model FileTaggerMVC.Models.FileViewModel
 
 <div>
     <dl class="dl-horizontal">
@@ -17,7 +17,7 @@
         </dt>
 
         <dd>
-            @if (!Model.Tags.Any()) 
+            @if (Model.Tags == null || !Model.Tags.Any()) 
             {
                 <text>No tags.</text>
             }
@@ -34,7 +34,7 @@
                     {
                         <tr>
                             <td>
-                                @tag.Description
+                                @tag.Text
                             </td>
                         </tr>
                     }

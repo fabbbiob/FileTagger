@@ -12,6 +12,7 @@
                 data: "fileName=" + nodeData.node.a_attr["data-filename"]
 
             }).done(function (dataDone) {
+                alert(dataDone);
                 $("#divView").html(dataDone);
             });
         }).jstree({
