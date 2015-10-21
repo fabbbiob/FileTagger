@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using FileTaggerMVC.Models;
-using FileTaggerMVC.DAL;
 using FileTaggerModel.Model;
 using FileTaggerRepository.Repositories.Impl;
 using AutoMapper;
@@ -44,7 +43,9 @@ namespace FileTaggerMVC.Controllers
             FileTaggerModel.Model.File file = new FileRepository().Get("FilePath", fileName).FirstOrDefault();
             if (file != null)
             {
-                return PartialView("Details", Mapper.Map<FileTaggerModel.Model.File, FileViewModel>(file));
+                FileViewModel fileViewModel = Mapper.Map<FileTaggerModel.Model.File, FileViewModel>(file);
+                TempData["FileViewModel"] = fileViewModel;
+                return PartialView("Details", fileViewModel);
             }
             else
             {
@@ -54,11 +55,20 @@ namespace FileTaggerMVC.Controllers
 
         public ActionResult Edit(int id)
         {
-            FileTaggerModel.Model.File file = new FileRepository().Get("FilePath", (string)TempData["fileName"]).FirstOrDefault();
-            FileViewModel fileViewMode = Mapper.Map<FileTaggerModel.Model.File, FileViewModel>(file); 
-
             ViewBag.Action = "Edit";
-            return View("CreateOrEdit", fileViewMode);
+            return View("CreateOrEdit", TempData["FileViewModel"]);
+        }
+
+        [HttpPost]
+        public ActionResult Edit([ModelBinder(typeof(FileViewModelBinder))]FileViewModel fileViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                FileTaggerModel.Model.File file = Mapper.Map<FileViewModel, FileTaggerModel.Model.File>(fileViewModel);
+                new FileRepository().Update(file);
+            }
+
+            return RedirectToAction("Index");
         }
 
         public ActionResult Create()
@@ -79,7 +89,7 @@ namespace FileTaggerMVC.Controllers
             if (ModelState.IsValid)
             {
                 FileTaggerModel.Model.File file = Mapper.Map<FileViewModel, FileTaggerModel.Model.File>(fileViewModel);
-                new FileRepository().Add(file);
+                new FileRepository().AddWithReferences(file);
             }
 
             return RedirectToAction("Index");

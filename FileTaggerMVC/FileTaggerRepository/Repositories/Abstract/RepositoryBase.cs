@@ -155,10 +155,10 @@ namespace FileTaggerRepository.Repositories.Abstract
                 conn.Open();
                 dr = cmd.ExecuteReader();
 
-                while (dr.Read())
-                {
-                    yield return Parse(dr);
-                }
+                //while (dr.Read())
+                //{
+                    yield return ParseWithReferences(dr);
+                //}
             }
             finally
             {

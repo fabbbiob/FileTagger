@@ -24,13 +24,7 @@
             else
             {
                 <table>
-                    <tr>
-                        <th>
-                            Tag
-                        </th>
-                    </tr>
-
-                    @foreach(var tag in Model.Tags)
+                    @foreach(var tag in Model.Tags.Where(t => t.Selected))
                     {
                         <tr>
                             <td>

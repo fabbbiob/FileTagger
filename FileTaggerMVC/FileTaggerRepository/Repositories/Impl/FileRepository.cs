@@ -4,6 +4,7 @@ using FileTaggerModel.Model;
 using System.Data;
 using System.Data.SQLite;
 using System.Text;
+using System.Linq;
 using FileTaggerRepository.Repositories.Abstract;
 
 namespace FileTaggerRepository.Repositories.Impl
@@ -47,7 +48,18 @@ namespace FileTaggerRepository.Repositories.Impl
             }
         }
 
-        protected override string UpdateQuery => "UPDATE FILE SET FilePath = @FilePath WHERE Id = @Id;";
+        protected override string UpdateQuery => @"UPDATE FILE SET FilePath = @FilePath WHERE Id = @Id;
+                                                   DELETE FROM TagMap WHERE Tag_Id IN (???) ";
+
+        //protected override string UpdateQuery(File entity)
+        //{
+        //    string updateQuery = "UPDATE FILE SET FilePath = @FilePath WHERE Id = @Id";
+
+        //    foreach (var x in entity.Tags)
+        //    {
+
+        //    }
+        //}
 
         protected override void UpdateCommandBinder(SQLiteCommand cmd, File entity)
         {
@@ -90,7 +102,14 @@ namespace FileTaggerRepository.Repositories.Impl
                                                     ON t.TagType_Id = tt.Id 
                                                   WHERE tm.File_Id = @Id";
 
-        protected override string GetByWhereQuery => "SELECT Id, FilePath FROM File WHERE @Prop = '@Where';";
+        protected override string GetByWhereQuery => "SELECT Id, FilePath FROM File WHERE @Prop = '@Where';" +
+                                                @"SELECT t.Id, t.Description, tt.Id, tt.Description 
+                                                  FROM Tag AS t
+                                                  INNER JOIN TagMap as tm
+                                                    ON tm.Tag_Id = t.Id
+                                                  LEFT JOIN TagType AS tt
+                                                    ON t.TagType_Id = tt.Id 
+                                                  WHERE tm.File_Id = (SELECT Id FROM File WHERE @Prop = '@Where')";
 
         //TODO
         protected override File ParseWithReferences(SQLiteDataReader dr)

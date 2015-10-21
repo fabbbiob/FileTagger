@@ -131,6 +131,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="AutoMapper\AutoMapperConfiguration.cs" />
     <Compile Include="AutoMapper\DomainToViewModelMappingProfile.cs" />
+    <Compile Include="AutoMapper\FileEntityConverter.cs" />
+    <Compile Include="AutoMapper\FileViewModelEntityConverter.cs" />
     <Compile Include="AutoMapper\TagEntityConverter.cs" />
     <Compile Include="AutoMapper\ViewModelToDomainMappingProfile.cs" />
     <Compile Include="Controllers\FileController.cs" />
