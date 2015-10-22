@@ -11,10 +11,17 @@ namespace FileTaggerMVC.Controllers
 {
     public class TagController : Controller
     {
+        private TagRepository _tagRepository;
+
+        public TagController()
+        {
+            _tagRepository = new TagRepository();
+        }
+
         // GET: Tag
         public ActionResult Index()
         {
-            List<Tag> list = new TagRepository().GetAll().ToList();
+            List<Tag> list = _tagRepository.GetAll().ToList();
             List<TagViewModel> viewModelList = Mapper.Map<IEnumerable<Tag>, IEnumerable<TagViewModel>>(list).ToList();
             return View(viewModelList);
         }
@@ -34,7 +41,7 @@ namespace FileTaggerMVC.Controllers
             if (ModelState.IsValid)
             {
                 Tag tag = Mapper.Map<TagViewModel, Tag>(tagViewModel);
-                new TagRepository().Add(tag);
+                _tagRepository.Add(tag);
             }
 
             return RedirectToAction("Index");
@@ -43,7 +50,7 @@ namespace FileTaggerMVC.Controllers
         // GET: Tag/Edit/5
         public ActionResult Edit(int id)
         {    
-            Tag tag = new TagRepository().GetById(id);
+            Tag tag = _tagRepository.GetById(id);
             TagViewModel tagViewModel = Mapper.Map<Tag, TagViewModel>(tag);
 
             //TODO remove this
@@ -59,7 +66,7 @@ namespace FileTaggerMVC.Controllers
             if (ModelState.IsValid)
             {
                 Tag tag = Mapper.Map<TagViewModel, Tag>(tagViewModel);
-                new TagRepository().Update(tag);
+                _tagRepository.Update(tag);
             }
 
             return RedirectToAction("Index");
@@ -68,7 +75,7 @@ namespace FileTaggerMVC.Controllers
         // GET: Tag/Delete/5
         public ActionResult Delete(int id)
         {
-            Tag tag = new TagRepository().GetById(id);
+            Tag tag = _tagRepository.GetById(id);
             TagViewModel tagViewModel = Mapper.Map<Tag, TagViewModel>(tag);
             return View(tagViewModel);
         }
@@ -78,11 +85,12 @@ namespace FileTaggerMVC.Controllers
         public ActionResult Delete(TagViewModel tagViewModel)
         {
             Tag tag = Mapper.Map<TagViewModel, Tag>(tagViewModel);
-            new TagRepository().Delete(tag);
+            _tagRepository.Delete(tag);
 
             return RedirectToAction("Index");
         }
 
+        //TODO
         private static void LoadTagTypes(TagViewModel tag)
         {
             List<TagType> tagTypes = new TagTypeRepository().GetAll().ToList();

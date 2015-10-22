@@ -11,8 +11,9 @@ namespace FileTaggerMVC.ModelBinders
         {
             HttpRequestBase request = controllerContext.HttpContext.Request;
 
+            string id = request.Form.Get("Id");
             string filePath = request.Form.Get("FilePath");
-            string tagIds = request.Form.Get("Tags");
+            string tagIds = request.Form.Get("TagIds");
 
             if (!string.IsNullOrEmpty(filePath))
             {
@@ -28,6 +29,7 @@ namespace FileTaggerMVC.ModelBinders
 
                 return new FileViewModel
                 {
+                    Id = int.Parse(id),
                     FilePath = filePath,
                     TagIds = ids
                 };

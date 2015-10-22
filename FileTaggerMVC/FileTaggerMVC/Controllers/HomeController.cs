@@ -1,5 +1,4 @@
-﻿using FileTaggerMVC.Models;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace FileTaggerMVC.Controllers
 {
@@ -7,19 +6,6 @@ namespace FileTaggerMVC.Controllers
     {
         public ActionResult Index()
         {
-            //using (var ctx = new TagsSQLiteContext(SqliteConnectionString))
-            //{
-            //    ctx.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
-
-            //    TagType tt = new TagType { Description = "Type1" };
-            //    ctx.TagTypes.Add(tt);
-
-            //    Tag t = new Tag { Description = "Tag1", TagType = tt };
-            //    ctx.Tags.Add(t);
-
-            //    ctx.SaveChanges();
-            //}
-
             return View();
         }
     }

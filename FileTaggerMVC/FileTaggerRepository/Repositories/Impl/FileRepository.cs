@@ -21,45 +21,44 @@ namespace FileTaggerRepository.Repositories.Impl
 
         protected override string AddWithReferencesQuery(File entity)
         {
+            return AddQuery + InsertTagMap(entity, "(SELECT Id FROM File ORDER BY Id DESC LIMIT 1)");
+        }
+
+        private static string InsertTagMap(File entity, string fileId)
+        {
             StringBuilder sb = new StringBuilder();
             int i = 0;
             IEnumerator<Tag> tagsEnumerator = entity.Tags.GetEnumerator();
-            while(tagsEnumerator.MoveNext())
+            while (tagsEnumerator.MoveNext())
             {
                 sb.Append("INSERT INTO TagMap(File_Id, Tag_Id) VALUES(");
-                sb.Append("(SELECT last_insert_rowid() FROM File)");
+                sb.Append(fileId);
                 sb.Append(", @Tag_Id");
                 sb.Append(i);
                 sb.Append(");");
                 i++;
             }
 
-            return AddQuery + sb;
+            return sb.ToString();
         }
 
-        protected override void AddWithReferencesCommandBuilder(SQLiteCommand cmd, File entity)
+        protected override void AddWithReferencesCommandBinder(SQLiteCommand cmd, File entity)
         {
             AddCommandBinder(cmd, entity);
+            BindTagIds(cmd, entity);
+        }
+
+        private static void BindTagIds(SQLiteCommand cmd, File file)
+        {
             int i = 0;
-            foreach (var tag in entity.Tags)
+            foreach (Tag tag in file.Tags)
             {
                 cmd.Parameters.Add("@Tag_Id" + i, DbType.String).Value = tag.Id;
                 i++;
             }
         }
 
-        protected override string UpdateQuery => @"UPDATE FILE SET FilePath = @FilePath WHERE Id = @Id;
-                                                   DELETE FROM TagMap WHERE Tag_Id IN (???) ";
-
-        //protected override string UpdateQuery(File entity)
-        //{
-        //    string updateQuery = "UPDATE FILE SET FilePath = @FilePath WHERE Id = @Id";
-
-        //    foreach (var x in entity.Tags)
-        //    {
-
-        //    }
-        //}
+        protected override string UpdateQuery => @"UPDATE FILE SET FilePath = @FilePath WHERE Id = @Id;";
 
         protected override void UpdateCommandBinder(SQLiteCommand cmd, File entity)
         {
@@ -144,6 +143,24 @@ namespace FileTaggerRepository.Repositories.Impl
             file.Tags = tags;
 
             return file;
+        }
+
+        protected override string UpdateWithReferencesQuery(File entity)
+        {
+            string delete = "DELETE FROM TagMap WHERE File_Id = @FileId;";
+            string insert = string.Empty;
+            if (entity.Tags.Any())
+            {
+                insert = InsertTagMap(entity, "@FileId");
+            }
+            
+            return delete + insert;
+        }
+
+        protected override void UpdateWithReferencesCommandBinder(SQLiteCommand cmd, File entity)
+        {
+            cmd.Parameters.Add("@FileId", DbType.Int32).Value = entity.Id;
+            BindTagIds(cmd, entity);
         }
     }
 }

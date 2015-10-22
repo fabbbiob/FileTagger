@@ -13,6 +13,13 @@ namespace FileTaggerMVC.Controllers
 {
     public class FileController : Controller
     {
+        private FileRepository _fileRepository;
+
+        public FileController()
+        {
+            _fileRepository = new FileRepository();
+        }
+
         //
         // GET: /File/
         public ActionResult Index()
@@ -22,9 +29,9 @@ namespace FileTaggerMVC.Controllers
 
         //
         // POST: /File/ListFiles/
-        [HttpPost]
         public ActionResult ListFiles(string folderPath)
         {
+            TempData["folderPath"] = folderPath;
             JsTreeNodeModel root = new JsTreeNodeModel
             {
                 Text = "root"
@@ -40,7 +47,7 @@ namespace FileTaggerMVC.Controllers
         public PartialViewResult Details(string fileName)
         {
             TempData["fileName"] = fileName;
-            FileTaggerModel.Model.File file = new FileRepository().Get("FilePath", fileName).FirstOrDefault();
+            FileTaggerModel.Model.File file = _fileRepository.Get("FilePath", fileName).FirstOrDefault();
             if (file != null)
             {
                 FileViewModel fileViewModel = Mapper.Map<FileTaggerModel.Model.File, FileViewModel>(file);
@@ -64,11 +71,11 @@ namespace FileTaggerMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                FileTaggerModel.Model.File file = Mapper.Map<FileViewModel, FileTaggerModel.Model.File>(fileViewModel);
-                new FileRepository().Update(file);
+                FileTaggerModel.Model.File editedFile = Mapper.Map<FileViewModel, FileTaggerModel.Model.File>(fileViewModel);
+                _fileRepository.UpdateWithReferences(editedFile);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("ListFiles", new { folderPath = (string)TempData["folderPath"] });
         }
 
         public ActionResult Create()
@@ -89,10 +96,10 @@ namespace FileTaggerMVC.Controllers
             if (ModelState.IsValid)
             {
                 FileTaggerModel.Model.File file = Mapper.Map<FileViewModel, FileTaggerModel.Model.File>(fileViewModel);
-                new FileRepository().AddWithReferences(file);
+                _fileRepository.AddWithReferences(file);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("ListFiles", new { folderPath = (string)TempData["folderPath"] });
         }
 
         private static void DirectorySearch(string folderPath, JsTreeNodeModel root)
@@ -125,6 +132,7 @@ namespace FileTaggerMVC.Controllers
             }
         }
         
+        //TODO
         private static void LoadTagTypes(FileViewModel fileViewModel)
         {
             List<Tag> tags = new TagRepository().GetAll().ToList();

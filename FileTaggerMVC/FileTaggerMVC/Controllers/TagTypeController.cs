@@ -10,10 +10,17 @@ namespace FileTaggerMVC.Controllers
 {
     public class TagTypeController : Controller
     {
+        private TagTypeRepository _tagTypeRepository;
+
+        public TagTypeController()
+        {
+            _tagTypeRepository = new TagTypeRepository();
+        }
+
         // GET: TagType
         public ActionResult Index()
         {
-            List<TagType> list = new TagTypeRepository().GetAll().ToList();
+            List<TagType> list = _tagTypeRepository.GetAll().ToList();
             List<TagTypeViewModel> viewModelList = 
                 Mapper.Map<IEnumerable<TagType>, IEnumerable<TagTypeViewModel>>(list).ToList();
             return View(viewModelList);
@@ -33,7 +40,7 @@ namespace FileTaggerMVC.Controllers
             if (ModelState.IsValid)
             {
                 TagType tagType = Mapper.Map<TagTypeViewModel, TagType>(tagTypeViewModel);
-                new TagTypeRepository().Add(tagType);
+                _tagTypeRepository.Add(tagType);
             }          
 
             return RedirectToAction("Index");
@@ -42,7 +49,7 @@ namespace FileTaggerMVC.Controllers
         // GET: TagType/Edit/5
         public ActionResult Edit(int id)
         {
-            TagType tagType = new TagTypeRepository().GetById(id);
+            TagType tagType = _tagTypeRepository.GetById(id);
             TagTypeViewModel tagTypeViewModel = Mapper.Map<TagType, TagTypeViewModel>(tagType);
 
             ViewBag.Action = "Edit";
@@ -56,7 +63,7 @@ namespace FileTaggerMVC.Controllers
             if (ModelState.IsValid)
             {
                 TagType tagType = Mapper.Map<TagTypeViewModel, TagType>(tagTypeViewModel);
-                new TagTypeRepository().Update(tagType);
+                _tagTypeRepository.Update(tagType);
             }
 
             return RedirectToAction("Index");
@@ -65,7 +72,7 @@ namespace FileTaggerMVC.Controllers
         // GET: TagType/Delete/5
         public ActionResult Delete(int id)
         {
-            TagType tagType = new TagTypeRepository().GetById(id);
+            TagType tagType = _tagTypeRepository.GetById(id);
             TagTypeViewModel tagTypeViewModel = Mapper.Map<TagType, TagTypeViewModel>(tagType);
             return View("Delete", tagTypeViewModel);
         }
@@ -75,7 +82,7 @@ namespace FileTaggerMVC.Controllers
         public ActionResult Delete(TagTypeViewModel tagTypeViewModel)
         {
             TagType tagType = Mapper.Map<TagTypeViewModel, TagType>(tagTypeViewModel);
-            new TagTypeRepository().Delete(tagType);
+            _tagTypeRepository.Delete(tagType);
             return RedirectToAction("Index");
         }
     }

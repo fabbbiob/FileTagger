@@ -6,21 +6,17 @@ namespace FileTaggerMVC.AutoMapper
 {
     public class ViewModelToDomainMappingProfile : Profile
     {
-        public override string ProfileName
-        {
-            get
-            {
-                return "ViewModelToDomainMappingProfile";
-            }
-        }
+        public override string ProfileName => "ViewModelToDomainMappingProfile";
 
         protected override void Configure()
         {
             Mapper.CreateMap<TagTypeViewModel, TagType>();
+
             Mapper.CreateMap<TagViewModel, Tag>()
-                .ConvertUsing<TagEntityConverter>();
+                  .ConvertUsing<TagEntityConverter>();
+
             Mapper.CreateMap<FileViewModel, File>()
-                .ConvertUsing<FileEntityConverter>();
+                  .ConvertUsing<FileEntityConverter>();
         }
     }
 }

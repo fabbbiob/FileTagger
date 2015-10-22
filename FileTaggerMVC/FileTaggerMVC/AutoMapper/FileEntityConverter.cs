@@ -23,8 +23,7 @@ namespace FileTaggerMVC.AutoMapper
                 FilePath = fileViewModel.FilePath,
                 Tags = tags
             };
-
-
+            
             return file;
         }
     }

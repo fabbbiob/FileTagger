@@ -139,9 +139,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Controllers\TagTypeController.cs" />
-    <Compile Include="DAL\FileDal.cs" />
-    <Compile Include="DAL\TagDal.cs" />
-    <Compile Include="DAL\TagTypeDal.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
