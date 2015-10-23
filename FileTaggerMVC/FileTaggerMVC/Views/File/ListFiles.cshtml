@@ -6,6 +6,7 @@
 <script type="text/javascript">
     $(function () {
         $('#jstreeDiv').on('select_node.jstree', function (e, nodeData) {
+            if (nodeData.node.a_attr["data-filename"] == undefined) return;
             $.ajax({
                 type: "GET",
                 url: "/File/Details",

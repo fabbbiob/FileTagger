@@ -8,5 +8,10 @@ namespace FileTaggerMVC.Controllers
         {
             return View();
         }
+
+        public ActionResult ByTag(int[] tagIds)
+        {
+            return View();
+        }
     }
 }

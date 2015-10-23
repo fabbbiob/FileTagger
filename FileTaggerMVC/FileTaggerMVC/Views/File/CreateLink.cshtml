@@ -1,3 +1,13 @@
-﻿<p>File not in database.</p>
-
-@Html.ActionLink("Create", "Create")
+﻿@model FileTaggerMVC.Models.NoFileViewModel
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FileName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FileName)
+        </dd>
+    </dl>
+</div>
+<p>File not in database.</p>
+@Html.ActionLink("Create", "Create", null, new { @class = "btn btn-info" })

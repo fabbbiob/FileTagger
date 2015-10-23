@@ -36,7 +36,8 @@ namespace FileTaggerMVC.Controllers
             Session["folderPath"] = folderPath;
             JsTreeNodeModel root = new JsTreeNodeModel
             {
-                Text = folderPath.Substring(folderPath.LastIndexOf(@"\") + 1)
+                Text = folderPath.Substring(folderPath.LastIndexOf(@"\") + 1),
+                State = new JsTreeNodeState()
             };
 
             DirectorySearch(folderPath, root);
@@ -55,7 +56,7 @@ namespace FileTaggerMVC.Controllers
             }
             else
             {
-                return PartialView("CreateLink");
+                return PartialView("CreateLink", new NoFileViewModel { FileName = fileName.Substring(fileName.LastIndexOf(@"\") + 1) });
             }
         }
 
@@ -111,6 +112,7 @@ namespace FileTaggerMVC.Controllers
         private static void DirectorySearch(string folderPath, JsTreeNodeModel root)
         {
             root.Children = new List<JsTreeNodeModel>();
+            root.State.Opened = true;
 
             foreach (string fileName in Directory.GetFiles(folderPath))
             {
@@ -119,7 +121,8 @@ namespace FileTaggerMVC.Controllers
                 {
                     Text = fileInfo.Name,
                     Type = "leaf",
-                    Attr = new JsTreeAttr { DataFilename = fileInfo.FullName }
+                    Attr = new JsTreeAttr { DataFilename = fileInfo.FullName },
+                    State = new JsTreeNodeState()
                 });
             }
 
@@ -149,12 +152,24 @@ namespace FileTaggerMVC.Controllers
     {
         [JsonProperty(PropertyName = "text")]
         public string Text;
+        [JsonProperty(PropertyName = "state")]
+        public JsTreeNodeState State;
         [JsonProperty(PropertyName = "children")]
         public List<JsTreeNodeModel> Children;
         [JsonProperty(PropertyName = "type")]
         public string Type;
         [JsonProperty(PropertyName = "a_attr")]
         public JsTreeAttr Attr;
+    }
+
+    internal class JsTreeNodeState
+    {
+        [JsonProperty(PropertyName = "opened")]
+        public bool Opened;
+        [JsonProperty(PropertyName = "disabled")]
+        public bool Disabled;
+        [JsonProperty(PropertyName = "selected")]
+        public bool Selected;
     }
 
     internal class JsTreeAttr
