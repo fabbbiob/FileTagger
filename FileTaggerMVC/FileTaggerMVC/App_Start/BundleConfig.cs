@@ -11,7 +11,7 @@ namespace FileTaggerMVC
                         "~/Scripts/jquery-1.11.3.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery.validate").Include(
-                        "~/Scripts/jquery.validate.min.js").Include(
+                        "~/Scripts/jquery.validate.min.js", 
                         "~/Scripts/jquery.validate.unobtrusive.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
@@ -20,10 +20,14 @@ namespace FileTaggerMVC
             bundles.Add(new ScriptBundle("~/bundles/jstree").Include(
                       "~/Scripts/jstree.min.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/selectize").Include(
+                "~/Scripts/selectize.min.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",
                       "~/Content/jstree/default/style.min.css",
-                      "~/Content/jstree/default-dark/style.min.css"));
+                      "~/Content/jstree/default-dark/style.min.css",
+                      "~/Content/selectize.bootstrap3.css"));
         }
     }
 }

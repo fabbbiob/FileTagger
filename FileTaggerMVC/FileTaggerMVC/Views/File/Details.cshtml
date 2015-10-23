@@ -28,7 +28,7 @@
                     {
                         <tr>
                             <td>
-                                @tag.Text
+                                @Html.ActionLink(tag.Text, "ByTags", "Home", new { tagIds = tag.Value }, null)
                             </td>
                         </tr>
                     }

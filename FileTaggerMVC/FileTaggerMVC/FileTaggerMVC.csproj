@@ -161,6 +161,7 @@
     <Content Include="Content\jstree\default\40px.png" />
     <Content Include="Content\jstree\default\style.min.css" />
     <Content Include="Content\jstree\default\throbber.gif" />
+    <Content Include="Content\selectize.bootstrap3.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -169,6 +170,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\jstree.min.js" />
+    <Content Include="Scripts\selectize.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

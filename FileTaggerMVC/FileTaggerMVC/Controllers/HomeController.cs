@@ -9,7 +9,8 @@ namespace FileTaggerMVC.Controllers
             return View();
         }
 
-        public ActionResult ByTag(int[] tagIds)
+        //TODO
+        public ActionResult ByTags(int[] tagIds)
         {
             return View();
         }

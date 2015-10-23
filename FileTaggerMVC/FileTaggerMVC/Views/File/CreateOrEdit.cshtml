@@ -1,5 +1,15 @@
 ﻿@model FileTaggerMVC.Models.FileViewModel
 
+<script type="text/javascript">
+    $(function () {
+        $('select').selectize({
+            persist: false,
+            createOnBlur: true,
+            create: false
+        });
+    });
+</script>
+
 @using (Html.BeginForm((string)ViewBag.Action, "File")) 
 {
     <div class="form-horizontal">
