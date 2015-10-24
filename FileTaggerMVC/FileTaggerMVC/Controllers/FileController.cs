@@ -164,6 +164,11 @@ namespace FileTaggerMVC.Controllers
 
     internal class JsTreeNodeState
     {
+        public JsTreeNodeState()
+        {
+            Opened = Disabled = Selected = false;
+        }
+
         [JsonProperty(PropertyName = "opened")]
         public bool Opened;
         [JsonProperty(PropertyName = "disabled")]
