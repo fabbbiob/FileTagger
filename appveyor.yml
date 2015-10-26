@@ -10,6 +10,7 @@ configuration: Release
 before_build: nuget restore FileTaggerMVC\FileTaggerMVC.sln
 
 build:
+    project: FileTaggerMVC\FileTaggerMVC.sln
     verbosity: minimal
 
 environment:
