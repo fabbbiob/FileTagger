@@ -18,4 +18,4 @@ environment:
        secure: F5Q88lzJGLHU+KOwsCn0BDu3pgwvxHgV2nfhaRmzscH9KQvc+NCcpUxP7ykSvEam
 
 after_test: 
-    - FileTaggerMVC\packages\OpenCover.4.6.166\tools\OpenCover.Console.exe -register:user -filter:"+[*]*" -target:"FileTaggerMVC\packages\NUnit.Runners.2.6.4\tools\nunit-console.exe" -targetargs:"/noshadow /domain:single  FileTaggerMVC\FileTaggerRepositoryTests\bin\debug\FileTaggerRepositoryTests.dll" -output:coverage.xml
+    - FileTaggerMVC\packages\OpenCover.4.6.166\tools\OpenCover.Console.exe -register:user -filter:"+[*]*" -target:"FileTaggerMVC\packages\NUnit.Runners.2.6.4\tools\nunit-console.exe" -targetargs:"/noshadow /domain:single  FileTaggerMVC\FileTaggerRepositoryTests\bin\release\FileTaggerRepositoryTests.dll" -output:coverage.xml
