@@ -6,3 +6,5 @@ services:
 platform: Any CPU
 
 configuration: Release
+
+before_build: nuget restore FileTaggerMVC\FileTaggerMVC.sln
