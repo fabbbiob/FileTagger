@@ -2,7 +2,7 @@
 using System.Data.SQLite;
 using System.Linq;
 using FileTaggerModel.Model;
-using FileTaggerRepository.Repositories;
+using FileTaggerRepository.Helpers;
 using FileTaggerRepository.Repositories.Impl;
 using NUnit.Framework;
 

@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using FileTaggerRepository.Repositories;
+using FileTaggerRepository.Helpers;
 using FileTaggerMVC.AutoMapper;
 
 namespace FileTaggerMVC

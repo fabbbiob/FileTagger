@@ -82,7 +82,7 @@ namespace FileTaggerMVC.Controllers
         public ActionResult Delete(TagTypeViewModel tagTypeViewModel)
         {
             TagType tagType = Mapper.Map<TagTypeViewModel, TagType>(tagTypeViewModel);
-            _tagTypeRepository.Delete(tagType);
+            _tagTypeRepository.Delete(tagType.Id);
             return RedirectToAction("Index");
         }
     }

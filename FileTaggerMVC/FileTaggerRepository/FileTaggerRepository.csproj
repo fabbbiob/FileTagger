@@ -43,12 +43,16 @@
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\SqliteHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\Abstract\IFileRepository.cs" />
     <Compile Include="Repositories\Abstract\IRepository.cs" />
     <Compile Include="Repositories\Abstract\IRepositoryWithReferences.cs" />
+    <Compile Include="Repositories\Abstract\ITagRepository.cs" />
+    <Compile Include="Repositories\Abstract\ITagTypeRepository.cs" />
     <Compile Include="Repositories\Abstract\RepositoryBase.cs" />
     <Compile Include="Repositories\Abstract\RepositoryBaseWithReferences.cs" />
-    <Compile Include="Repositories\DbCreator.cs" />
+    <Compile Include="Helpers\DbCreator.cs" />
     <Compile Include="Repositories\Impl\FileRepository.cs" />
     <Compile Include="Repositories\Impl\TagRepository.cs" />
     <Compile Include="Repositories\Impl\TagTypeRepository.cs" />

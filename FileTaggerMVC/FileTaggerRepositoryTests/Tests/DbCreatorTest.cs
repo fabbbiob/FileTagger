@@ -1,4 +1,4 @@
-﻿using FileTaggerRepository.Repositories;
+﻿using FileTaggerRepository.Helpers;
 using NUnit.Framework;
 
 namespace FileTaggerRepositoryTests.Tests

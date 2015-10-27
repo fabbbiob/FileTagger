@@ -6,12 +6,14 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.IO;
 
-namespace FileTaggerRepository.Repositories
+namespace FileTaggerRepository.Helpers
 {
     public class DbCreator
     {
         private static string ConnectionString => ConfigurationManager.AppSettings["SqliteConnectionString"];
 
+
+        //TODO create index file-FilePath
         private const string CreateTables = @"  PRAGMA foreign_keys = ON;
                                                 CREATE TABLE TagType(
 	                                                Id INTEGER PRIMARY KEY,
