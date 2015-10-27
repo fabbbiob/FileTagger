@@ -26,11 +26,20 @@ namespace FileTaggerRepository.Helpers
         internal static void GetAll(string query, Action<SQLiteDataReader> action)
         {
             ExecuteQuery(query, null, null, cmd => {
-                SQLiteDataReader dr = cmd.ExecuteReader();
-
-                while (dr.Read())
+                SQLiteDataReader dr = null;
+                try
                 {
-                    action(dr);
+                    dr = cmd.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        action(dr);
+                    }
+                }
+                finally
+                {
+                    dr?.Close();
+                    dr?.Dispose();
                 }
             });
         }
@@ -40,12 +49,22 @@ namespace FileTaggerRepository.Helpers
                                    IEntity entity, 
                                    Action<SQLiteDataReader> action)
         {
-            ExecuteQuery(query, commandBinder, entity, cmd => {
-                SQLiteDataReader dr = cmd.ExecuteReader();
-
-                if (dr.Read())
+            ExecuteQuery(query, commandBinder, entity, cmd =>
+            {
+                SQLiteDataReader dr = null;
+                try
                 {
-                    action(dr);
+                    dr = cmd.ExecuteReader();
+
+                    if (dr.Read())
+                    {
+                        action(dr);
+                    }
+                }
+                finally
+                {
+                    dr?.Close();
+                    dr?.Dispose();
                 }
             });
         }

@@ -9,7 +9,7 @@ using FileTaggerModel;
 
 namespace FileTaggerRepository.Repositories.Impl
 {
-    public class TagTypeRepository : ITagTypeRepository//: RepositoryBase<TagType>
+    public class TagTypeRepository : ITagTypeRepository
     {
         //protected override string GetByIdWithReferencesQuery =>
         //               @"SELECT tt.Id, tt.Description 

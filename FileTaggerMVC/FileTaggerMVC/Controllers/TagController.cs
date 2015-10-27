@@ -85,7 +85,7 @@ namespace FileTaggerMVC.Controllers
         public ActionResult Delete(TagViewModel tagViewModel)
         {
             Tag tag = Mapper.Map<TagViewModel, Tag>(tagViewModel);
-            _tagRepository.Delete(tag);
+            _tagRepository.Delete(tag.Id);
 
             return RedirectToAction("Index");
         }

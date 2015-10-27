@@ -86,7 +86,7 @@ namespace FileTaggerRepositoryTests.Tests
             };
             repo.Add(tag);
 
-            repo.Delete(tag);
+            repo.Delete(tag.Id);
 
             Assert.Null(repo.GetById(tag.Id));
         }

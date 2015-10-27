@@ -9,7 +9,7 @@ namespace FileTaggerRepository.Repositories.Abstract
 {
     interface ITagRepository
     {
-        int Add(Tag tagType);
+        void Add(Tag tagType);
         void Update(Tag tagType);
         void Delete(int id);
         IEnumerable<Tag> GetAll();
