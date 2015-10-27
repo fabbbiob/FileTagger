@@ -132,7 +132,8 @@ namespace FileTaggerMVC.Controllers
 
                 JsTreeNodeModel node = new JsTreeNodeModel
                 {
-                    Text = directoryInfo.Name
+                    Text = directoryInfo.Name,
+                    State = new JsTreeNodeState()
                 };
 
                 DirectorySearch(directoryName, node);
