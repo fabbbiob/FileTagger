@@ -6,20 +6,41 @@ using System.Data.SQLite;
 using System.Text;
 using System.Linq;
 using FileTaggerRepository.Repositories.Abstract;
+using FileTaggerRepository.Helpers;
+using FileTaggerModel;
 
 namespace FileTaggerRepository.Repositories.Impl
 {
-    public class FileRepository : RepositoryBaseWithReferences<File>
+    public class FileRepository : IFileRepository
     {
-        protected override string AddQuery => @"INSERT INTO File(FilePath) VALUES(@FilePath);
-                                                SELECT last_insert_rowid() FROM File;";
 
-        protected override void AddCommandBinder(SQLiteCommand cmd, File entity)
-        {
-            cmd.Parameters.Add("@FilePath", DbType.String).Value = entity.FilePath;
-        }
+        //protected override string GetAllQuery => "SELECT Id, FilePath FROM File;";
 
-        protected override string AddWithReferencesQuery(File entity)
+        //protected override File Parse(SQLiteDataReader dr)
+        //{
+        //    return new File
+        //    {
+        //        Id = dr.GetInt32(0),
+        //        FilePath = dr.GetString(1)
+        //    };
+        //}
+
+        //protected override string GetByIdWithReferencesQuery => 
+        //                                        GetByIdQuery +
+        //                                        @"SELECT t.Id, t.Description, tt.Id, tt.Description 
+        //                                          FROM Tag AS t
+        //                                          INNER JOIN TagMap as tm
+        //                                            ON tm.Tag_Id = t.Id
+        //                                          LEFT JOIN TagType AS tt
+        //                                            ON t.TagType_Id = tt.Id 
+        //                                          WHERE tm.File_Id = @Id";
+
+
+
+        private static string AddQuery => @"INSERT INTO File(FilePath) VALUES(@FilePath);
+                                            SELECT last_insert_rowid() FROM File;";
+
+        private static string AddWithReferencesQuery(File entity)
         {
             return AddQuery + InsertTagMap(entity, "(SELECT Id FROM File ORDER BY Id DESC LIMIT 1)");
         }
@@ -42,10 +63,41 @@ namespace FileTaggerRepository.Repositories.Impl
             return sb.ToString();
         }
 
-        protected override void AddWithReferencesCommandBinder(SQLiteCommand cmd, File entity)
+        private static void AddWithReferencesCommandBinder(SQLiteCommand cmd, IEntity entity)
         {
-            AddCommandBinder(cmd, entity);
-            BindTagIds(cmd, entity);
+            File file = (File)entity;
+            cmd.Parameters.Add("@FilePath", DbType.String).Value = file.FilePath;
+            int i = 0;
+            foreach (Tag tag in file.Tags)
+            {
+                cmd.Parameters.Add("@Tag_Id" + i, DbType.String).Value = tag.Id;
+                i++;
+            }
+        }
+
+        public void Add(File file)
+        {
+            SqliteHelper.Insert(AddWithReferencesQuery(file), AddWithReferencesCommandBinder, file);
+        }
+
+        private static string UpdateWithReferencesQuery(IEntity entity)
+        {
+            File file = (File)entity;
+            string delete = "DELETE FROM TagMap WHERE File_Id = @FileId;";
+            string insert = string.Empty;
+            if (file.Tags.Any())
+            {
+                insert = InsertTagMap(file, "@FileId");
+            }
+
+            return delete + insert;
+        }
+
+        private static void UpdateWithReferencesCommandBinder(SQLiteCommand cmd, IEntity entity)
+        {
+            File file = (File)entity;
+            cmd.Parameters.Add("@FileId", DbType.Int32).Value = entity.Id;
+            BindTagIds(cmd, file);
         }
 
         private static void BindTagIds(SQLiteCommand cmd, File file)
@@ -58,64 +110,35 @@ namespace FileTaggerRepository.Repositories.Impl
             }
         }
 
-        protected override string UpdateQuery => @"UPDATE FILE SET FilePath = @FilePath WHERE Id = @Id;";
-
-        protected override void UpdateCommandBinder(SQLiteCommand cmd, File entity)
+        public void Update(File file)
         {
-            cmd.Parameters.Add("@Id", DbType.Int32).Value = entity.Id;
-            cmd.Parameters.Add("@FilePath", DbType.String).Value = entity.FilePath;
+            SqliteHelper.Update(UpdateWithReferencesQuery(file), UpdateWithReferencesCommandBinder, file);
         }
 
-        protected override string DeleteQuery => "DELETE FROM File WHERE Id = @Id;";
+        private static string GetByFilePathQuery => "SELECT Id, FilePath FROM File WHERE FilePath = '@Where';" +
+                                                   @"SELECT t.Id, t.Description, tt.Id, tt.Description 
+                                                     FROM Tag AS t
+                                                     INNER JOIN TagMap as tm
+                                                        ON tm.Tag_Id = t.Id
+                                                     LEFT JOIN TagType AS tt
+                                                        ON t.TagType_Id = tt.Id 
+                                                     WHERE tm.File_Id = (SELECT Id FROM File WHERE FilePath = '@Where')";
 
-        protected override void DeleteCommandBinder(SQLiteCommand cmd, File entity)
+        private static void GetByFilePathCommandBinder(SQLiteCommand cmd, IEntity entity)
         {
-            cmd.Parameters.Add("@Id", DbType.Int32).Value = entity.Id;
+            File file = (File)entity;
+            cmd.Parameters.Add("@Where", DbType.String).Value = file.FilePath;
         }
 
-        protected override string GetByIdQuery => "SELECT Id, FilePath FROM File WHERE Id = @Id;";
-
-        protected override void GetByIdCommandBinder(SQLiteCommand cmd, int id)
+        private static File ParseWithReferences(SQLiteDataReader dr)
         {
-            cmd.Parameters.Add("@Id", DbType.Int32).Value = id;
-        }
+            if (!dr.Read()) return null;
 
-        protected override string GetAllQuery => "SELECT Id, FilePath FROM File;";
-
-        protected override File Parse(SQLiteDataReader dr)
-        {
-            return new File
+            File file = new File
             {
                 Id = dr.GetInt32(0),
                 FilePath = dr.GetString(1)
             };
-        }
-
-        protected override string GetByIdWithReferencesQuery => 
-                                                GetByIdQuery +
-                                                @"SELECT t.Id, t.Description, tt.Id, tt.Description 
-                                                  FROM Tag AS t
-                                                  INNER JOIN TagMap as tm
-                                                    ON tm.Tag_Id = t.Id
-                                                  LEFT JOIN TagType AS tt
-                                                    ON t.TagType_Id = tt.Id 
-                                                  WHERE tm.File_Id = @Id";
-
-        protected override string GetByWhereQuery => "SELECT Id, FilePath FROM File WHERE @Prop = '@Where';" +
-                                                @"SELECT t.Id, t.Description, tt.Id, tt.Description 
-                                                  FROM Tag AS t
-                                                  INNER JOIN TagMap as tm
-                                                    ON tm.Tag_Id = t.Id
-                                                  LEFT JOIN TagType AS tt
-                                                    ON t.TagType_Id = tt.Id 
-                                                  WHERE tm.File_Id = (SELECT Id FROM File WHERE @Prop = '@Where')";
-
-        //TODO
-        protected override File ParseWithReferences(SQLiteDataReader dr)
-        {
-            if (!dr.Read()) return null;
-
-            File file = Parse(dr);
 
             LinkedList<Tag> tags = new LinkedList<Tag>();
             dr.NextResult();
@@ -145,28 +168,13 @@ namespace FileTaggerRepository.Repositories.Impl
             return file;
         }
 
-        protected override string UpdateWithReferencesQuery(File entity)
+        public File GetByFilename(string filename)
         {
-            string delete = "DELETE FROM TagMap WHERE File_Id = @FileId;";
-            string insert = string.Empty;
-            if (entity.Tags.Any())
-            {
-                insert = InsertTagMap(entity, "@FileId");
-            }
-            
-            return delete + insert;
+            File file = null;
+            SqliteHelper.GetById(GetByFilePathQuery, GetByFilePathCommandBinder, new File { FilePath = filename }, dr => file = ParseWithReferences(dr));
+            return file;
         }
 
-        protected override void UpdateWithReferencesCommandBinder(SQLiteCommand cmd, File entity)
-        {
-            cmd.Parameters.Add("@FileId", DbType.Int32).Value = entity.Id;
-            BindTagIds(cmd, entity);
-        }
-
-
-        //TODO
-
-
-
+        
     }
 }

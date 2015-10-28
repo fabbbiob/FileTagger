@@ -10,8 +10,8 @@ namespace FileTaggerRepository.Helpers
         private static string ConnectionString => ConfigurationManager.AppSettings["SqliteConnectionString"];
 
         internal static void Insert(string query,
-                                  Action<SQLiteCommand, IEntity> commandBinder,
-                                  IEntity entity)
+                                    Action<SQLiteCommand, IEntity> commandBinder,
+                                    IEntity entity)
         {
             ExecuteQuery(query, commandBinder, entity, cmd => { entity.Id = (int)(long)cmd.ExecuteScalar(); });
         }
@@ -45,9 +45,9 @@ namespace FileTaggerRepository.Helpers
         }
 
         internal static void GetById(string query,
-                                   Action<SQLiteCommand, IEntity> commandBinder,
-                                   IEntity entity, 
-                                   Action<SQLiteDataReader> action)
+                                     Action<SQLiteCommand, IEntity> commandBinder,
+                                     IEntity entity, 
+                                     Action<SQLiteDataReader> action)
         {
             ExecuteQuery(query, commandBinder, entity, cmd =>
             {

@@ -48,7 +48,7 @@ namespace FileTaggerMVC.Controllers
         public PartialViewResult Details(string fileName)
         {
             Session["fileName"] = fileName;
-            FileTaggerModel.Model.File file = _fileRepository.Get("FilePath", fileName).FirstOrDefault();
+            FileTaggerModel.Model.File file = _fileRepository.GetByFilename(fileName);
             if (file != null)
             {
                 FileViewModel fileViewModel = Mapper.Map<FileTaggerModel.Model.File, FileViewModel>(file);
@@ -63,7 +63,7 @@ namespace FileTaggerMVC.Controllers
         // GET: /File/Edit/5
         public ActionResult Edit(int id)
         {
-            FileTaggerModel.Model.File file = _fileRepository.Get("FilePath", (string)Session["fileName"]).First();
+            FileTaggerModel.Model.File file = _fileRepository.GetByFilename((string)Session["fileName"]);
             FileViewModel fileViewModel = Mapper.Map<FileTaggerModel.Model.File, FileViewModel>(file);
 
             ViewBag.Action = "Edit";
@@ -77,7 +77,7 @@ namespace FileTaggerMVC.Controllers
             if (ModelState.IsValid)
             {
                 FileTaggerModel.Model.File editedFile = Mapper.Map<FileViewModel, FileTaggerModel.Model.File>(fileViewModel);
-                _fileRepository.UpdateWithReferences(editedFile);
+                _fileRepository.Update(editedFile);
             }
 
             return RedirectToAction("ListFiles", new { folderPath = (string)Session["folderPath"] });
@@ -103,7 +103,7 @@ namespace FileTaggerMVC.Controllers
             if (ModelState.IsValid)
             {
                 FileTaggerModel.Model.File file = Mapper.Map<FileViewModel, FileTaggerModel.Model.File>(fileViewModel);
-                _fileRepository.AddWithReferences(file);
+                _fileRepository.Add(file);
             }
 
             return RedirectToAction("ListFiles", new { folderPath = (string)Session["folderPath"] });
