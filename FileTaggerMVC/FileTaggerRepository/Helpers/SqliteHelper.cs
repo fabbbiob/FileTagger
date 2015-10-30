@@ -55,7 +55,10 @@ namespace FileTaggerRepository.Helpers
                 try
                 {
                     dr = cmd.ExecuteReader();
-                    action(dr);
+                    if (dr.Read())
+                    { 
+                        action(dr);
+                    }
                 }
                 finally
                 { 

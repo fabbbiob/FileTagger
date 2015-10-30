@@ -67,7 +67,7 @@ namespace FileTaggerRepositoryTests.Tests
                 Tags = new List<Tag>()
             };
             repo.Add(file);
-
+            
             Assert.AreEqual(file, repo.GetByFilename(file.FilePath));
         }
 
