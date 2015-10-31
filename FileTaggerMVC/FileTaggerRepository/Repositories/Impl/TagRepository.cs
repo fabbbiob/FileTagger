@@ -71,11 +71,11 @@ namespace FileTaggerRepository.Repositories.Impl
             return DBNull.Value;
         }
 
-        private string AddQuery => @"INSERT INTO Tag(Description, TagType_Id) 
-                                     VALUES (@Description, @TagType_Id);
-                                     SELECT last_insert_rowid() FROM Tag;";
+        private static string AddQuery => @"INSERT INTO Tag(Description, TagType_Id) 
+                                            VALUES (@Description, @TagType_Id);
+                                            SELECT last_insert_rowid() FROM Tag;";
 
-        private void AddCommandBinder(SQLiteCommand cmd, IEntity entity)
+        private static void AddCommandBinder(SQLiteCommand cmd, IEntity entity)
         {
             Tag tag = (Tag) entity;
             cmd.Parameters.Add("@Description", DbType.String).Value = tag.Description;
@@ -87,12 +87,12 @@ namespace FileTaggerRepository.Repositories.Impl
             SqliteHelper.Insert(AddQuery, AddCommandBinder, tagType);
         }
 
-        private string UpdateQuery => @"UPDATE Tag 
-                                        SET Description = @Description, 
-                                        TagType_Id = @TagType_Id 
-                                        WHERE Id = @Id;";
+        private static string UpdateQuery => @"UPDATE Tag 
+                                               SET Description = @Description, 
+                                               TagType_Id = @TagType_Id 
+                                               WHERE Id = @Id;";
 
-        private void UpdateCommandBinder(SQLiteCommand cmd, IEntity entity)
+        private static void UpdateCommandBinder(SQLiteCommand cmd, IEntity entity)
         {
             Tag tag = (Tag)entity;
             cmd.Parameters.Add("@Id", DbType.Int32).Value = tag.Id;
@@ -105,9 +105,9 @@ namespace FileTaggerRepository.Repositories.Impl
             SqliteHelper.Update(UpdateQuery, UpdateCommandBinder, tagType);
         }
 
-        private string DeleteQuery => "DELETE FROM Tag WHERE Id = @Id;";
+        private static string DeleteQuery => "DELETE FROM Tag WHERE Id = @Id;";
 
-        private void DeleteCommandBinder(SQLiteCommand cmd, IEntity entity)
+        private static void DeleteCommandBinder(SQLiteCommand cmd, IEntity entity)
         {
             cmd.Parameters.Add("@Id", DbType.Int32).Value = entity.Id;
         }
@@ -117,7 +117,7 @@ namespace FileTaggerRepository.Repositories.Impl
             SqliteHelper.Delete(DeleteQuery, DeleteCommandBinder, new TagType { Id = id });
         }
 
-        private string GetAllQuery =>
+        private static string GetAllQuery =>
                        @"SELECT t.Id, t.Description, tt.Id, tt.Description 
                          FROM Tag as t
                          LEFT JOIN TagType AS tt
@@ -126,7 +126,13 @@ namespace FileTaggerRepository.Repositories.Impl
         public IEnumerable<Tag> GetAll()
         {
             LinkedList<Tag> list = new LinkedList<Tag>();
-            SqliteHelper.GetAll(GetAllQuery, dr => { list.AddLast(Parse(dr)); });
+            SqliteHelper.GetAll(GetAllQuery, dr =>
+            {
+                while (dr.Read())
+                {
+                    list.AddLast(Parse(dr));
+                }
+            });
             return list;
         }
 
@@ -137,7 +143,7 @@ namespace FileTaggerRepository.Repositories.Impl
                             ON t.TagType_Id = tt.Id 
                          WHERE t.Id = @Id;";
 
-        private void GetByIdCommandBinder(SQLiteCommand cmd, IEntity entity)
+        private static void GetByIdCommandBinder(SQLiteCommand cmd, IEntity entity)
         {
             cmd.Parameters.Add("@Id", DbType.Int32).Value = entity.Id;
         }
@@ -145,7 +151,13 @@ namespace FileTaggerRepository.Repositories.Impl
         public Tag GetById(int id)
         {
             Tag tag = null;
-            SqliteHelper.GetById(GetByIdQuery, GetByIdCommandBinder, new TagType { Id = id }, dr => tag = Parse(dr));
+            SqliteHelper.GetById(GetByIdQuery, GetByIdCommandBinder, new TagType { Id = id }, dr =>
+            {
+                if (dr.Read())
+                { 
+                    tag = Parse(dr);
+                }
+            });
             return tag;
         }
     }

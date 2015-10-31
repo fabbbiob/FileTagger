@@ -3,7 +3,6 @@ using FileTaggerModel.Model;
 using System.Data;
 using System.Data.SQLite;
 using FileTaggerRepository.Repositories.Abstract;
-using System;
 using FileTaggerRepository.Helpers;
 using FileTaggerModel;
 
@@ -44,10 +43,10 @@ namespace FileTaggerRepository.Repositories.Impl
         //    return tagType;
         //}
 
-        private string AddQuery => @"INSERT INTO TagType(Description) VALUES (@Description);
-                                     SELECT last_insert_rowid() FROM TagType;";
+        private static string AddQuery => @"INSERT INTO TagType(Description) VALUES (@Description);
+                                            SELECT last_insert_rowid() FROM TagType;";
 
-        private void AddCommandBinder(SQLiteCommand cmd, IEntity entity)
+        private static void AddCommandBinder(SQLiteCommand cmd, IEntity entity)
         {
             cmd.Parameters.Add("@Description", DbType.String).Value = ((TagType)entity).Description;
         }
@@ -57,9 +56,9 @@ namespace FileTaggerRepository.Repositories.Impl
             SqliteHelper.Insert(AddQuery, AddCommandBinder, tagType);
         }
 
-        private string DeleteQuery => "DELETE FROM TagType WHERE Id = @Id;";
+        private static string DeleteQuery => "DELETE FROM TagType WHERE Id = @Id;";
 
-        private void DeleteCommandBinder(SQLiteCommand cmd, IEntity entity)
+        private static void DeleteCommandBinder(SQLiteCommand cmd, IEntity entity)
         {
             cmd.Parameters.Add("@Id", DbType.Int32).Value = entity.Id;
         }
@@ -69,9 +68,9 @@ namespace FileTaggerRepository.Repositories.Impl
             SqliteHelper.Delete(DeleteQuery, DeleteCommandBinder, new TagType { Id = id });
         }
 
-        private string GetAllQuery => "SELECT Id, Description FROM TagType;";
+        private static string GetAllQuery => "SELECT Id, Description FROM TagType;";
 
-        private TagType Parse(SQLiteDataReader dr)
+        private static TagType Parse(SQLiteDataReader dr)
         {
             return new TagType
             {
@@ -83,13 +82,19 @@ namespace FileTaggerRepository.Repositories.Impl
         public IEnumerable<TagType> GetAll()
         {
             LinkedList<TagType> list = new LinkedList<TagType>();
-            SqliteHelper.GetAll(GetAllQuery, dr => { list.AddLast(Parse(dr)); });
+            SqliteHelper.GetAll(GetAllQuery, dr =>
+            {
+                while (dr.Read())
+                {
+                    list.AddLast(Parse(dr));
+                }
+            });
             return list;
         }
 
-        private string GetByIdQuery => "SELECT Id, Description FROM TagType WHERE Id = @Id;";
+        private static string GetByIdQuery => "SELECT Id, Description FROM TagType WHERE Id = @Id;";
 
-        private void GetByIdCommandBinder(SQLiteCommand cmd, IEntity entity)
+        private static void GetByIdCommandBinder(SQLiteCommand cmd, IEntity entity)
         {
             cmd.Parameters.Add("@Id", DbType.Int32).Value = entity.Id;
         }
@@ -97,13 +102,19 @@ namespace FileTaggerRepository.Repositories.Impl
         public TagType GetById(int id)
         {
             TagType tagType = null;
-            SqliteHelper.GetById(GetByIdQuery, GetByIdCommandBinder, new TagType { Id = id }, dr => tagType = Parse(dr));
+            SqliteHelper.GetById(GetByIdQuery, GetByIdCommandBinder, new TagType { Id = id }, dr =>
+            {
+                if (dr.Read())
+                { 
+                    tagType = Parse(dr);
+                }
+            });
             return tagType;
         }
 
-        private string UpdateQuery => "UPDATE TagType SET Description = @Description where Id = @Id;";
+        private static string UpdateQuery => "UPDATE TagType SET Description = @Description where Id = @Id;";
 
-        private void UpdateCommandBinder(SQLiteCommand cmd, IEntity entity)
+        private static void UpdateCommandBinder(SQLiteCommand cmd, IEntity entity)
         {
             TagType tagType = (TagType)entity;
             cmd.Parameters.Add("@Id", DbType.Int32).Value = tagType.Id;
