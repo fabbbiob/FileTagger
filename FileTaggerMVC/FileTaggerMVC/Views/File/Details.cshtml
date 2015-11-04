@@ -28,7 +28,7 @@
                     {
                         <tr>
                             <td>
-                                @Html.ActionLink(tag.Text, "ByTags", "Home", new { tagIds = tag.Value }, null)
+                                @Html.ActionLink(tag.Text, "ByTag", "Home", new { tagIds = tag.Value }, new { target = "_blank" })
                             </td>
                         </tr>
                     }

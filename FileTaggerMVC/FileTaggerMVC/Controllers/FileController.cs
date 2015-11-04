@@ -109,6 +109,12 @@ namespace FileTaggerMVC.Controllers
             return RedirectToAction("ListFiles", new { folderPath = (string)Session["folderPath"] });
         }
 
+        public ActionResult ByTag(int tagId)
+        {
+            IEnumerable<FileTaggerModel.Model.File> files = _fileRepository.GetByTag(tagId);
+            return View(files);
+        }
+
         private static void DirectorySearch(string folderPath, JsTreeNodeModel root)
         {
             root.Children = new List<JsTreeNodeModel>();

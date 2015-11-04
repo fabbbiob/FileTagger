@@ -186,7 +186,7 @@ namespace FileTaggerRepository.Repositories.Impl
                                                      ON f.Id = tm.File_Id
                                                  WHERE tm.Tag_Id = @Tag_Id";
 
-        public IEnumerable<File> GetByTag(Tag tag)
+        public IEnumerable<File> GetByTag(int tagId)
         {
             LinkedList<File> list = new LinkedList<File>();
             SqliteHelper.GetAllByCriteria(GetByTagQuery, dr =>
@@ -195,7 +195,7 @@ namespace FileTaggerRepository.Repositories.Impl
                 {
                     list.AddLast(Parse(dr));
                 }
-            }, cmd => cmd.Parameters.Add("@Tag_Id", DbType.Int32).Value = tag.Id);
+            }, cmd => cmd.Parameters.Add("@Tag_Id", DbType.Int32).Value = tagId);
             return list;
         }
     }

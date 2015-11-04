@@ -163,7 +163,7 @@ namespace FileTaggerRepositoryTests.Tests
             fileRepository.Add(fileWithTag);
             fileRepository.Add(fileWithoutTag);
 
-            IEnumerable<File> files = fileRepository.GetByTag(tag);
+            IEnumerable<File> files = fileRepository.GetByTag(tag.Id);
             Assert.Contains(fileWithTag, files.ToArray());
         }
     }
