@@ -17,18 +17,42 @@ namespace FileTaggerRepository.Helpers
         }
 
         internal static void Delete(string query,
-                                  Action<SQLiteCommand, IEntity> commandBinder,
-                                  IEntity entity)
+                                    Action<SQLiteCommand, IEntity> commandBinder,
+                                    IEntity entity)
         {
             ExecuteQuery(query, commandBinder, entity, cmd => cmd.ExecuteNonQuery());
         }
 
-        internal static void GetAll(string query, Action<SQLiteDataReader> action)
+        internal static void GetAll(string query,
+                                    Action<SQLiteDataReader> action)
         {
             ExecuteQuery(query, null, null, cmd => {
                 SQLiteDataReader dr = null;
                 try
                 {
+                    dr = cmd.ExecuteReader();
+                    action(dr);
+                }
+                finally
+                {
+                    if (dr != null)
+                    {
+                        dr.Close();
+                        dr.Dispose();
+                    }
+                }
+            });
+        }
+
+        internal static void GetAllByCriteria(string query,
+                                              Action<SQLiteDataReader> action,
+                                              Action<SQLiteCommand> commandBinder)
+        {
+            ExecuteQuery(query, null, null, cmd => {
+                SQLiteDataReader dr = null;
+                try
+                {
+                    commandBinder(cmd);
                     dr = cmd.ExecuteReader();
                     action(dr);
                 }
@@ -67,7 +91,9 @@ namespace FileTaggerRepository.Helpers
             });
         }
 
-        internal static void Update(string query, Action<SQLiteCommand, IEntity> commandBinder, IEntity entity)
+        internal static void Update(string query,
+                                    Action<SQLiteCommand, IEntity> commandBinder,
+                                    IEntity entity)
         {
             ExecuteQuery(query, commandBinder, entity, cmd => cmd.ExecuteNonQuery());
         }

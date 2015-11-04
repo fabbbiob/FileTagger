@@ -136,5 +136,35 @@ namespace FileTaggerRepositoryTests.Tests
 
             Assert.AreEqual(file, fileRepository.GetByFilename(file.FilePath));
         }
+
+        [Test]
+        public void CanGetFilesByTag()
+        {
+            TagRepository tagRepository = new TagRepository();
+            Tag tag = new Tag
+            {
+                Description = "CanGetFilesByTag tag"
+            };
+            tagRepository.Add(tag);
+
+            FileRepository fileRepository = new FileRepository();
+            File fileWithTag = new File
+            {
+                FilePath = Guid.NewGuid().ToString(),
+                Tags = new []{ tag }
+            };
+
+            File fileWithoutTag = new File
+            {
+                FilePath = Guid.NewGuid().ToString(),
+                Tags = new Tag[0]
+            };
+
+            fileRepository.Add(fileWithTag);
+            fileRepository.Add(fileWithoutTag);
+
+            IEnumerable<File> files = fileRepository.GetByTag(tag);
+            Assert.Contains(fileWithTag, files.ToArray());
+        }
     }
 }

@@ -134,11 +134,7 @@ namespace FileTaggerRepository.Repositories.Impl
         {
             if (!dr.Read()) return null;
 
-            File file = new File
-            {
-                Id = dr.GetInt32(0),
-                FilePath = dr.GetString(1)
-            };
+            File file = Parse(dr);
 
             LinkedList<Tag> tags = new LinkedList<Tag>();
             dr.NextResult();
@@ -168,6 +164,15 @@ namespace FileTaggerRepository.Repositories.Impl
             return file;
         }
 
+        private static File Parse(SQLiteDataReader dr)
+        {
+            return new File
+            {
+                Id = dr.GetInt32(0),
+                FilePath = dr.GetString(1)
+            };
+        }
+
         public File GetByFilename(string filename)
         {
             File file = null;
@@ -175,6 +180,23 @@ namespace FileTaggerRepository.Repositories.Impl
             return file;
         }
 
-        
+        private static string GetByTagQuery => @"SELECT f.*
+                                                 FROM File AS f
+                                                 INNER JOIN TagMap AS tm
+                                                     ON f.Id = tm.File_Id
+                                                 WHERE tm.Tag_Id = @Tag_Id";
+
+        public IEnumerable<File> GetByTag(Tag tag)
+        {
+            LinkedList<File> list = new LinkedList<File>();
+            SqliteHelper.GetAllByCriteria(GetByTagQuery, dr =>
+            {
+                while (dr.Read())
+                {
+                    list.AddLast(Parse(dr));
+                }
+            }, cmd => cmd.Parameters.Add("@Tag_Id", DbType.Int32).Value = tag.Id);
+            return list;
+        }
     }
 }
