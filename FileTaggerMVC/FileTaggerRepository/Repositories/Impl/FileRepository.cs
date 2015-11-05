@@ -8,6 +8,7 @@ using System.Linq;
 using FileTaggerRepository.Repositories.Abstract;
 using FileTaggerRepository.Helpers;
 using FileTaggerModel;
+using System.Diagnostics;
 
 namespace FileTaggerRepository.Repositories.Impl
 {
@@ -176,7 +177,10 @@ namespace FileTaggerRepository.Repositories.Impl
         public File GetByFilename(string filename)
         {
             File file = null;
-            SqliteHelper.GetById(GetByFilePathQuery, GetByFilePathCommandBinder, new File { FilePath = filename }, dr => file = ParseWithReferences(dr));
+            SqliteHelper.GetById(GetByFilePathQuery, 
+                                 GetByFilePathCommandBinder, 
+                                 new File { FilePath = filename },
+                                 dr => file = ParseWithReferences(dr));
             return file;
         }
 
@@ -197,6 +201,16 @@ namespace FileTaggerRepository.Repositories.Impl
                 }
             }, cmd => cmd.Parameters.Add("@Tag_Id", DbType.Int32).Value = tagId);
             return list;
+        }
+
+
+        //TODO refactor
+        public void Run(string fileName)
+        {
+            Process proc = new Process();
+            proc.StartInfo.FileName = fileName;
+            proc.StartInfo.UseShellExecute = true;
+            proc.Start();
         }
     }
 }

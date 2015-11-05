@@ -8,6 +8,6 @@ namespace FileTaggerRepository.Repositories.Abstract
         void Add(File tagType);
         void Update(File file);
         File GetByFilename(string filename);
-        IEnumerable<File> GetByTag(Tag tag);
+        IEnumerable<File> GetByTag(int tagId);
     }
 }

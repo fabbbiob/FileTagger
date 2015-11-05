@@ -13,14 +13,19 @@ namespace FileTaggerMVC.AutoMapper
         public FileViewModel Convert(ResolutionContext context)
         {
             File file = (File)context.SourceValue;
-
-            List<Tag> tags = new TagRepository().GetAll().ToList();
+            
             FileViewModel fileViewModel = new FileViewModel
             {
                 Id = file.Id,
-                FilePath = file.FilePath,
-                Tags = new MultiSelectList(tags, "Id", "Description", file.Tags.Select(t => t.Id).ToArray())
+                FilePath = file.FilePath                
             };
+
+            //TODO refactor
+            if (file.Tags != null)
+            {
+                List<Tag> tags = new TagRepository().GetAll().ToList();
+                fileViewModel.Tags = new MultiSelectList(tags, "Id", "Description", file.Tags.Select(t => t.Id).ToArray());
+            }
 
             return fileViewModel;
         }

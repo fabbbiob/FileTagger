@@ -23,7 +23,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    @Html.ActionLink(item.Description, "ByTag", "File", new { tagId = item.Id }, new { target = "blank" })
                 </td>
                 <td>
                     @if (item.TagType != null)

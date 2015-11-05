@@ -1,5 +1,17 @@
 ﻿@model FileTaggerMVC.Models.FileViewModel
 
+<script type="text/javascript">
+    $(function () {
+        $("#run").click(function (evt) {
+            $.ajax({
+                type: "GET",
+                url: "/File/Run",
+                data: "filePath=" + $(evt.target).data("filepath")
+            });
+        });
+    });
+</script>
+
 <div>
     <dl class="dl-horizontal">
         <dt>
@@ -40,4 +52,7 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-success" })
+</p>
+<p>
+    <a href="#" data-filepath="@Model.FilePath" class="btn btn-danger" id="run">Run</a>
 </p>

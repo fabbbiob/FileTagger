@@ -56,7 +56,11 @@ namespace FileTaggerMVC.Controllers
             }
             else
             {
-                return PartialView("CreateLink", new NoFileViewModel { FileName = fileName.Substring(fileName.LastIndexOf(@"\") + 1) });
+                return PartialView("CreateLink", new NoFileViewModel
+                {
+                    FileName = fileName.Substring(fileName.LastIndexOf(@"\") + 1),
+                    FilePath = fileName
+                });
             }
         }
 
@@ -112,7 +116,14 @@ namespace FileTaggerMVC.Controllers
         public ActionResult ByTag(int tagId)
         {
             IEnumerable<FileTaggerModel.Model.File> files = _fileRepository.GetByTag(tagId);
-            return View(files);
+            return View(Mapper.Map<IEnumerable<FileTaggerModel.Model.File>, IEnumerable<FileViewModel>>(files).ToList());
+        }
+
+        //TODO refactor
+        public string Run(string filePath)
+        {
+            _fileRepository.Run(filePath);
+            return filePath;
         }
 
         private static void DirectorySearch(string folderPath, JsTreeNodeModel root)

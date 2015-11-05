@@ -1,4 +1,17 @@
 ﻿@model FileTaggerMVC.Models.NoFileViewModel
+
+<script type="text/javascript">
+    $(function () {
+        $("#run").click(function (evt) {
+            $.ajax({
+                type: "GET",
+                url: "/File/Run",
+                data: "filePath=" + $(evt.target).data("filepath")
+            });
+        });
+    });
+</script>
+
 <div>
     <dl class="dl-horizontal">
         <dt>
@@ -10,4 +23,9 @@
     </dl>
 </div>
 <p>File not in database.</p>
-@Html.ActionLink("Create", "Create", null, new { @class = "btn btn-info" })
+<p>
+    @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-info" })
+</p>
+<p>
+    <a href="#" data-filepath="@Model.FilePath" class="btn btn-danger" id="run">Run</a>
+</p>
