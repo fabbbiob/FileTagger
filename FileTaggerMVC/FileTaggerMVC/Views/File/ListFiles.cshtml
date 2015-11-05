@@ -10,7 +10,7 @@
             $.ajax({
                 type: "GET",
                 url: "/File/Details",
-                data: "fileName=" + nodeData.node.a_attr["data-filename"]
+                data: "fileName=" + escape(nodeData.node.a_attr["data-filename"])
             }).done(function (dataDone) {
                 $("#divView").html(dataDone);
             });

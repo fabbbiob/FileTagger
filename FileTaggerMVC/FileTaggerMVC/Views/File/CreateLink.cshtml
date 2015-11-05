@@ -6,7 +6,7 @@
             $.ajax({
                 type: "GET",
                 url: "/File/Run",
-                data: "filePath=" + $(evt.target).data("filepath")
+                data: "filePath=" + escape($(evt.target).data("filepath"))
             });
         });
     });
@@ -27,5 +27,5 @@
     @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-info" })
 </p>
 <p>
-    <a href="#" data-filepath="@Model.FilePath" class="btn btn-danger" id="run">Run</a>
+    <a href="javascript:void(0)" data-filepath="@Model.FilePath" class="btn btn-danger" id="run">Run</a>
 </p>

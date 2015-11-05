@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Web.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,8 @@ namespace FileTaggerMVC.Controllers
 {
     public class FileController : Controller
     {
-        private FileRepository _fileRepository;
-        private TagRepository _tagRepository;
+        private readonly FileRepository _fileRepository;
+        private readonly TagRepository _tagRepository;
 
         public FileController()
         {
@@ -36,7 +37,7 @@ namespace FileTaggerMVC.Controllers
             Session["folderPath"] = folderPath;
             JsTreeNodeModel root = new JsTreeNodeModel
             {
-                Text = folderPath.Substring(folderPath.LastIndexOf(@"\") + 1),
+                Text = folderPath.Substring(folderPath.LastIndexOf(@"\", StringComparison.Ordinal) + 1),
                 State = new JsTreeNodeState()
             };
 
@@ -58,7 +59,7 @@ namespace FileTaggerMVC.Controllers
             {
                 return PartialView("CreateLink", new NoFileViewModel
                 {
-                    FileName = fileName.Substring(fileName.LastIndexOf(@"\") + 1),
+                    FileName = fileName.Substring(fileName.LastIndexOf(@"\", StringComparison.Ordinal) + 1),
                     FilePath = fileName
                 });
             }

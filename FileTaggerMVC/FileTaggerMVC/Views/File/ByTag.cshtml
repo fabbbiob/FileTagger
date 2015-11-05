@@ -10,7 +10,13 @@
             $.ajax({
                 type: "GET",
                 url: "/File/Run",
-                data: "filePath=" + $(evt.target).data("filepath")
+                data: "filePath=" + $(evt.target).data("filepath"),
+                success: function (html) {
+                    console.log(html);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                }
             });
         });
     });
@@ -32,7 +38,7 @@
                 @Html.DisplayFor(modelItem => item.FileName)
             </td>
             <td>
-                <a href="#" data-filepath="@item.FilePath" class="btn btn-danger">Run</a>
+                <a href="javascript:void(0)" data-filepath="@item.FilePath" class="btn btn-danger">Run</a>
             </td>
         </tr>
     }
