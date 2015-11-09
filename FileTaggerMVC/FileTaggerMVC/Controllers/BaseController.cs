@@ -5,7 +5,7 @@ namespace FileTaggerMVC.Controllers
 {
     public class BaseController : Controller
     {
-        private readonly ILog _log;
+        protected readonly ILog _log;
 
         public BaseController()
         {

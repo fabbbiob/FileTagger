@@ -205,12 +205,12 @@ namespace FileTaggerRepository.Repositories.Impl
 
 
         //TODO refactor
-        public void Run(string fileName)
+        public bool Run(string fileName)
         {
             Process proc = new Process();
             proc.StartInfo.FileName = fileName;
             proc.StartInfo.UseShellExecute = true;
-            proc.Start();
+            return proc.Start();
         }
     }
 }

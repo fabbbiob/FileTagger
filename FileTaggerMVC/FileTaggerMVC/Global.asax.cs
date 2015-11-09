@@ -17,8 +17,6 @@ namespace FileTaggerMVC
 
             DbCreator.CreateDatabase();
             AutoMapperConfiguration.Configure();
-
-            log4net.Config.XmlConfigurator.Configure();
         }
     }
 }

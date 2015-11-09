@@ -10,6 +10,7 @@ namespace FileTaggerMVC.Logger
         {
             if (logger == null)
             {
+                log4net.Config.XmlConfigurator.Configure();
                 logger = LogManager.GetLogger(typeof(Logger));
             }
 
