@@ -9,15 +9,17 @@ using FileTaggerModel.Model;
 using FileTaggerRepository.Repositories.Impl;
 using AutoMapper;
 using FileTaggerMVC.ModelBinders;
+using FileTaggerMVC.Filters;
 
 namespace FileTaggerMVC.Controllers
 {
-    public class FileController : Controller
+    [FileTaggerHandleError]
+    public class FileController : BaseController
     {
         private readonly FileRepository _fileRepository;
         private readonly TagRepository _tagRepository;
 
-        public FileController()
+        public FileController() : base()
         {
             _fileRepository = new FileRepository();
             _tagRepository = new TagRepository();

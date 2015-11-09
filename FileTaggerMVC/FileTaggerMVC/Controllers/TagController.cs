@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FileTaggerModel.Model;
+using FileTaggerMVC.Filters;
 using FileTaggerMVC.ModelBinders;
 using FileTaggerMVC.Models;
 using FileTaggerRepository.Repositories.Impl;
@@ -9,11 +10,12 @@ using System.Web.Mvc;
 
 namespace FileTaggerMVC.Controllers
 {
-    public class TagController : Controller
+    [FileTaggerHandleError]
+    public class TagController : BaseController
     {
         private TagRepository _tagRepository;
 
-        public TagController()
+        public TagController() : base()
         {
             _tagRepository = new TagRepository();
         }
@@ -90,7 +92,7 @@ namespace FileTaggerMVC.Controllers
             return RedirectToAction("Index");
         }
 
-        //TODO
+        // TODO
         private static void LoadTagTypes(TagViewModel tag)
         {
             List<TagType> tagTypes = new TagTypeRepository().GetAll().ToList();
