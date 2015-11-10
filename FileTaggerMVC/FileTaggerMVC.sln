@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{46E8A753
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTaggerRepositoryTests", "FileTaggerRepositoryTests\FileTaggerRepositoryTests.csproj", "{6C6DF586-3A79-47E4-B514-67644C9C4807}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileLauncher", "FileLauncher\FileLauncher.csproj", "{69FA5718-446E-4E1B-BAD3-E7CD4E43B473}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69FA5718-446E-4E1B-BAD3-E7CD4E43B473}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69FA5718-446E-4E1B-BAD3-E7CD4E43B473}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69FA5718-446E-4E1B-BAD3-E7CD4E43B473}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69FA5718-446E-4E1B-BAD3-E7CD4E43B473}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

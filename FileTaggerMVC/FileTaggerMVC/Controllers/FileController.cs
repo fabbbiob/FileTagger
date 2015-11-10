@@ -10,6 +10,7 @@ using FileTaggerRepository.Repositories.Impl;
 using AutoMapper;
 using FileTaggerMVC.ModelBinders;
 using FileTaggerMVC.Filters;
+using System.Security.Principal;
 
 namespace FileTaggerMVC.Controllers
 {
@@ -125,6 +126,8 @@ namespace FileTaggerMVC.Controllers
         //TODO refactor
         public string Run(string filePath)
         {
+            _log.Debug(WindowsIdentity.GetCurrent().Name);
+
             _fileRepository.Run(filePath);
             return filePath;
         }

@@ -9,12 +9,13 @@ using FileTaggerRepository.Repositories.Abstract;
 using FileTaggerRepository.Helpers;
 using FileTaggerModel;
 using System.Diagnostics;
+using System.IO.Pipes;
+using System.IO;
 
 namespace FileTaggerRepository.Repositories.Impl
 {
     public class FileRepository : IFileRepository
     {
-
         //protected override string GetAllQuery => "SELECT Id, FilePath FROM File;";
 
         //protected override File Parse(SQLiteDataReader dr)
@@ -36,17 +37,15 @@ namespace FileTaggerRepository.Repositories.Impl
         //                                            ON t.TagType_Id = tt.Id 
         //                                          WHERE tm.File_Id = @Id";
 
-
-
         private static string AddQuery => @"INSERT INTO File(FilePath) VALUES(@FilePath);
                                             SELECT last_insert_rowid() FROM File;";
 
-        private static string AddWithReferencesQuery(File entity)
+        private static string AddWithReferencesQuery(FileTaggerModel.Model.File entity)
         {
             return AddQuery + InsertTagMap(entity, "(SELECT Id FROM File ORDER BY Id DESC LIMIT 1)");
         }
 
-        private static string InsertTagMap(File entity, string fileId)
+        private static string InsertTagMap(FileTaggerModel.Model.File entity, string fileId)
         {
             StringBuilder sb = new StringBuilder();
             int i = 0;
@@ -66,7 +65,7 @@ namespace FileTaggerRepository.Repositories.Impl
 
         private static void AddWithReferencesCommandBinder(SQLiteCommand cmd, IEntity entity)
         {
-            File file = (File)entity;
+            FileTaggerModel.Model.File file = (FileTaggerModel.Model.File)entity;
             cmd.Parameters.Add("@FilePath", DbType.String).Value = file.FilePath;
             int i = 0;
             foreach (Tag tag in file.Tags)
@@ -76,14 +75,14 @@ namespace FileTaggerRepository.Repositories.Impl
             }
         }
 
-        public void Add(File file)
+        public void Add(FileTaggerModel.Model.File file)
         {
             SqliteHelper.Insert(AddWithReferencesQuery(file), AddWithReferencesCommandBinder, file);
         }
 
         private static string UpdateWithReferencesQuery(IEntity entity)
         {
-            File file = (File)entity;
+            FileTaggerModel.Model.File file = (FileTaggerModel.Model.File)entity;
             string delete = "DELETE FROM TagMap WHERE File_Id = @FileId;";
             string insert = string.Empty;
             if (file.Tags.Any())
@@ -96,12 +95,12 @@ namespace FileTaggerRepository.Repositories.Impl
 
         private static void UpdateWithReferencesCommandBinder(SQLiteCommand cmd, IEntity entity)
         {
-            File file = (File)entity;
+            FileTaggerModel.Model.File file = (FileTaggerModel.Model.File)entity;
             cmd.Parameters.Add("@FileId", DbType.Int32).Value = entity.Id;
             BindTagIds(cmd, file);
         }
 
-        private static void BindTagIds(SQLiteCommand cmd, File file)
+        private static void BindTagIds(SQLiteCommand cmd, FileTaggerModel.Model.File file)
         {
             int i = 0;
             foreach (Tag tag in file.Tags)
@@ -111,7 +110,7 @@ namespace FileTaggerRepository.Repositories.Impl
             }
         }
 
-        public void Update(File file)
+        public void Update(FileTaggerModel.Model.File file)
         {
             SqliteHelper.Update(UpdateWithReferencesQuery(file), UpdateWithReferencesCommandBinder, file);
         }
@@ -127,15 +126,15 @@ namespace FileTaggerRepository.Repositories.Impl
 
         private static void GetByFilePathCommandBinder(SQLiteCommand cmd, IEntity entity)
         {
-            File file = (File)entity;
+            FileTaggerModel.Model.File file = (FileTaggerModel.Model.File)entity;
             cmd.Parameters.Add("@Where", DbType.String).Value = file.FilePath;
         }
 
-        private static File ParseWithReferences(SQLiteDataReader dr)
+        private static FileTaggerModel.Model.File ParseWithReferences(SQLiteDataReader dr)
         {
             if (!dr.Read()) return null;
 
-            File file = Parse(dr);
+            FileTaggerModel.Model.File file = Parse(dr);
 
             LinkedList<Tag> tags = new LinkedList<Tag>();
             dr.NextResult();
@@ -165,21 +164,21 @@ namespace FileTaggerRepository.Repositories.Impl
             return file;
         }
 
-        private static File Parse(SQLiteDataReader dr)
+        private static FileTaggerModel.Model.File Parse(SQLiteDataReader dr)
         {
-            return new File
+            return new FileTaggerModel.Model.File
             {
                 Id = dr.GetInt32(0),
                 FilePath = dr.GetString(1)
             };
         }
 
-        public File GetByFilename(string filename)
+        public FileTaggerModel.Model.File GetByFilename(string filename)
         {
-            File file = null;
+            FileTaggerModel.Model.File file = null;
             SqliteHelper.GetById(GetByFilePathQuery, 
                                  GetByFilePathCommandBinder, 
-                                 new File { FilePath = filename },
+                                 new FileTaggerModel.Model.File { FilePath = filename },
                                  dr => file = ParseWithReferences(dr));
             return file;
         }
@@ -190,9 +189,9 @@ namespace FileTaggerRepository.Repositories.Impl
                                                      ON f.Id = tm.File_Id
                                                  WHERE tm.Tag_Id = @Tag_Id";
 
-        public IEnumerable<File> GetByTag(int tagId)
+        public IEnumerable<FileTaggerModel.Model.File> GetByTag(int tagId)
         {
-            LinkedList<File> list = new LinkedList<File>();
+            LinkedList<FileTaggerModel.Model.File> list = new LinkedList<FileTaggerModel.Model.File>();
             SqliteHelper.GetAllByCriteria(GetByTagQuery, dr =>
             {
                 while (dr.Read())
@@ -203,14 +202,43 @@ namespace FileTaggerRepository.Repositories.Impl
             return list;
         }
 
+        //TODO move to services
+        #region "launch process"
+        private const string MyPipeName = "MyPipeName";
+        
+        private static void Send(string fileName)
+        {
+            NamedPipeClientStream pipeStream = new NamedPipeClientStream(".", 
+                                                                         MyPipeName, 
+                                                                         PipeDirection.Out, 
+                                                                         PipeOptions.None);
 
-        //TODO refactor
+            if (pipeStream.IsConnected != true)
+            {
+                pipeStream.Connect(100);
+            }
+            else
+            {
+                //TODO warn user
+            }
+
+            StreamWriter sw = new StreamWriter(pipeStream);
+            sw.WriteLine(fileName);
+            sw.Flush();
+        }
+        
         public bool Run(string fileName)
         {
-            Process proc = new Process();
-            proc.StartInfo.FileName = fileName;
-            proc.StartInfo.UseShellExecute = true;
-            return proc.Start();
+            try
+            {
+                Send(fileName);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
+        #endregion
     }
 }
