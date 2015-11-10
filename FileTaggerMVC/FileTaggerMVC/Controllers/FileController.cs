@@ -117,10 +117,16 @@ namespace FileTaggerMVC.Controllers
             return RedirectToAction("ListFiles", new { folderPath = (string)Session["folderPath"] });
         }
 
-        public ActionResult ByTag(int tagId)
+        // GET: /File/ByTag?tagId=1&description=test
+        public ActionResult ByTag(int tagId, string description)
         {
             IEnumerable<FileTaggerModel.Model.File> files = _fileRepository.GetByTag(tagId);
-            return View(Mapper.Map<IEnumerable<FileTaggerModel.Model.File>, IEnumerable<FileViewModel>>(files).ToList());
+            List<FileViewModel> list = Mapper.Map<IEnumerable<FileTaggerModel.Model.File>, IEnumerable<FileViewModel>>(files).ToList();
+            return View(new ByTagModel
+            {
+                TagDescription = description,
+                FileViewModels = list
+            });
         }
 
         //TODO refactor
@@ -172,6 +178,13 @@ namespace FileTaggerMVC.Controllers
         }
     }
 
+    #region ViewModels
+    public class ByTagModel
+    {
+        public string TagDescription;
+        public List<FileViewModel> FileViewModels;
+    }
+
     internal class JsTreeNodeModel
     {
         [JsonProperty(PropertyName = "text")]
@@ -206,4 +219,5 @@ namespace FileTaggerMVC.Controllers
         [JsonProperty(PropertyName = "data-filename")]
         public string DataFilename;
     }
+    #endregion
 }

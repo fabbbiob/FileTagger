@@ -23,7 +23,7 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.Description, "ByTag", "File", new { tagId = item.Id }, null)
+                    @Html.ActionLink(item.Description, "ByTag", "File", new { tagId = item.Id, description = item.Description }, null)
                 </td>
                 <td>
                     @if (item.TagType != null)
