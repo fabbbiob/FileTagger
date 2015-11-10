@@ -202,6 +202,51 @@ namespace FileTaggerRepository.Repositories.Impl
             return list;
         }
 
+        private static string GetByTagsQuery(IEnumerable<int> tagIds)
+        {
+            const string query = @"SELECT f.*
+                                   FROM File AS f
+                                   INNER JOIN TagMap AS tm
+                                       ON f.Id = tm.File_Id
+                                   WHERE tm.Tag_Id IN (";
+
+            StringBuilder sb = new StringBuilder();
+            int i = 0;
+            IEnumerator<int> tagsEnumerator = tagIds.GetEnumerator();
+            while (tagsEnumerator.MoveNext())
+            {
+                sb.Append("@Tag_Id");
+                sb.Append(i);
+                sb.Append(",");
+                i++;
+            }
+            sb.Remove(sb.Length - 1, 1);
+            sb.Append(")");
+
+            return query + sb.ToString();
+        }
+
+        public IEnumerable<FileTaggerModel.Model.File> GetByTags(IEnumerable<int> tagIds)
+        {
+            LinkedList<FileTaggerModel.Model.File> list = new LinkedList<FileTaggerModel.Model.File>();
+            SqliteHelper.GetAllByCriteria(GetByTagsQuery(tagIds), dr =>
+            {
+                while (dr.Read())
+                {
+                    list.AddLast(Parse(dr));
+                }
+            }, cmd => 
+            {
+                int i = 0;
+                foreach (int tagId in tagIds)
+                {
+                    cmd.Parameters.Add("@Tag_Id" + i, DbType.Int32).Value = tagId;
+                    i++;
+                }
+            });
+            return list;
+        }
+
         //TODO move to services
         #region "launch process"
         private const string MyPipeName = "MyPipeName";

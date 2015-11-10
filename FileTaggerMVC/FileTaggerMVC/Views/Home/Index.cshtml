@@ -1,17 +1,21 @@
-﻿@{
+﻿@model IEnumerable<FileTaggerMVC.Models.TagViewModel>
+
+@{
     ViewBag.Title = "Search";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-
-<div class="row">
-    <div class="col-lg-6">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for...">
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="button">Go!</button>
-            </span>
-        </div>
+@using (Html.BeginForm("ByTags", "Home"))
+{
+    <div class="form-horizontal">
+        @foreach (FileTaggerMVC.Models.TagViewModel tag in Model)
+        {
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" value="@tag.Id" name="tagIds"> @tag.Description
+                </label>
+            </div>
+        }
+        <button class="btn btn-default" type="submit">Search</button>
     </div>
-</div>
+}
