@@ -6,7 +6,7 @@
             $.ajax({
                 type: "GET",
                 url: "/File/Run",
-                data: "filePath=" + $(evt.target).data("filepath")
+                data: "filePath=" + escape($(evt.target).data("filepath"))
             });
         });
     });
