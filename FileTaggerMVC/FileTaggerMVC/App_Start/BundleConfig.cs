@@ -16,9 +16,9 @@ namespace FileTaggerMVC
                 "~/Scripts/selectize.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.min.css",
-                      "~/Content/jstree/default/style.min.css",
-                      "~/Content/jstree/default-dark/style.min.css",
+                      "~/Content/bootstrap.min.css").Include(
+                      "~/Content/jstree/default/style.min.css", new CssRewriteUrlTransform()).Include(
+                      "~/Content/jstree/default-dark/style.min.css", new CssRewriteUrlTransform()).Include(
                       "~/Content/selectize.bootstrap3.css"));
         }
     }
