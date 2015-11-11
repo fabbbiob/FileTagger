@@ -1,0 +1,35 @@
+﻿@model IEnumerable<FileTaggerMVC.Models.FileViewModel>
+
+<script type="text/javascript">
+    $(function () {
+        $("#run").click(function (evt) {
+            $.ajax({
+                type: "GET",
+                url: "/File/Run",
+                data: "filePath=" + escape($(evt.target).data("filepath"))
+            });
+        });
+    });
+</script>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FileName)
+        </th>
+        <th>
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.FileName
+            </td>
+            <td>
+                <a href="javascript:void(0)" data-filepath="@item.FilePath" class="btn btn-danger" id="run">Run</a>
+            </td>
+        </tr>
+    }
+</table>
+

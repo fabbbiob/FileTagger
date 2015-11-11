@@ -1,21 +1,44 @@
 ﻿@model IEnumerable<FileTaggerMVC.Models.TagViewModel>
-
 @{
     ViewBag.Title = "Search";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<script type="text/javascript">
+    $(function () {
+        $('form').submit(function () {
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: $(this).serialize(),
+                success: function (result) {
+                    $('#result').html(result);
+                }
+            });
+            return false;
+        });
+    });
+</script>
 
 @using (Html.BeginForm("ByTags", "Home"))
 {
     <div class="form-horizontal">
         @foreach (FileTaggerMVC.Models.TagViewModel tag in Model)
         {
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" value="@tag.Id" name="tagIds"> @tag.Description
-                </label>
-            </div>
+            <label class="checkbox-inline">
+                <input type="checkbox" value="@tag.Id" name="tagIds"> @tag.Description
+            </label>
+            <text>&nbsp;&nbsp;&nbsp;</text>
         }
-        <button class="btn btn-default" type="submit">Search</button>
     </div>
+    <hr />
+    <button class="btn btn-default" type="submit">Search</button>
 }
+
+&nbsp;
+
+<div class="row">
+    <div class="col-md-12">
+        <div id="result"></div>
+    </div>
+</div>

@@ -31,12 +31,16 @@ namespace FileTaggerMVC.Controllers
             return View(viewModelList);
         }
 
-        // TODO view
         public ActionResult ByTags(int[] tagIds)
         {
+            if (tagIds == null || tagIds.Length == 0)
+            {
+                return Content("<hr />Select at least one tag", "text/html");
+            }
+
             IEnumerable<File> files = _fileRepository.GetByTags(tagIds);
             List<FileViewModel> list = Mapper.Map<IEnumerable<File>, IEnumerable<FileViewModel>>(files).ToList();
-            return View();
+            return PartialView(list);
         }
     }
 }

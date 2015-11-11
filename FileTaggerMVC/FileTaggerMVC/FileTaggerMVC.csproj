@@ -224,6 +224,7 @@
     <None Include="Properties\PublishProfiles\iis profile.pubxml" />
     <None Include="Properties\PublishProfiles\MyProfile.pubxml" />
     <Content Include="Views\File\ByTag.cshtml" />
+    <Content Include="Views\Home\ByTags.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FileTaggerModel\FileTaggerModel.csproj">
