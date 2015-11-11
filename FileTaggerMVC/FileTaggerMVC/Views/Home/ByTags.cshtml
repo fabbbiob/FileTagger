@@ -1,16 +1,6 @@
 ﻿@model IEnumerable<FileTaggerMVC.Models.FileViewModel>
 
-<script type="text/javascript">
-    $(function () {
-        $("#run").click(function (evt) {
-            $.ajax({
-                type: "GET",
-                url: "/File/Run",
-                data: "filePath=" + escape($(evt.target).data("filepath"))
-            });
-        });
-    });
-</script>
+<script type="text/javascript" src="~/Scripts/fileRunner.js"></script>
 
 <table class="table">
     <tr>
@@ -27,7 +17,9 @@
                 @item.FileName
             </td>
             <td>
-                <a href="javascript:void(0)" data-filepath="@item.FilePath" class="btn btn-danger" id="run">Run</a>
+                @{
+                    Html.RenderPartial("RunButton", item.FilePath);
+                }
             </td>
         </tr>
     }

@@ -161,6 +161,7 @@
     <Content Include="Scripts\bootstrap.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\fileRunner.js" />
     <Content Include="Scripts\jquery-1.11.3.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -217,6 +218,7 @@
     <None Include="Properties\PublishProfiles\MyProfile.pubxml" />
     <Content Include="Views\File\ByTag.cshtml" />
     <Content Include="Views\Home\ByTags.cshtml" />
+    <Content Include="Views\Shared\RunButton.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FileTaggerModel\FileTaggerModel.csproj">

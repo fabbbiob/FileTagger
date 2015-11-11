@@ -129,13 +129,9 @@ namespace FileTaggerMVC.Controllers
             });
         }
 
-        //TODO refactor
-        public string Run(string filePath)
+        public bool Run(string filePath)
         {
-            _log.Debug(WindowsIdentity.GetCurrent().Name);
-
-            _fileRepository.Run(filePath);
-            return filePath;
+            return _fileRepository.Run(filePath);
         }
 
         private static void DirectorySearch(string folderPath, JsTreeNodeModel root)

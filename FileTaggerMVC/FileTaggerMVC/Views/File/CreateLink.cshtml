@@ -1,16 +1,6 @@
 ﻿@model FileTaggerMVC.Models.NoFileViewModel
 
-<script type="text/javascript">
-    $(function () {
-        $("#run").click(function (evt) {
-            $.ajax({
-                type: "GET",
-                url: "/File/Run",
-                data: "filePath=" + escape($(evt.target).data("filepath"))
-            });
-        });
-    });
-</script>
+<script type="text/javascript" src="~/Scripts/fileRunner.js"></script>
 
 <div>
     <dl class="dl-horizontal">
@@ -27,5 +17,7 @@
     @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-info" })
 </p>
 <p>
-    <a href="javascript:void(0)" data-filepath="@Model.FilePath" class="btn btn-danger" id="run">Run</a>
+    @{
+        Html.RenderPartial("RunButton", Model.FilePath);
+    }
 </p>

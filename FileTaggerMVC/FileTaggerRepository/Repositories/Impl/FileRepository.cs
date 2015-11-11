@@ -262,10 +262,6 @@ namespace FileTaggerRepository.Repositories.Impl
             {
                 pipeStream.Connect(100);
             }
-            else
-            {
-                //TODO warn user
-            }
 
             StreamWriter sw = new StreamWriter(pipeStream);
             sw.WriteLine(fileName);

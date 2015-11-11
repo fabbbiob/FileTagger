@@ -1,5 +1,6 @@
 ﻿@model FileTaggerMVC.Models.FileViewModel
 
+<script type="text/javascript" src="~/Scripts/fileRunner.js"></script>
 <script type="text/javascript">
     $(function () {
         $('select').selectize({
@@ -39,3 +40,8 @@
         </div>
     </div>
 }
+<p>
+    @{
+        Html.RenderPartial("RunButton", Model.FilePath);
+    }
+</p>
