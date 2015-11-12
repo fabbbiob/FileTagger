@@ -26,6 +26,12 @@
                    @Html.Raw(@Model)
                 ]
             }
+        }).bind('loaded.jstree', function (e, data) {
+            $(document).scrollTop(localStorage['scrollTop']);
+        });
+
+        $(document).scroll(function () {
+            localStorage['scrollTop'] = $(document).scrollTop();
         });
     });
 </script>
