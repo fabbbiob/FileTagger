@@ -11,9 +11,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTaggerRepository", "Fil
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{46E8A753-DCB4-461A-9966-6757297B8549}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTaggerRepositoryTests", "FileTaggerRepositoryTests\FileTaggerRepositoryTests.csproj", "{6C6DF586-3A79-47E4-B514-67644C9C4807}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileLauncher", "FileLauncher\FileLauncher.csproj", "{69FA5718-446E-4E1B-BAD3-E7CD4E43B473}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTaggerRepository.Tests", "FileTaggerRepository.Tests\FileTaggerRepository.Tests.csproj", "{6C6DF586-3A79-47E4-B514-67644C9C4807}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTaggerService", "FileTaggerService\FileTaggerService.csproj", "{3DD96BEA-1C5B-45D0-BAAC-7B9E212A085B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTaggerService.Tests", "FileTaggerService.Tests\FileTaggerService.Tests.csproj", "{DFB84488-0779-4DFD-AA94-86F0464A95E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,19 +37,28 @@ Global
 		{B497D11E-E0C2-425D-8B1A-6E2E292717E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B497D11E-E0C2-425D-8B1A-6E2E292717E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B497D11E-E0C2-425D-8B1A-6E2E292717E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Release|Any CPU.Build.0 = Release|Any CPU
 		{69FA5718-446E-4E1B-BAD3-E7CD4E43B473}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{69FA5718-446E-4E1B-BAD3-E7CD4E43B473}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69FA5718-446E-4E1B-BAD3-E7CD4E43B473}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69FA5718-446E-4E1B-BAD3-E7CD4E43B473}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DD96BEA-1C5B-45D0-BAAC-7B9E212A085B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DD96BEA-1C5B-45D0-BAAC-7B9E212A085B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DD96BEA-1C5B-45D0-BAAC-7B9E212A085B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DD96BEA-1C5B-45D0-BAAC-7B9E212A085B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFB84488-0779-4DFD-AA94-86F0464A95E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFB84488-0779-4DFD-AA94-86F0464A95E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFB84488-0779-4DFD-AA94-86F0464A95E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFB84488-0779-4DFD-AA94-86F0464A95E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6C6DF586-3A79-47E4-B514-67644C9C4807} = {46E8A753-DCB4-461A-9966-6757297B8549}
+		{DFB84488-0779-4DFD-AA94-86F0464A95E0} = {46E8A753-DCB4-461A-9966-6757297B8549}
 	EndGlobalSection
 EndGlobal

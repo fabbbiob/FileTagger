@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FileTaggerRepository.Repositories.Abstract
 {
-    interface ITagTypeRepository
+    public interface ITagTypeRepository
     {
         void Add(TagType tagType);
         void Update(TagType tagType);
