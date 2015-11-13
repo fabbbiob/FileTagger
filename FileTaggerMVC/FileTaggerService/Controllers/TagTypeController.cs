@@ -14,7 +14,7 @@ namespace FileTaggerService.Controllers
     {
         private readonly ITagTypeRepository _tagTypeRepository;
 
-        public TagTypeController()
+        public TagTypeController() : base()
         {
             _tagTypeRepository = new TagTypeRepository();
         }
@@ -34,12 +34,12 @@ namespace FileTaggerService.Controllers
             _tagTypeRepository.Delete(id);
         }
 
-        public IEnumerable<TagType> GetAll()
+        public IEnumerable<TagType> Get()
         {
             return _tagTypeRepository.GetAll();
         }
 
-        public TagType GetById(int id)
+        public TagType Get(int id)
         {
             return _tagTypeRepository.GetById(id);
         }
