@@ -13,11 +13,12 @@ namespace FileTaggerRepositoryTests.Tests
         [TestFixtureSetUp]
         public void Setup()
         {
+            //DbCreator.DeleteDatabase();
             DbCreator.CreateDatabase();
         }
 
         [Test]
-        public void CanAddTagType()
+        public void CanAddTag()
         {
             TagRepository repo = new TagRepository();
             repo.Add(new Tag

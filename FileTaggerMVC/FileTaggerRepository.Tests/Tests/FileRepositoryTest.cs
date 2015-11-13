@@ -15,6 +15,7 @@ namespace FileTaggerRepositoryTests.Tests
         [TestFixtureSetUp]
         public void Setup()
         {
+            //DbCreator.DeleteDatabase();
             DbCreator.CreateDatabase();
         }
 

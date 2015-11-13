@@ -67,5 +67,15 @@ namespace FileTaggerRepository.Helpers
                 }
             }
         }
+
+        public static void DeleteDatabase()
+        {
+            string dbFileName = ConnectionStringParameters["Data Source"];
+
+            if (File.Exists(dbFileName))
+            {
+                File.Delete(dbFileName);
+            }
+        }
     }
 }

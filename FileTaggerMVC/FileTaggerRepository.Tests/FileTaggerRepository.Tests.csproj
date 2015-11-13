@@ -62,8 +62,6 @@
     <Compile Include="Tests\FileRepositoryTest.cs" />
     <Compile Include="Tests\TagRepositoryTest.cs" />
     <Compile Include="Tests\TagTypeRepositoryTest.cs" />
-    <Compile Include="Tests\TagTypeWithTagsRepositoryTest.cs" />
-    <Compile Include="Tests\TagWithFilesRepositoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -109,6 +107,10 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.98.1\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.98.1\build\net46\System.Data.SQLite.Core.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

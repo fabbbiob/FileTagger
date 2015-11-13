@@ -9,6 +9,7 @@ namespace FileTaggerRepositoryTests.Tests
         [Test]
         public void CreateDatabase()
         {
+            //DbCreator.DeleteDatabase();
             DbCreator.CreateDatabase();
         }
     }
