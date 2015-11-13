@@ -119,6 +119,18 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="bin\de\" />
+    <Folder Include="bin\es\" />
+    <Folder Include="bin\fr\" />
+    <Folder Include="bin\it\" />
+    <Folder Include="bin\ja\" />
+    <Folder Include="bin\ko\" />
+    <Folder Include="bin\roslyn\" />
+    <Folder Include="bin\ru\" />
+    <Folder Include="bin\x64\" />
+    <Folder Include="bin\x86\" />
+    <Folder Include="bin\zh-Hans\" />
+    <Folder Include="bin\zh-Hant\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
@@ -164,10 +176,10 @@
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y "$(SolutionDir)FileTaggerRepository\bin\Debug\x64\SQLite.Interop.dll" "$(ProjectDir)bin\x64"
-xcopy /Y "$(SolutionDir)FileTaggerRepository\bin\Debug\x86\SQLite.Interop.dll" "$(ProjectDir)bin\x86"
-xcopy /Y "$(SolutionDir)FileTaggerRepository\bin\Release\x64\SQLite.Interop.dll" "$(ProjectDir)bin\x64"
- xcopy /Y "$(SolutionDir)FileTaggerRepository\bin\Release\x86\SQLite.Interop.dll" "$(ProjectDir)bin\x86"</PostBuildEvent>
+    <PostBuildEvent>start xcopy /Q /R /Y "$(SolutionDir)FileTaggerRepository\bin\Debug\x64\SQLite.Interop.dll" "$(ProjectDir)bin\x64"
+start xcopy /Q /R /Y"$(SolutionDir)FileTaggerRepository\bin\Debug\x86\SQLite.Interop.dll" "$(ProjectDir)bin\x86"
+start xcopy /Q /R /Y "$(SolutionDir)FileTaggerRepository\bin\Release\x64\SQLite.Interop.dll" "$(ProjectDir)bin\x64"
+start xcopy /Q /R /Y "$(SolutionDir)FileTaggerRepository\bin\Release\x86\SQLite.Interop.dll" "$(ProjectDir)bin\x86"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
