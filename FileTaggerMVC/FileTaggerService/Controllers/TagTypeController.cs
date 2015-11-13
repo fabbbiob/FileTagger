@@ -19,12 +19,12 @@ namespace FileTaggerService.Controllers
             _tagTypeRepository = new TagTypeRepository();
         }
 
-        public void Add(TagType tagType)
+        public void Post(TagType tagType)
         {
             _tagTypeRepository.Add(tagType);
         }
 
-        public void Update(TagType tagType)
+        public void Put(TagType tagType)
         {
             _tagTypeRepository.Update(tagType);
         }
