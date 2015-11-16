@@ -15,7 +15,7 @@ namespace FileTaggerMVC.AutoMapper
             Mapper.CreateMap<Tag, TagViewModel>();
 
             Mapper.CreateMap<File, FileViewModel>()
-                  .ConvertUsing<FileViewModelEntityConverter>();
+                  .ConvertUsing(new FileViewModelEntityConverter());
         }
     }
 }

@@ -2,6 +2,7 @@
 using FileTaggerModel.Model;
 using FileTaggerMVC.Filters;
 using FileTaggerMVC.Models;
+using FileTaggerRepository.Repositories.Abstract;
 using FileTaggerRepository.Repositories.Impl;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace FileTaggerMVC.Controllers
     [FileTaggerHandleError]
     public class TagTypeController : BaseController
     {
-        private TagTypeRepository _tagTypeRepository;
+        private ITagTypeRepository _tagTypeRepository;
 
         public TagTypeController() : base()
         {

@@ -3,6 +3,7 @@ using FileTaggerModel.Model;
 using FileTaggerMVC.Filters;
 using FileTaggerMVC.ModelBinders;
 using FileTaggerMVC.Models;
+using FileTaggerRepository.Repositories.Abstract;
 using FileTaggerRepository.Repositories.Impl;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,13 @@ namespace FileTaggerMVC.Controllers
     [FileTaggerHandleError]
     public class TagController : BaseController
     {
-        private TagRepository _tagRepository;
+        private readonly ITagRepository _tagRepository;
+        private readonly ITagTypeRepository _tagTypeRepository;
 
         public TagController() : base()
         {
             _tagRepository = new TagRepository();
+            _tagTypeRepository = new TagTypeRepository();
         }
 
         // GET: Tag
@@ -32,7 +35,7 @@ namespace FileTaggerMVC.Controllers
         public ActionResult Create()
         {
             TagViewModel tag = new TagViewModel();
-            LoadTagTypes(tag);
+            LoadTagTypes(tag, _tagTypeRepository);
             return View(tag);
         }
 
@@ -54,9 +57,8 @@ namespace FileTaggerMVC.Controllers
         {    
             Tag tag = _tagRepository.GetById(id);
             TagViewModel tagViewModel = Mapper.Map<Tag, TagViewModel>(tag);
-
-            //TODO remove this
-            LoadTagTypes(tagViewModel);
+            
+            LoadTagTypes(tagViewModel, _tagTypeRepository);
             
             return View(tagViewModel);
         }
@@ -92,10 +94,9 @@ namespace FileTaggerMVC.Controllers
             return RedirectToAction("Index");
         }
 
-        // TODO
-        private static void LoadTagTypes(TagViewModel tag)
+        private static void LoadTagTypes(TagViewModel tag, ITagTypeRepository tagTypeRepository)
         {
-            List<TagType> tagTypes = new TagTypeRepository().GetAll().ToList();
+            List<TagType> tagTypes = tagTypeRepository.GetAll().ToList();
             List<TagTypeViewModel> viewModelList = 
                 Mapper.Map<IEnumerable<TagType>, IEnumerable<TagTypeViewModel>>(tagTypes).ToList();
 

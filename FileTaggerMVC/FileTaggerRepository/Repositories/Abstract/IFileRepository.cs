@@ -9,5 +9,6 @@ namespace FileTaggerRepository.Repositories.Abstract
         void Update(File file);
         File GetByFilename(string filename);
         IEnumerable<File> GetByTag(int tagId);
+        IEnumerable<File> GetByTags(IEnumerable<int> tagIds);
     }
 }

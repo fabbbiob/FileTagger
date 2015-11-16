@@ -11,14 +11,15 @@ using AutoMapper;
 using FileTaggerMVC.ModelBinders;
 using FileTaggerMVC.Filters;
 using System.Security.Principal;
+using FileTaggerRepository.Repositories.Abstract;
 
 namespace FileTaggerMVC.Controllers
 {
     [FileTaggerHandleError]
     public class FileController : BaseController
     {
-        private readonly FileRepository _fileRepository;
-        private readonly TagRepository _tagRepository;
+        private readonly IFileRepository _fileRepository;
+        private readonly ITagRepository _tagRepository;
 
         public FileController() : base()
         {
@@ -35,7 +36,7 @@ namespace FileTaggerMVC.Controllers
         // GET: /File/ListFiles?folderPath=path
         public ActionResult ListFiles(string folderPath)
         {
-            //TODO validate folderPath
+            //TODO use web api to validate folderPath
 
             Session["folderPath"] = folderPath;
             JsTreeNodeModel root = new JsTreeNodeModel

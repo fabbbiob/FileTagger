@@ -247,7 +247,7 @@ namespace FileTaggerRepository.Repositories.Impl
             return list;
         }
 
-        //TODO move to services
+        //TODO use web api
         #region "launch process"
         private const string MyPipeName = "MyPipeName";
         
@@ -258,7 +258,7 @@ namespace FileTaggerRepository.Repositories.Impl
                                                                          PipeDirection.Out, 
                                                                          PipeOptions.None);
 
-            if (pipeStream.IsConnected != true)
+            if (!pipeStream.IsConnected)
             {
                 pipeStream.Connect(100);
             }
@@ -266,6 +266,7 @@ namespace FileTaggerRepository.Repositories.Impl
             StreamWriter sw = new StreamWriter(pipeStream);
             sw.WriteLine(fileName);
             sw.Flush();
+            sw.Close();
         }
         
         public bool Run(string fileName)

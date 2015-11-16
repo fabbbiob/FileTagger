@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FileTaggerModel.Model;
 using FileTaggerMVC.Models;
+using FileTaggerRepository.Repositories.Abstract;
 using FileTaggerRepository.Repositories.Impl;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,14 @@ namespace FileTaggerMVC.AutoMapper
 {
     public class FileViewModelEntityConverter : ITypeConverter<File, FileViewModel>
     {
+        private readonly ITagRepository _tagRepository;
+
+        //TODO use web api
+        public FileViewModelEntityConverter()
+        {
+            _tagRepository = new TagRepository();
+        }
+
         public FileViewModel Convert(ResolutionContext context)
         {
             File file = (File)context.SourceValue;
@@ -20,10 +29,9 @@ namespace FileTaggerMVC.AutoMapper
                 FilePath = file.FilePath                
             };
 
-            //TODO refactor
             if (file.Tags != null)
             {
-                List<Tag> tags = new TagRepository().GetAll().ToList();
+                List<Tag> tags = _tagRepository.GetAll().ToList();
                 fileViewModel.Tags = new MultiSelectList(tags, "Id", "Description", file.Tags.Select(t => t.Id).ToArray());
             }
 
