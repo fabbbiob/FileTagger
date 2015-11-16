@@ -180,14 +180,14 @@
     <PostBuildEvent>if $(ConfigurationName) == Debug goto :debug
 
 :release
-xcopy /d /Q /R /Y "$(SolutionDir)FileTaggerRepository\bin\Release\x64\SQLite.Interop.dll" "$(ProjectDir)bin\x64"
-xcopy /d /Q /R /Y "$(SolutionDir)FileTaggerRepository\bin\Release\x86\SQLite.Interop.dll" "$(ProjectDir)bin\x86"
+echo f | xcopy /d /Q /R /Y "$(SolutionDir)FileTaggerRepository\bin\Release\x64\SQLite.Interop.dll" "$(ProjectDir)bin\x64"
+echo f | xcopy /d /Q /R /Y "$(SolutionDir)FileTaggerRepository\bin\Release\x86\SQLite.Interop.dll" "$(ProjectDir)bin\x86"
 
 goto :exit
 
 :debug
-xcopy /d /Q /R /Y "$(SolutionDir)FileTaggerRepository\bin\Debug\x64\SQLite.Interop.dll" "$(ProjectDir)bin\x86"
-xcopy /d /Q /R /Y "$(SolutionDir)FileTaggerRepository\bin\Debug\x64\SQLite.Interop.dll" "$(ProjectDir)bin\x64"
+echo f | xcopy /d /Q /R /Y "$(SolutionDir)FileTaggerRepository\bin\Debug\x64\SQLite.Interop.dll" "$(ProjectDir)bin\x86"
+echo f | xcopy /d /Q /R /Y "$(SolutionDir)FileTaggerRepository\bin\Debug\x64\SQLite.Interop.dll" "$(ProjectDir)bin\x64"
 
 :exit</PostBuildEvent>
   </PropertyGroup>
