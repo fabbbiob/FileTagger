@@ -10,5 +10,8 @@ namespace FileTaggerRepository.Repositories.Abstract
         File GetByFilename(string filename);
         IEnumerable<File> GetByTag(int tagId);
         IEnumerable<File> GetByTags(IEnumerable<int> tagIds);
+
+        //TODO remove this after web api integration
+        bool Run(string filePath);
     }
 }
