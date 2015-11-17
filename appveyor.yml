@@ -16,3 +16,8 @@ build:
 environment:
     COVERALLS_REPO_TOKEN:  
        secure: F5Q88lzJGLHU+KOwsCn0BDu3pgwvxHgV2nfhaRmzscH9KQvc+NCcpUxP7ykSvEam
+       
+test:
+  categories:
+    only:
+      - WaitForNUnit3Support
