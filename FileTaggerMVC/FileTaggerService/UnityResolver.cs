@@ -7,39 +7,21 @@ namespace FileTaggerService
 {
     public class UnityResolver : IDependencyResolver
     {
-        protected IUnityContainer _container;
+        private readonly IUnityContainer _container;
 
         public UnityResolver(IUnityContainer container)
         {
-            if (container == null)
-            {
-                throw new ArgumentNullException("container");
-            }
             _container = container;
         }
 
         public object GetService(Type serviceType)
         {
-            try
-            {
-                return _container.Resolve(serviceType);
-            }
-            catch (ResolutionFailedException)
-            {
-                return null;
-            }
+            return _container.Resolve(serviceType);
         }
 
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            try
-            {
-                return _container.ResolveAll(serviceType);
-            }
-            catch (ResolutionFailedException)
-            {
-                return new List<object>();
-            }
+            return _container.ResolveAll(serviceType);
         }
 
         public IDependencyScope BeginScope()

@@ -5,7 +5,7 @@ using Moq;
 using NUnit.Framework;
 using System.Linq;
 
-namespace FileTaggerService.Tests
+namespace FileTaggerService.Tests.Tests
 {
     [TestFixture]
     public class TagTypeControllerTest
@@ -15,19 +15,19 @@ namespace FileTaggerService.Tests
         {
             TagType expected = new TagType { Id = 1, Description = "abc" };
             Mock<ITagTypeRepository> mock = new Mock<ITagTypeRepository>();
-            mock.Setup(f => f.GetById(1))
+            mock.Setup(f => f.GetById(It.IsAny<int>()))
                 .Returns(expected);
 
             TagTypeController controller = new TagTypeController(mock.Object);
-            TagType tagType = controller.Get(1);
 
-            Assert.AreEqual(expected, tagType);
+            Assert.AreEqual(expected, controller.Get(1));
         }
 
         [Test]
         public void CanGetAllTagTypes()
         {
-            TagType[] expected = new[] {
+            TagType[] expected =     
+            {
                 new TagType { Id = 1, Description = "abc" },
                 new TagType { Id = 2, Description = "def" }
             };

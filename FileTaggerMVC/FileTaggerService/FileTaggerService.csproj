@@ -152,7 +152,6 @@
     <Folder Include="bin\x86\" />
     <Folder Include="bin\zh-Hans\" />
     <Folder Include="bin\zh-Hant\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FileTaggerModel\FileTaggerModel.csproj">
