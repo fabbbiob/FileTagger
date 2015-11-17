@@ -1,4 +1,5 @@
-﻿using FileTaggerRepository.Repositories.Abstract;
+﻿using FileTaggerModel.Model;
+using FileTaggerRepository.Repositories.Abstract;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -14,30 +15,33 @@ namespace FileTaggerService.Controllers
         }
 
         // GET: api/Tag
-        public IEnumerable<string> Get()
+        public IEnumerable<Tag> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _tagRepository.GetAll();
         }
 
         // GET: api/Tag/5
-        public string Get(int id)
+        public Tag Get(int id)
         {
-            return "value";
+            return _tagRepository.GetById(id);
         }
 
         // POST: api/Tag
-        public void Post([FromBody]string value)
+        public void Post([FromBody]Tag tag)
         {
+            _tagRepository.Add(tag);
         }
 
         // PUT: api/Tag/5
-        public void Put(int id, [FromBody]string value)
+        public void Put([FromBody]Tag tag)
         {
+            _tagRepository.Update(tag);
         }
 
         // DELETE: api/Tag/5
         public void Delete(int id)
         {
+            _tagRepository.Delete(id);
         }
     }
 }
