@@ -206,7 +206,7 @@ echo f | xcopy /d /Q /R /Y "$(SolutionDir)FileTaggerRepository\bin\Release\x86\S
 goto :exit
 
 :debug
-echo f | xcopy /d /Q /R /Y "$(SolutionDir)FileTaggerRepository\bin\Debug\x64\SQLite.Interop.dll" "$(ProjectDir)bin\x86\SQLite.Interop.dll"
+echo f | xcopy /d /Q /R /Y "$(SolutionDir)FileTaggerRepository\bin\Debug\x86\SQLite.Interop.dll" "$(ProjectDir)bin\x86\SQLite.Interop.dll"
 echo f | xcopy /d /Q /R /Y "$(SolutionDir)FileTaggerRepository\bin\Debug\x64\SQLite.Interop.dll" "$(ProjectDir)bin\x64\SQLite.Interop.dll"
 
 :exit</PostBuildEvent>
