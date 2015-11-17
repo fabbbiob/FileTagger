@@ -12,7 +12,7 @@ namespace FileTaggerRepositoryTests.Tests
     [TestFixture]
     public class FileRepositoryTest
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             //DbCreator.DeleteDatabase();
@@ -34,28 +34,33 @@ namespace FileTaggerRepositoryTests.Tests
             Assert.AreNotEqual(0, file.Id);
         }
 
-        [Test, ExpectedException(typeof(SQLiteException))]
+        [Test]
         public void CanFailSamePath()
         {
             FileRepository repo = new FileRepository();
-            const string filePath = "1";
+            string filePath = Guid.NewGuid().ToString();
             repo.Add(new File
             {
                 FilePath = filePath,
                 Tags = new List<Tag>()
             });
-            repo.Add(new File
-            {
-                FilePath = filePath,
-                Tags = new List<Tag>()
-            });
+
+            Assert.Throws(typeof(SQLiteException), () => 
+                repo.Add(new File
+                {
+                    FilePath = filePath,
+                    Tags = new List<Tag>()
+                })
+            );
         }
 
-        [Test, ExpectedException(typeof(SQLiteException))]
+        [Test]
         public void CanFailWithNullFilepath()
         {
             FileRepository repo = new FileRepository();
-            repo.Add(new File { Tags = new List<Tag>() });
+            Assert.Throws(typeof(SQLiteException), () =>
+                repo.Add(new File { Tags = new List<Tag>() })
+            );
         }
 
         [Test]

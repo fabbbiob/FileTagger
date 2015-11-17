@@ -10,7 +10,7 @@ namespace FileTaggerRepositoryTests.Tests
     [TestFixture]
     public class TagRepositoryTest
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             //DbCreator.DeleteDatabase();
@@ -27,11 +27,13 @@ namespace FileTaggerRepositoryTests.Tests
             });
         }
 
-        [Test, ExpectedException(typeof(SQLiteException))]
+        [Test]
         public void CanFailWithNullDescriptionAndNullTagType()
         {
             TagRepository repo = new TagRepository();
-            repo.Add(new Tag());
+            Assert.Throws(typeof(SQLiteException), () =>
+                repo.Add(new Tag())
+            );
         }
 
         [Test]
