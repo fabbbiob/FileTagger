@@ -1,6 +1,5 @@
 ﻿using FileTaggerModel.Model;
 using FileTaggerRepository.Repositories.Abstract;
-using FileTaggerRepository.Repositories.Impl;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -10,9 +9,9 @@ namespace FileTaggerService.Controllers
     {
         private readonly IFileRepository _fileRepository;
 
-        public FileController()
+        public FileController(IFileRepository fileRepository)
         {
-            _fileRepository = new FileRepository();
+            _fileRepository = fileRepository;
         }
 
         // GET: api/File?tagId=5

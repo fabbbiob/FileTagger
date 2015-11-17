@@ -1,4 +1,7 @@
-﻿using System.Web.Http;
+﻿using FileTaggerRepository.Repositories.Abstract;
+using FileTaggerRepository.Repositories.Impl;
+using Microsoft.Practices.Unity;
+using System.Web.Http;
 
 namespace FileTaggerService
 {
@@ -16,6 +19,13 @@ namespace FileTaggerService
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            // Unity configuration
+            UnityContainer container = new UnityContainer();
+            container.RegisterType<IFileRepository, FileRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<ITagRepository, TagRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<ITagTypeRepository, TagTypeRepository>(new HierarchicalLifetimeManager());
+            config.DependencyResolver = new UnityResolver(container);
         }
     }
 }

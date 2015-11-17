@@ -1,6 +1,5 @@
 ﻿using FileTaggerModel.Model;
 using FileTaggerRepository.Repositories.Abstract;
-using FileTaggerRepository.Repositories.Impl;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -10,9 +9,9 @@ namespace FileTaggerService.Controllers
     {
         private readonly ITagTypeRepository _tagTypeRepository;
 
-        public TagTypeController() : base()
+        public TagTypeController(ITagTypeRepository tagTypeRepository) : base()
         {
-            _tagTypeRepository = new TagTypeRepository();
+            _tagTypeRepository = tagTypeRepository;
         }
 
         public void Post(TagType tagType)

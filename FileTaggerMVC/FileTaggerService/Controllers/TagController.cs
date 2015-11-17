@@ -1,5 +1,4 @@
 ﻿using FileTaggerRepository.Repositories.Abstract;
-using FileTaggerRepository.Repositories.Impl;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -9,9 +8,9 @@ namespace FileTaggerService.Controllers
     {
         private readonly ITagRepository _tagRepository;
 
-        public TagController() : base()
+        public TagController(ITagRepository tagRepository) : base()
         {
-            _tagRepository = new TagRepository();
+            _tagRepository = tagRepository;
         }
 
         // GET: api/Tag
