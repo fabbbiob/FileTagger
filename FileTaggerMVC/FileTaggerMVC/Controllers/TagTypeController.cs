@@ -2,10 +2,10 @@
 using FileTaggerModel.Model;
 using FileTaggerMVC.Filters;
 using FileTaggerMVC.Models;
-using FileTaggerRepository.Repositories.Abstract;
-using FileTaggerRepository.Repositories.Impl;
+using Newtonsoft.Json;
+using RestSharp;
 using System.Collections.Generic;
-using System.Linq;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace FileTaggerMVC.Controllers
@@ -13,19 +13,22 @@ namespace FileTaggerMVC.Controllers
     [FileTaggerHandleError]
     public class TagTypeController : BaseController
     {
-        private ITagTypeRepository _tagTypeRepository;
+        private RestClient _client;
 
         public TagTypeController() : base()
         {
-            _tagTypeRepository = new TagTypeRepository();
+            _client = new RestClient(WebConfigurationManager.AppSettings["FileTaggerServiceUrl"]);
         }
 
         // GET: TagType
         public ActionResult Index()
         {
-            List<TagType> list = _tagTypeRepository.GetAll().ToList();
+            RestRequest request = new RestRequest("api/tagtype", Method.GET);
+            IRestResponse<List<TagType>> response = _client.Execute<List<TagType>>(request);
+
+            List<TagType> list = response.Data;
             List<TagTypeViewModel> viewModelList = 
-                Mapper.Map<IEnumerable<TagType>, IEnumerable<TagTypeViewModel>>(list).ToList();
+                Mapper.Map<List<TagType>, List<TagTypeViewModel>>(list);
             return View(viewModelList);
         }
 
@@ -43,7 +46,11 @@ namespace FileTaggerMVC.Controllers
             if (ModelState.IsValid)
             {
                 TagType tagType = Mapper.Map<TagTypeViewModel, TagType>(tagTypeViewModel);
-                _tagTypeRepository.Add(tagType);
+
+                RestRequest request = new RestRequest("api/tagtype", Method.POST);
+                string json = JsonConvert.SerializeObject(tagType);
+                request.AddParameter("text/json", json, ParameterType.RequestBody);
+                _client.Execute<TagType>(request);
             }          
 
             return RedirectToAction("Index");
@@ -52,10 +59,9 @@ namespace FileTaggerMVC.Controllers
         // GET: TagType/Edit/5
         public ActionResult Edit(int id)
         {
-            TagType tagType = _tagTypeRepository.GetById(id);
-            TagTypeViewModel tagTypeViewModel = Mapper.Map<TagType, TagTypeViewModel>(tagType);
-
             ViewBag.Action = "Edit";
+
+            TagTypeViewModel tagTypeViewModel = Get(id);
             return View("CreateOrEdit", tagTypeViewModel);
         }
 
@@ -66,7 +72,10 @@ namespace FileTaggerMVC.Controllers
             if (ModelState.IsValid)
             {
                 TagType tagType = Mapper.Map<TagTypeViewModel, TagType>(tagTypeViewModel);
-                _tagTypeRepository.Update(tagType);
+                RestRequest request = new RestRequest("api/tagtype", Method.PUT);
+                string json = JsonConvert.SerializeObject(tagType);
+                request.AddParameter("text/json", json, ParameterType.RequestBody);
+                _client.Execute<TagType>(request);
             }
 
             return RedirectToAction("Index");
@@ -75,8 +84,7 @@ namespace FileTaggerMVC.Controllers
         // GET: TagType/Delete/5
         public ActionResult Delete(int id)
         {
-            TagType tagType = _tagTypeRepository.GetById(id);
-            TagTypeViewModel tagTypeViewModel = Mapper.Map<TagType, TagTypeViewModel>(tagType);
+            TagTypeViewModel tagTypeViewModel = Get(id);
             return View("Delete", tagTypeViewModel);
         }
 
@@ -84,9 +92,18 @@ namespace FileTaggerMVC.Controllers
         [HttpPost]
         public ActionResult Delete(TagTypeViewModel tagTypeViewModel)
         {
-            TagType tagType = Mapper.Map<TagTypeViewModel, TagType>(tagTypeViewModel);
-            _tagTypeRepository.Delete(tagType.Id);
+            RestRequest request = new RestRequest("api/tagtype", Method.DELETE);
+            request.AddParameter("id", tagTypeViewModel.Id.ToString());
+            _client.Execute<TagType>(request);
             return RedirectToAction("Index");
+        }
+
+        private TagTypeViewModel Get(int id)
+        {
+            RestRequest request = new RestRequest("api/tagtype/{id}", Method.GET);
+            request.AddUrlSegment("id", id.ToString());
+            IRestResponse<TagType> response = _client.Execute<TagType>(request);
+            return Mapper.Map<TagType, TagTypeViewModel>(response.Data);
         }
     }
 }
