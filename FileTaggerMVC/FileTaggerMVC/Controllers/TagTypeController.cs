@@ -13,7 +13,7 @@ namespace FileTaggerMVC.Controllers
     [FileTaggerHandleError]
     public class TagTypeController : BaseController
     {
-        private RestClient _client;
+        private readonly RestClient _client;
 
         public TagTypeController() : base()
         {
