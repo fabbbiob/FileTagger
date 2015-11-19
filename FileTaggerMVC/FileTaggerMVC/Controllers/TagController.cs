@@ -29,7 +29,7 @@ namespace FileTaggerMVC.Controllers
             IRestResponse<List<Tag>> response = _client.Execute<List<Tag>>(request);
             
             List<Tag> list = response.Data;
-            List<TagViewModel> viewModelList = Mapper.Map<IEnumerable<Tag>, IEnumerable<TagViewModel>>(list).ToList();
+            List<TagViewModel> viewModelList = Mapper.Map<List<Tag>, List<TagViewModel>>(list);
             return View(viewModelList);
         }
 

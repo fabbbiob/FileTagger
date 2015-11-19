@@ -12,6 +12,8 @@ using FileTaggerMVC.ModelBinders;
 using FileTaggerMVC.Filters;
 using System.Security.Principal;
 using FileTaggerRepository.Repositories.Abstract;
+using RestSharp;
+using System.Web.Configuration;
 
 namespace FileTaggerMVC.Controllers
 {
@@ -20,11 +22,13 @@ namespace FileTaggerMVC.Controllers
     {
         private readonly IFileRepository _fileRepository;
         private readonly ITagRepository _tagRepository;
+        private readonly RestClient _client;
 
         public FileController() : base()
         {
             _fileRepository = new FileRepository();
             _tagRepository = new TagRepository();
+            _client = new RestClient(WebConfigurationManager.AppSettings["FileTaggerServiceUrl"]);
         }
 
         // GET: /File/
@@ -53,7 +57,12 @@ namespace FileTaggerMVC.Controllers
         public PartialViewResult Details(string fileName)
         {
             Session["fileName"] = fileName;
-            FileTaggerModel.Model.File file = _fileRepository.GetByFilename(fileName);
+
+            RestRequest request = new RestRequest("api/file", Method.POST);
+            request.AddParameter("filename", fileName);
+            IRestResponse<FileTaggerModel.Model.File> response = _client.Execute<FileTaggerModel.Model.File>(request);
+
+            FileTaggerModel.Model.File file = response.Data;
             if (file != null)
             {
                 FileViewModel fileViewModel = Mapper.Map<FileTaggerModel.Model.File, FileViewModel>(file);
