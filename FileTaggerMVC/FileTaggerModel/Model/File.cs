@@ -6,7 +6,7 @@ namespace FileTaggerModel.Model
     {
         public int Id { get; set; }
         public string FilePath { get; set; }
-        public IEnumerable<Tag> Tags { get; set; }
+        public List<Tag> Tags { get; set; }
 
         public override bool Equals(object obj)
         {

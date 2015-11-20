@@ -5,7 +5,6 @@ using System.Web.Http;
 
 namespace FileTaggerService.Controllers
 {
-    // TODO refactor
     public class FileController : ApiController
     {
         private readonly IFileRepository _fileRepository;
@@ -15,23 +14,16 @@ namespace FileTaggerService.Controllers
             _fileRepository = fileRepository;
         }
 
-        // GET: api/File?tagId=5
-        public IEnumerable<File> Get([FromUri]int tagId)
+        // GET: api/File/{id}
+        public IEnumerable<File> Get([FromUri]int id)
         {
-            return _fileRepository.GetByTag(tagId);
+            return _fileRepository.GetByTag(id);
         }
 
         // GET: api/File?tagIds=5
         public IEnumerable<File> Get([FromUri]int[] tagIds)
         {
             return _fileRepository.GetByTags(tagIds);
-        }
-
-        // POST: api/File
-        [HttpPost]
-        public File Get([FromBody]string filename)
-        {
-            return _fileRepository.GetByFilename(filename);
         }
 
         // POST: api/File

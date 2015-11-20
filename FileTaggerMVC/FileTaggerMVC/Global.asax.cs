@@ -1,7 +1,6 @@
 ﻿using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using FileTaggerRepository.Helpers;
 using FileTaggerMVC.AutoMapper;
 
 namespace FileTaggerMVC
@@ -15,7 +14,8 @@ namespace FileTaggerMVC
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            DbCreator.CreateDatabase();
+            // TODO call web api
+            //DbCreator.CreateDatabase();
             AutoMapperConfiguration.Configure();
         }
     }

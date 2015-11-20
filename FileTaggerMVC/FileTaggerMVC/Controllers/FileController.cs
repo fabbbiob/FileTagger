@@ -6,12 +6,9 @@ using System.Linq;
 using Newtonsoft.Json;
 using FileTaggerMVC.Models;
 using FileTaggerModel.Model;
-using FileTaggerRepository.Repositories.Impl;
 using AutoMapper;
 using FileTaggerMVC.ModelBinders;
 using FileTaggerMVC.Filters;
-using System.Security.Principal;
-using FileTaggerRepository.Repositories.Abstract;
 using RestSharp;
 using System.Web.Configuration;
 
@@ -20,14 +17,10 @@ namespace FileTaggerMVC.Controllers
     [FileTaggerHandleError]
     public class FileController : BaseController
     {
-        private readonly IFileRepository _fileRepository;
-        private readonly ITagRepository _tagRepository;
         private readonly RestClient _client;
 
         public FileController() : base()
         {
-            _fileRepository = new FileRepository();
-            _tagRepository = new TagRepository();
             _client = new RestClient(WebConfigurationManager.AppSettings["FileTaggerServiceUrl"]);
         }
 
@@ -58,11 +51,7 @@ namespace FileTaggerMVC.Controllers
         {
             Session["fileName"] = fileName;
 
-            RestRequest request = new RestRequest("api/file", Method.POST);
-            request.AddParameter("filename", fileName);
-            IRestResponse<FileTaggerModel.Model.File> response = _client.Execute<FileTaggerModel.Model.File>(request);
-
-            FileTaggerModel.Model.File file = response.Data;
+            FileTaggerModel.Model.File file = Get(fileName);
             if (file != null)
             {
                 FileViewModel fileViewModel = Mapper.Map<FileTaggerModel.Model.File, FileViewModel>(file);
@@ -81,7 +70,7 @@ namespace FileTaggerMVC.Controllers
         // GET: /File/Edit/5
         public ActionResult Edit(int id)
         {
-            FileTaggerModel.Model.File file = _fileRepository.GetByFilename((string)Session["fileName"]);
+            FileTaggerModel.Model.File file = Get((string)Session["fileName"]); 
             FileViewModel fileViewModel = Mapper.Map<FileTaggerModel.Model.File, FileViewModel>(file);
 
             ViewBag.Action = "Edit";
@@ -95,7 +84,11 @@ namespace FileTaggerMVC.Controllers
             if (ModelState.IsValid)
             {
                 FileTaggerModel.Model.File editedFile = Mapper.Map<FileViewModel, FileTaggerModel.Model.File>(fileViewModel);
-                _fileRepository.Update(editedFile);
+
+                RestRequest request = new RestRequest("api/file", Method.PUT);
+                string json = JsonConvert.SerializeObject(editedFile);
+                request.AddParameter("text/json", json, ParameterType.RequestBody);
+                _client.Execute<TagType>(request);
             }
 
             return RedirectToAction("ListFiles", new { folderPath = (string)Session["folderPath"] });
@@ -121,7 +114,11 @@ namespace FileTaggerMVC.Controllers
             if (ModelState.IsValid)
             {
                 FileTaggerModel.Model.File file = Mapper.Map<FileViewModel, FileTaggerModel.Model.File>(fileViewModel);
-                _fileRepository.Add(file);
+
+                RestRequest request = new RestRequest("api/file", Method.POST);
+                string json = JsonConvert.SerializeObject(file);
+                request.AddParameter("text/json", json, ParameterType.RequestBody);
+                _client.Execute<FileTaggerModel.Model.File>(request);
             }
 
             return RedirectToAction("ListFiles", new { folderPath = (string)Session["folderPath"] });
@@ -130,8 +127,11 @@ namespace FileTaggerMVC.Controllers
         // GET: /File/ByTag?tagId=1&description=test
         public ActionResult ByTag(int tagId, string description)
         {
-            IEnumerable<FileTaggerModel.Model.File> files = _fileRepository.GetByTag(tagId);
-            List<FileViewModel> list = Mapper.Map<IEnumerable<FileTaggerModel.Model.File>, IEnumerable<FileViewModel>>(files).ToList();
+            RestRequest request = new RestRequest("api/file/{id}", Method.GET);
+            request.AddParameter("id", tagId.ToString());
+            IRestResponse<List<FileTaggerModel.Model.File>> response = _client.Execute<List<FileTaggerModel.Model.File>>(request);
+
+            List<FileViewModel> list = Mapper.Map<IEnumerable<FileTaggerModel.Model.File>, IEnumerable<FileViewModel>>(response.Data).ToList();
             return View(new ByTagModel
             {
                 TagDescription = description,
@@ -141,7 +141,10 @@ namespace FileTaggerMVC.Controllers
 
         public bool Run(string filePath)
         {
-            return _fileRepository.Run(filePath);
+            RestRequest request = new RestRequest("api/Process", Method.GET);
+            request.AddParameter("fileName", filePath);
+            IRestResponse<bool> response = _client.Execute<bool>(request);
+            return response.Data;
         }
 
         private static void DirectorySearch(string folderPath, JsTreeNodeModel root)
@@ -179,8 +182,19 @@ namespace FileTaggerMVC.Controllers
 
         private void LoadTagTypes(FileViewModel fileViewModel)
         {
-            List<Tag> tags = _tagRepository.GetAll().ToList();
+            RestRequest request = new RestRequest("api/tag", Method.GET);
+            IRestResponse<List<Tag>> response = _client.Execute<List<Tag>>(request);
+            List<Tag> tags = response.Data;
+
             fileViewModel.Tags = new MultiSelectList(tags, "Id", "Description");
+        }
+
+        private FileTaggerModel.Model.File Get(string fileName)
+        {
+            RestRequest request = new RestRequest("api/FileName", Method.GET);
+            request.AddParameter("filename", fileName);
+            IRestResponse<FileTaggerModel.Model.File> response = _client.Execute<FileTaggerModel.Model.File>(request);
+            return response.Data;
         }
     }
 

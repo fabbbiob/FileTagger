@@ -8,9 +8,6 @@ using System.Linq;
 using FileTaggerRepository.Repositories.Abstract;
 using FileTaggerRepository.Helpers;
 using FileTaggerModel;
-using System.Diagnostics;
-using System.IO.Pipes;
-using System.IO;
 
 namespace FileTaggerRepository.Repositories.Impl
 {
@@ -136,13 +133,13 @@ namespace FileTaggerRepository.Repositories.Impl
 
             FileTaggerModel.Model.File file = Parse(dr);
 
-            LinkedList<Tag> tags = new LinkedList<Tag>();
+            List<Tag> tags = new List<Tag>();
             dr.NextResult();
 
             while (dr.Read())
             {
                 Tag tag;
-                tags.AddLast(tag = new Tag
+                tags.Add(tag = new Tag
                 {
                     Id = dr.GetInt32(0),
                     Description = dr.GetString(1)
@@ -246,41 +243,6 @@ namespace FileTaggerRepository.Repositories.Impl
             });
             return list;
         }
-
-        //TODO use web api
-        #region "launch process"
-        private const string MyPipeName = "MyPipeName";
         
-        private static void Send(string fileName)
-        {
-            NamedPipeClientStream pipeStream = new NamedPipeClientStream(".", 
-                                                                         MyPipeName, 
-                                                                         PipeDirection.Out, 
-                                                                         PipeOptions.None);
-
-            if (!pipeStream.IsConnected)
-            {
-                pipeStream.Connect(100);
-            }
-
-            StreamWriter sw = new StreamWriter(pipeStream);
-            sw.WriteLine(fileName);
-            sw.Flush();
-            sw.Close();
-        }
-        
-        public bool Run(string fileName)
-        {
-            try
-            {
-                Send(fileName);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        #endregion
     }
 }

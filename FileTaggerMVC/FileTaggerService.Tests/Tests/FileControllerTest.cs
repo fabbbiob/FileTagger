@@ -53,8 +53,8 @@ namespace FileTaggerService.Tests.Tests
             mock.Setup(f => f.GetByFilename(It.IsAny<string>()))
                 .Returns(expected);
 
-            FileController controller = new FileController(mock.Object);
-            Assert.AreEqual(expected, controller.Get(""));
+            FileNameController controller = new FileNameController(mock.Object);
+            Assert.AreEqual(expected, controller.GetByFilename(""));
         }
 
         [Test]

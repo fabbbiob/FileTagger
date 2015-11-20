@@ -133,6 +133,7 @@
     <Compile Include="App_Start\UnityWebApiActivator.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\FileNameController.cs" />
     <Compile Include="Controllers\ProcessController.cs" />
     <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Controllers\TagTypeController.cs" />

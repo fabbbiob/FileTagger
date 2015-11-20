@@ -30,7 +30,7 @@
                     {
                         <tr>
                             <td>
-                                @Html.ActionLink(tag.Text, "ByTag", "Home", new { tagIds = tag.Value, description = tag.Text })
+                                @Html.ActionLink(tag.Text, "ByTag", "File", new { tagId = tag.Value, description = tag.Text }, null)
                             </td>
                         </tr>
                     }

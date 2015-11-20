@@ -136,7 +136,7 @@ namespace FileTaggerRepositoryTests.Tests
             File file = new File
             {
                 FilePath = Guid.NewGuid().ToString(),
-                Tags = new [] { tag1, tag2 }
+                Tags = new [] { tag1, tag2 }.ToList()
             };
             fileRepository.Add(file);
 
@@ -157,13 +157,13 @@ namespace FileTaggerRepositoryTests.Tests
             File fileWithTag = new File
             {
                 FilePath = Guid.NewGuid().ToString(),
-                Tags = new []{ tag }
+                Tags = new []{ tag }.ToList()
             };
 
             File fileWithoutTag = new File
             {
                 FilePath = Guid.NewGuid().ToString(),
-                Tags = new Tag[0]
+                Tags = new Tag[0].ToList()
             };
 
             fileRepository.Add(fileWithTag);
