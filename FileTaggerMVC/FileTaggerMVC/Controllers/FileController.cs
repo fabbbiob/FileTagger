@@ -15,10 +15,10 @@ namespace FileTaggerMVC.Controllers
     [FileTaggerHandleError]
     public class FileController : BaseController
     {
-        private ITagRest _tagRest;
-        private IFileRest _fileRest;
-        private IProcessRest _processRest;
-        private ISearchRest _searchRest;
+        private readonly ITagRest _tagRest;
+        private readonly IFileRest _fileRest;
+        private readonly IProcessRest _processRest;
+        private readonly ISearchRest _searchRest;
 
         public FileController(ITagRest tagRest,
                               IFileRest fileRest,

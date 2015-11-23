@@ -12,8 +12,8 @@ namespace FileTaggerMVC.Controllers
     [FileTaggerHandleError]
     public class HomeController : BaseController
     {
-        private ITagRest _tagRest;
-        private ISearchRest _searchRest;
+        private readonly ITagRest _tagRest;
+        private readonly ISearchRest _searchRest;
 
         public HomeController(ITagRest tagRest, ISearchRest searchRest) : base()
         {

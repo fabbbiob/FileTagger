@@ -13,8 +13,8 @@ namespace FileTaggerMVC.Controllers
     [FileTaggerHandleError]
     public class TagController : BaseController
     {
-        private ITagRest _tagRest;
-        private ITagTypeRest _tagTypeRest;
+        private readonly ITagRest _tagRest;
+        private readonly ITagTypeRest _tagTypeRest;
 
         public TagController(ITagRest tagRest, ITagTypeRest tagTypeRest) : base()
         {
