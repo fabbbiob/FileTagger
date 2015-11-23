@@ -1,22 +1,22 @@
 ﻿using AutoMapper;
-using FileTaggerModel.Model;
 using FileTaggerMVC.Models;
+using FileTaggerMVC.Models.Base;
 
 namespace FileTaggerMVC.AutoMapper
 {
-    public class TagEntityConverter : ITypeConverter<TagViewModel, Tag>
+    public class TagEntityConverter : ITypeConverter<TagViewModel, BaseTag>
     {
-        public Tag Convert(ResolutionContext context)
+        public BaseTag Convert(ResolutionContext context)
         {
             TagViewModel tagViewModel = (TagViewModel)context.SourceValue;
-            Tag tag = new Tag
+            BaseTag tag = new BaseTag
             {
                 Id = tagViewModel.Id,
                 Description = tagViewModel.Description,
             };
             if (tagViewModel.TagTypeId != -1)
             {
-                tag.TagType = new TagType
+                tag.TagType = new BaseTagType
                 {
                     Id = tagViewModel.TagTypeId
                 };

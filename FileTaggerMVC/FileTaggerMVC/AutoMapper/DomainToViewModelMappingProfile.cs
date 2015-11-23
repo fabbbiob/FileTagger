@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using FileTaggerModel.Model;
 using FileTaggerMVC.App_Start;
 using FileTaggerMVC.Models;
+using FileTaggerMVC.Models.Base;
 using FileTaggerMVC.RestSharp.Abstract;
 using Microsoft.Practices.Unity;
 
@@ -13,11 +13,11 @@ namespace FileTaggerMVC.AutoMapper
 
         protected override void Configure()
         {
-            Mapper.CreateMap<TagType, TagTypeViewModel>();
+            Mapper.CreateMap<BaseTagType, TagTypeViewModel>();
 
-            Mapper.CreateMap<Tag, TagViewModel>();
+            Mapper.CreateMap<BaseTag, TagViewModel>();
 
-            Mapper.CreateMap<File, FileViewModel>()
+            Mapper.CreateMap<BaseFile, FileViewModel>()
                   .ConvertUsing(new FileViewModelEntityConverter(UnityConfig.GetConfiguredContainer().Resolve<ITagRest>()));
         }
     }

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using FileTaggerModel.Model;
-using FileTaggerMVC.App_Start;
 using FileTaggerMVC.Models;
+using FileTaggerMVC.Models.Base;
 
 namespace FileTaggerMVC.AutoMapper
 {
@@ -11,12 +10,12 @@ namespace FileTaggerMVC.AutoMapper
 
         protected override void Configure()
         {
-            Mapper.CreateMap<TagTypeViewModel, TagType>();
+            Mapper.CreateMap<TagTypeViewModel, BaseTagType>();
 
-            Mapper.CreateMap<TagViewModel, Tag>()
+            Mapper.CreateMap<TagViewModel, BaseTag>()
                   .ConvertUsing(new TagEntityConverter());
 
-            Mapper.CreateMap<FileViewModel, File>()
+            Mapper.CreateMap<FileViewModel, BaseFile>()
                   .ConvertUsing(new FileEntityConverter());
         }
     }

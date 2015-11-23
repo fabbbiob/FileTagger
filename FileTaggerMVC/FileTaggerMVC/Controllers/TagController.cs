@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using FileTaggerModel.Model;
 using FileTaggerMVC.Filters;
 using FileTaggerMVC.ModelBinders;
 using FileTaggerMVC.Models;
+using FileTaggerMVC.Models.Base;
 using FileTaggerMVC.RestSharp.Abstract;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,8 +25,8 @@ namespace FileTaggerMVC.Controllers
         // GET: Tag
         public ActionResult Index()
         {
-            List<Tag> list = _tagRest.Get();
-            List<TagViewModel> viewModelList = Mapper.Map<List<Tag>, List<TagViewModel>>(list);
+            List<BaseTag> list = _tagRest.Get();
+            List<TagViewModel> viewModelList = Mapper.Map<List<BaseTag>, List<TagViewModel>>(list);
             return View(viewModelList);
         }
 
@@ -44,7 +44,7 @@ namespace FileTaggerMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                Tag tag = Mapper.Map<TagViewModel, Tag>(tagViewModel);
+                BaseTag tag = Mapper.Map<TagViewModel, BaseTag>(tagViewModel);
                 _tagRest.Post(tag);
             }
 
@@ -65,7 +65,7 @@ namespace FileTaggerMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                Tag tag = Mapper.Map<TagViewModel, Tag>(tagViewModel);
+                BaseTag tag = Mapper.Map<TagViewModel, BaseTag>(tagViewModel);
                 _tagRest.Put(tag);
             }
 
@@ -89,9 +89,9 @@ namespace FileTaggerMVC.Controllers
 
         private void LoadTagTypes(TagViewModel tag)
         {
-            List<TagType> tagTypes = _tagTypeRest.Get();
+            List<BaseTagType> tagTypes = _tagTypeRest.Get();
             List<TagTypeViewModel> viewModelList = 
-                Mapper.Map<IEnumerable<TagType>, IEnumerable<TagTypeViewModel>>(tagTypes).ToList();
+                Mapper.Map<List<BaseTagType>, List<TagTypeViewModel>>(tagTypes).ToList();
 
             tag.TagTypeViewModel = new DropDownListViewModel();
             tag.TagTypeViewModel.Items = new List<SelectListItem>();
@@ -106,8 +106,8 @@ namespace FileTaggerMVC.Controllers
 
         private TagViewModel Get(int id)
         {
-            Tag tag = _tagRest.Get(id);
-            return Mapper.Map<Tag, TagViewModel>(tag);
+            BaseTag tag = _tagRest.Get(id);
+            return Mapper.Map<BaseTag, TagViewModel>(tag);
         }
     }
 }

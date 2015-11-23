@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using FileTaggerModel.Model;
 using FileTaggerMVC.Models;
+using FileTaggerMVC.Models.Base;
 using FileTaggerMVC.RestSharp.Abstract;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace FileTaggerMVC.AutoMapper
 {
-    public class FileViewModelEntityConverter : ITypeConverter<File, FileViewModel>
+    public class FileViewModelEntityConverter : ITypeConverter<BaseFile, FileViewModel>
     {
         private ITagRest _tagRest;
 
@@ -19,7 +19,7 @@ namespace FileTaggerMVC.AutoMapper
 
         public FileViewModel Convert(ResolutionContext context)
         {
-            File file = (File)context.SourceValue;
+            BaseFile file = (BaseFile)context.SourceValue;
             
             FileViewModel fileViewModel = new FileViewModel
             {
@@ -29,7 +29,7 @@ namespace FileTaggerMVC.AutoMapper
 
             if (file.Tags != null)
             {
-                List<Tag> tags = _tagRest.Get();
+                List<BaseTag> tags = _tagRest.Get();
                 fileViewModel.Tags = new MultiSelectList(tags, "Id", "Description", file.Tags.Select(t => t.Id).ToArray());
             }
 

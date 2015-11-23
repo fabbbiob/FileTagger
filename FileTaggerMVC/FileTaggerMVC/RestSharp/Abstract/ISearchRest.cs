@@ -1,11 +1,11 @@
-﻿using FileTaggerModel.Model;
+﻿using FileTaggerMVC.Models.Base;
 using System.Collections.Generic;
 
 namespace FileTaggerMVC.RestSharp.Abstract
 {
     public interface ISearchRest
     {
-        List<File> GetByTags(int[] tagIds);
-        List<File> GetByTag(int tagId);
+        List<BaseFile> GetByTags(int[] tagIds);
+        List<BaseFile> GetByTag(int tagId);
     }
 }

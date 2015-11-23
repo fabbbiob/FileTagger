@@ -4,11 +4,11 @@ using System.Web.Mvc;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using FileTaggerMVC.Models;
-using FileTaggerModel.Model;
 using AutoMapper;
 using FileTaggerMVC.ModelBinders;
 using FileTaggerMVC.Filters;
 using FileTaggerMVC.RestSharp.Abstract;
+using FileTaggerMVC.Models.Base;
 
 namespace FileTaggerMVC.Controllers
 {
@@ -58,10 +58,10 @@ namespace FileTaggerMVC.Controllers
         {
             Session["fileName"] = fileName;
 
-            FileTaggerModel.Model.File file = Get(fileName);
+            BaseFile file = Get(fileName);
             if (file != null)
             {
-                FileViewModel fileViewModel = Mapper.Map<FileTaggerModel.Model.File, FileViewModel>(file);
+                FileViewModel fileViewModel = Mapper.Map<BaseFile, FileViewModel>(file);
                 return PartialView("Details", fileViewModel);
             }
             else
@@ -77,8 +77,8 @@ namespace FileTaggerMVC.Controllers
         // GET: /File/Edit/5
         public ActionResult Edit(int id)
         {
-            FileTaggerModel.Model.File file = Get((string)Session["fileName"]); 
-            FileViewModel fileViewModel = Mapper.Map<FileTaggerModel.Model.File, FileViewModel>(file);
+            BaseFile file = Get((string)Session["fileName"]); 
+            FileViewModel fileViewModel = Mapper.Map<BaseFile, FileViewModel>(file);
 
             ViewBag.Action = "Edit";
             return View("CreateOrEdit", fileViewModel);
@@ -90,7 +90,7 @@ namespace FileTaggerMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                FileTaggerModel.Model.File editedFile = Mapper.Map<FileViewModel, FileTaggerModel.Model.File>(fileViewModel);
+                BaseFile editedFile = Mapper.Map<FileViewModel, BaseFile>(fileViewModel);
                 _fileRest.Put(editedFile);
             }
 
@@ -116,7 +116,7 @@ namespace FileTaggerMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                FileTaggerModel.Model.File file = Mapper.Map<FileViewModel, FileTaggerModel.Model.File>(fileViewModel);
+                BaseFile file = Mapper.Map<FileViewModel, BaseFile>(fileViewModel);
                 _fileRest.Post(file);
             }
 
@@ -126,8 +126,8 @@ namespace FileTaggerMVC.Controllers
         // GET: /File/ByTag?tagId=1&description=test
         public ActionResult ByTag(int tagId, string description)
         {
-            List<FileTaggerModel.Model.File> files = _searchRest.GetByTag(tagId);
-            List<FileViewModel> list = Mapper.Map<List<FileTaggerModel.Model.File>, List<FileViewModel>>(files);
+            List<BaseFile> files = _searchRest.GetByTag(tagId);
+            List<FileViewModel> list = Mapper.Map<List<BaseFile>, List<FileViewModel>>(files);
             return View(new ByTagModel
             {
                 TagDescription = description,
@@ -175,11 +175,11 @@ namespace FileTaggerMVC.Controllers
 
         private void LoadTagTypes(FileViewModel fileViewModel)
         {
-            List<Tag> tags = _tagRest.Get();
+            List<BaseTag> tags = _tagRest.Get();
             fileViewModel.Tags = new MultiSelectList(tags, "Id", "Description");
         }
 
-        private FileTaggerModel.Model.File Get(string fileName)
+        private BaseFile Get(string fileName)
         {
             return _fileRest.Get(fileName);
         }

@@ -1,7 +1,7 @@
 ﻿using FileTaggerMVC.RestSharp.Abstract;
 using System.Collections.Generic;
-using FileTaggerModel.Model;
 using RestSharp;
+using FileTaggerMVC.Models.Base;
 
 namespace FileTaggerMVC.RestSharp.Impl
 {
@@ -19,28 +19,28 @@ namespace FileTaggerMVC.RestSharp.Impl
             _client.Execute(request);
         }
 
-        public List<TagType> Get()
+        public List<BaseTagType> Get()
         {
             RestRequest request = new RestRequest("api/tagtype", Method.GET);
-            IRestResponse<List<TagType>> response = _client.Execute<List<TagType>>(request);
+            IRestResponse<List<BaseTagType>> response = _client.Execute<List<BaseTagType>>(request);
             return response.Data;
         }
 
-        public TagType Get(int id)
+        public BaseTagType Get(int id)
         {
             RestRequest request = new RestRequest("api/tagtype/{id}", Method.GET);
             request.AddUrlSegment("id", id.ToString());
-            IRestResponse<TagType> response = _client.Execute<TagType>(request);
+            IRestResponse<BaseTagType> response = _client.Execute<BaseTagType>(request);
             return response.Data;
         }
 
-        public void Post(TagType tagType)
+        public void Post(BaseTagType tagType)
         {
             RestRequest request = new RestRequest("api/tagtype", Method.POST);
             PostOrPut(request, tagType);
         }
 
-        public void Put(TagType tagType)
+        public void Put(BaseTagType tagType)
         {
             RestRequest request = new RestRequest("api/tagtype", Method.PUT);
             PostOrPut(request, tagType);

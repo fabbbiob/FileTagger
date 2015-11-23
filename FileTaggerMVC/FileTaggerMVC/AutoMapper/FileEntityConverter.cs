@@ -1,23 +1,23 @@
 ﻿using AutoMapper;
-using FileTaggerModel.Model;
 using FileTaggerMVC.Models;
+using FileTaggerMVC.Models.Base;
 using System.Collections.Generic;
 
 namespace FileTaggerMVC.AutoMapper
 {
-    public class FileEntityConverter : ITypeConverter<FileViewModel, File>
+    public class FileEntityConverter : ITypeConverter<FileViewModel, BaseFile>
     {
-        public File Convert(ResolutionContext context)
+        public BaseFile Convert(ResolutionContext context)
         {
             FileViewModel fileViewModel = (FileViewModel)context.SourceValue;
 
-            List<Tag> tags = new List<Tag>(fileViewModel.TagIds.Length);
+            List<BaseTag> tags = new List<BaseTag>(fileViewModel.TagIds.Length);
             foreach (int tagId in fileViewModel.TagIds)
             {
-                tags.Add(new Tag { Id = tagId });
+                tags.Add(new BaseTag { Id = tagId });
             }
 
-            File file = new File
+            BaseFile file = new BaseFile
             {
                 Id = fileViewModel.Id,
                 FilePath = fileViewModel.FilePath,

@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using FileTaggerModel.Model;
 using FileTaggerMVC.Filters;
 using FileTaggerMVC.Models;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Linq;
 using FileTaggerMVC.RestSharp.Abstract;
+using FileTaggerMVC.Models.Base;
 
 namespace FileTaggerMVC.Controllers
 {
@@ -23,8 +23,8 @@ namespace FileTaggerMVC.Controllers
 
         public ActionResult Index()
         {
-            List<Tag> list = _tagRest.Get();
-            List<TagViewModel> viewModelList = Mapper.Map<IEnumerable<Tag>, IEnumerable<TagViewModel>>(list)
+            List<BaseTag> list = _tagRest.Get();
+            List<TagViewModel> viewModelList = Mapper.Map<IEnumerable<BaseTag>, IEnumerable<TagViewModel>>(list)
                 .OrderByDescending(t => t.TagType)
                 .ThenBy(t => t.Description)
                 .ToList();
@@ -39,8 +39,8 @@ namespace FileTaggerMVC.Controllers
                 return Content("<hr />Select at least one tag", "text/html");
             }
             
-            List<File> files = _searchRest.GetByTags(tagIds);
-            List<FileViewModel> list = Mapper.Map<List<File>, List<FileViewModel>>(files);
+            List<BaseFile> files = _searchRest.GetByTags(tagIds);
+            List<FileViewModel> list = Mapper.Map<List<BaseFile>, List<FileViewModel>>(files);
             return PartialView(list);
         }
     }

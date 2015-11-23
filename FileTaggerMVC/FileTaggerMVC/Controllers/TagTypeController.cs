@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using FileTaggerModel.Model;
 using FileTaggerMVC.Filters;
 using FileTaggerMVC.Models;
+using FileTaggerMVC.Models.Base;
 using FileTaggerMVC.RestSharp.Abstract;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -21,8 +21,8 @@ namespace FileTaggerMVC.Controllers
         // GET: TagType
         public ActionResult Index()
         {
-            List<TagType> list = _tagTypeRest.Get();
-            List<TagTypeViewModel> viewModelList = Mapper.Map<List<TagType>, List<TagTypeViewModel>>(list);
+            List<BaseTagType> list = _tagTypeRest.Get();
+            List<TagTypeViewModel> viewModelList = Mapper.Map<List<BaseTagType>, List<TagTypeViewModel>>(list);
             return View(viewModelList);
         }
 
@@ -39,7 +39,7 @@ namespace FileTaggerMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                TagType tagType = Mapper.Map<TagTypeViewModel, TagType>(tagTypeViewModel);
+                BaseTagType tagType = Mapper.Map<TagTypeViewModel, BaseTagType>(tagTypeViewModel);
                 _tagTypeRest.Post(tagType);
             }          
 
@@ -61,7 +61,7 @@ namespace FileTaggerMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                TagType tagType = Mapper.Map<TagTypeViewModel, TagType>(tagTypeViewModel);
+                BaseTagType tagType = Mapper.Map<TagTypeViewModel, BaseTagType>(tagTypeViewModel);
                 _tagTypeRest.Put(tagType);
             }
 
@@ -85,8 +85,8 @@ namespace FileTaggerMVC.Controllers
 
         private TagTypeViewModel Get(int id)
         {
-            TagType tagType = _tagTypeRest.Get(id);
-            return Mapper.Map<TagType, TagTypeViewModel>(tagType);
+            BaseTagType tagType = _tagTypeRest.Get(id);
+            return Mapper.Map<BaseTagType, TagTypeViewModel>(tagType);
         }
     }
 }

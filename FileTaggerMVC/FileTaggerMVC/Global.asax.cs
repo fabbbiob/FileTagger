@@ -2,6 +2,9 @@
 using System.Web.Optimization;
 using System.Web.Routing;
 using FileTaggerMVC.AutoMapper;
+using FileTaggerMVC.RestSharp.Abstract;
+using FileTaggerMVC.App_Start;
+using Microsoft.Practices.Unity;
 
 namespace FileTaggerMVC
 {
@@ -14,8 +17,8 @@ namespace FileTaggerMVC
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            // TODO call web api
-            //DbCreator.CreateDatabase();
+            IDataBaseCreatorRest creator = UnityConfig.GetConfiguredContainer().Resolve<IDataBaseCreatorRest>();
+            creator.Create();
             AutoMapperConfiguration.Configure();
         }
     }

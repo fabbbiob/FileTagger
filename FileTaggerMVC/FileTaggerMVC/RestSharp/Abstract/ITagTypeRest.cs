@@ -1,14 +1,14 @@
-﻿using FileTaggerModel.Model;
+﻿using FileTaggerMVC.Models.Base;
 using System.Collections.Generic;
 
 namespace FileTaggerMVC.RestSharp.Abstract
 {
     public interface ITagTypeRest
     {
-        List<TagType> Get();
-        TagType Get(int id);
-        void Post(TagType tagType);
-        void Put(TagType tagType);
+        List<BaseTagType> Get();
+        BaseTagType Get(int id);
+        void Post(BaseTagType tagType);
+        void Put(BaseTagType tagType);
         void Delete(int id);
     }
 }

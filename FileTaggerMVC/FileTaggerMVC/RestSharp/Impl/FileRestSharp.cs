@@ -1,8 +1,8 @@
 ﻿using FileTaggerMVC.RestSharp.Abstract;
 using System;
 using System.Collections.Generic;
-using FileTaggerModel.Model;
 using RestSharp;
+using FileTaggerMVC.Models.Base;
 
 namespace FileTaggerMVC.RestSharp.Impl
 {
@@ -13,21 +13,21 @@ namespace FileTaggerMVC.RestSharp.Impl
 
         }
 
-        public File Get(string fileName)
+        public BaseFile Get(string fileName)
         {
             RestRequest request = new RestRequest("api/FileName", Method.GET);
             request.AddParameter("filename", fileName);
-            IRestResponse<File> response = _client.Execute<File>(request);
+            IRestResponse<BaseFile> response = _client.Execute<BaseFile>(request);
             return response.Data;
         }
 
-        public void Post(File file)
+        public void Post(BaseFile file)
         {
             RestRequest request = new RestRequest("api/file", Method.POST);
             PostOrPut(request, file);
         }
 
-        public void Put(File file)
+        public void Put(BaseFile file)
         {
             RestRequest request = new RestRequest("api/file", Method.PUT);
             PostOrPut(request, file);

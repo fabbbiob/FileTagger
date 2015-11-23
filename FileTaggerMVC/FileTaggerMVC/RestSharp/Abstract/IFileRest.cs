@@ -1,16 +1,11 @@
-﻿using FileTaggerModel.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FileTaggerMVC.Models.Base;
 
 namespace FileTaggerMVC.RestSharp.Abstract
 {
     public interface IFileRest
     {
-        void Post(File file);
-        void Put(File file);
-        File Get(string fileName);
+        void Post(BaseFile file);
+        void Put(BaseFile file);
+        BaseFile Get(string fileName);
     }
 }
