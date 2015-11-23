@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FileTaggerModel.Model;
+using FileTaggerMVC.App_Start;
 using FileTaggerMVC.Models;
 
 namespace FileTaggerMVC.AutoMapper
@@ -13,7 +14,7 @@ namespace FileTaggerMVC.AutoMapper
             Mapper.CreateMap<TagTypeViewModel, TagType>();
 
             Mapper.CreateMap<TagViewModel, Tag>()
-                  .ConvertUsing<TagEntityConverter>();
+                  .ConvertUsing(new TagEntityConverter());
 
             Mapper.CreateMap<FileViewModel, File>()
                   .ConvertUsing(new FileEntityConverter());

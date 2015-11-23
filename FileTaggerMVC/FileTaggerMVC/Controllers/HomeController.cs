@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Linq;
 using FileTaggerMVC.RestSharp.Abstract;
-using FileTaggerMVC.RestSharp.Impl;
 
 namespace FileTaggerMVC.Controllers
 {
@@ -16,11 +15,10 @@ namespace FileTaggerMVC.Controllers
         private ITagRest _tagRest;
         private ISearchRest _searchRest;
 
-        public HomeController() : base()
+        public HomeController(ITagRest tagRest, ISearchRest searchRest) : base()
         {
-            // TODO DI
-            _tagRest = new TagRestSharp();
-            _searchRest = new SearchRestSharp();
+            _tagRest = tagRest;
+            _searchRest = searchRest;
         }
 
         public ActionResult Index()

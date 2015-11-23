@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FileTaggerMVC.RestSharp.Abstract
 {
-    interface IFileRest
+    public interface IFileRest
     {
         void Post(File file);
         void Put(File file);

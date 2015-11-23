@@ -1,16 +1,22 @@
 ﻿using AutoMapper;
 using FileTaggerModel.Model;
 using FileTaggerMVC.Models;
-using RestSharp;
+using FileTaggerMVC.RestSharp.Abstract;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace FileTaggerMVC.AutoMapper
 {
     public class FileViewModelEntityConverter : ITypeConverter<File, FileViewModel>
     {
+        private ITagRest _tagRest;
+
+        public FileViewModelEntityConverter(ITagRest tagRest)
+        {
+            _tagRest = tagRest;
+        }
+
         public FileViewModel Convert(ResolutionContext context)
         {
             File file = (File)context.SourceValue;
@@ -23,12 +29,7 @@ namespace FileTaggerMVC.AutoMapper
 
             if (file.Tags != null)
             {
-                // TODO refactor
-                RestClient client = new RestClient(WebConfigurationManager.AppSettings["FileTaggerServiceUrl"]);
-                RestRequest request = new RestRequest("api/tag", Method.GET);
-                IRestResponse<List<Tag>> response = client.Execute<List<Tag>>(request);
-
-                List<Tag> tags = response.Data;
+                List<Tag> tags = _tagRest.Get();
                 fileViewModel.Tags = new MultiSelectList(tags, "Id", "Description", file.Tags.Select(t => t.Id).ToArray());
             }
 

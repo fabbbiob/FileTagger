@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FileTaggerMVC.RestSharp.Abstract
 {
-    interface ITagTypeRest
+    public interface ITagTypeRest
     {
         List<TagType> Get();
         TagType Get(int id);

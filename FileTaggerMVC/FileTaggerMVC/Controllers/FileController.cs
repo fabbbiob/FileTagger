@@ -2,16 +2,13 @@
 using System.IO;
 using System.Web.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 using FileTaggerMVC.Models;
 using FileTaggerModel.Model;
 using AutoMapper;
 using FileTaggerMVC.ModelBinders;
 using FileTaggerMVC.Filters;
-using RestSharp;
 using FileTaggerMVC.RestSharp.Abstract;
-using FileTaggerMVC.RestSharp.Impl;
 
 namespace FileTaggerMVC.Controllers
 {
@@ -23,13 +20,15 @@ namespace FileTaggerMVC.Controllers
         private IProcessRest _processRest;
         private ISearchRest _searchRest;
 
-        public FileController() : base()
+        public FileController(ITagRest tagRest,
+                              IFileRest fileRest,
+                              IProcessRest processRest,
+                              ISearchRest searchRest) : base()
         {
-            // TODO DI
-            _tagRest = new TagRestSharp();
-            _fileRest = new FileRestSharp();
-            _processRest = new ProcessRestSharp();
-            _searchRest = new SearchRestSharp();
+            _tagRest = tagRest;
+            _fileRest = fileRest;
+            _processRest = processRest;
+            _searchRest = searchRest;
         }
 
         // GET: /File/

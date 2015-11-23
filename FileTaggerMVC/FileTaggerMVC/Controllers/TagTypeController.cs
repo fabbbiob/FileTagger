@@ -3,7 +3,6 @@ using FileTaggerModel.Model;
 using FileTaggerMVC.Filters;
 using FileTaggerMVC.Models;
 using FileTaggerMVC.RestSharp.Abstract;
-using FileTaggerMVC.RestSharp.Impl;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -14,10 +13,9 @@ namespace FileTaggerMVC.Controllers
     {
         private ITagTypeRest _tagTypeRest;
 
-        // TODO DI
-        public TagTypeController() : base()
+        public TagTypeController(ITagTypeRest tagTypeRest) : base()
         {
-            _tagTypeRest = new TagTypeRestSharp();
+            _tagTypeRest = tagTypeRest;
         }
 
         // GET: TagType

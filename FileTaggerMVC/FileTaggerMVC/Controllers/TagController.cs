@@ -4,12 +4,8 @@ using FileTaggerMVC.Filters;
 using FileTaggerMVC.ModelBinders;
 using FileTaggerMVC.Models;
 using FileTaggerMVC.RestSharp.Abstract;
-using FileTaggerMVC.RestSharp.Impl;
-using Newtonsoft.Json;
-using RestSharp;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace FileTaggerMVC.Controllers
@@ -20,11 +16,10 @@ namespace FileTaggerMVC.Controllers
         private ITagRest _tagRest;
         private ITagTypeRest _tagTypeRest;
 
-        // TODO DI
-        public TagController() : base()
+        public TagController(ITagRest tagRest, ITagTypeRest tagTypeRest) : base()
         {
-            _tagRest = new TagRestSharp();
-            _tagTypeRest = new TagTypeRestSharp();
+            _tagRest = tagRest;
+            _tagTypeRest = tagTypeRest;
         }
 
         // GET: Tag

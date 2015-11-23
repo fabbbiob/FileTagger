@@ -1,6 +1,6 @@
 ﻿namespace FileTaggerMVC.RestSharp.Abstract
 {
-    interface IProcessRest
+    public interface IProcessRest
     {
         bool Run(string filePath);
     }

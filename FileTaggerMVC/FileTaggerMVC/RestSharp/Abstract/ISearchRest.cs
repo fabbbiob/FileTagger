@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FileTaggerMVC.RestSharp.Abstract
 {
-    interface ISearchRest
+    public interface ISearchRest
     {
         List<File> GetByTags(int[] tagIds);
         List<File> GetByTag(int tagId);
