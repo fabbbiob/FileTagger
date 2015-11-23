@@ -7,17 +7,13 @@ platform: Any CPU
 
 configuration: Release
 
-before_build: nuget restore %solution_name%
+before_build: nuget restore FileTaggerMVC\FileTaggerMVC.sln
 
 build:
-  project: %solution_name%
+  project: FileTaggerMVC\FileTaggerMVC.sln
   verbosity: minimal
 
 environment:
-  matrix:
-    - solution_name: FileTaggerMVC\FileTaggerService.sln
-    - solution_name: FileTaggerMVC\FileTaggerLauncher.sln
-    - solution_name: FileTaggerMVC\FileTaggerMVC.sln
   COVERALLS_REPO_TOKEN:  
     secure: F5Q88lzJGLHU+KOwsCn0BDu3pgwvxHgV2nfhaRmzscH9KQvc+NCcpUxP7ykSvEam
 
