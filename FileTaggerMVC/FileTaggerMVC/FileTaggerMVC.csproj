@@ -129,6 +129,17 @@
     <Compile Include="Models\TagViewModel.cs" />
     <Compile Include="Models\TagTypeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RestSharp\Abstract\BaseRestSharp.cs" />
+    <Compile Include="RestSharp\Abstract\IFileRest.cs" />
+    <Compile Include="RestSharp\Abstract\IProcessRest.cs" />
+    <Compile Include="RestSharp\Abstract\ISearchRest.cs" />
+    <Compile Include="RestSharp\Abstract\ITagRest.cs" />
+    <Compile Include="RestSharp\Abstract\ITagTypeRest.cs" />
+    <Compile Include="RestSharp\Impl\FileRestSharp.cs" />
+    <Compile Include="RestSharp\Impl\ProcessRestSharp.cs" />
+    <Compile Include="RestSharp\Impl\SearchRestSharp.cs" />
+    <Compile Include="RestSharp\Impl\TagRestSharp.cs" />
+    <Compile Include="RestSharp\Impl\TagTypeRestSharp.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css">
