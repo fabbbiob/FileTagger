@@ -75,20 +75,6 @@
     <Compile Include="Tests\TagTypeControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FileTaggerModel\FileTaggerModel.csproj">
-      <Project>{B5014632-0BA1-45EB-9389-39EFD4CAFAD4}</Project>
-      <Name>FileTaggerModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FileTaggerRepository\FileTaggerRepository.csproj">
-      <Project>{b497d11e-e0c2-425d-8b1a-6e2e292717e7}</Project>
-      <Name>FileTaggerRepository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FileTaggerService\FileTaggerService.csproj">
-      <Project>{3DD96BEA-1C5B-45D0-BAAC-7B9E212A085B}</Project>
-      <Name>FileTaggerService</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>

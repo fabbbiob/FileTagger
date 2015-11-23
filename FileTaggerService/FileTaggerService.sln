@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTaggerModel", "FileTaggerModel\FileTaggerModel.csproj", "{B5014632-0BA1-45EB-9389-39EFD4CAFAD4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTaggerRepository", "FileTaggerRepository\FileTaggerRepository.csproj", "{B497D11E-E0C2-425D-8B1A-6E2E292717E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTaggerRepository.Tests", "FileTaggerRepository.Tests\FileTaggerRepository.Tests.csproj", "{6C6DF586-3A79-47E4-B514-67644C9C4807}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTaggerService", "FileTaggerService\FileTaggerService.csproj", "{3DD96BEA-1C5B-45D0-BAAC-7B9E212A085B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTaggerService.Tests", "FileTaggerService.Tests\FileTaggerService.Tests.csproj", "{DFB84488-0779-4DFD-AA94-86F0464A95E0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{388AC4E7-1E16-4D4E-ADF1-B734B3100D30}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D332BB7D-0395-4E48-BF50-1D3A659164C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B5014632-0BA1-45EB-9389-39EFD4CAFAD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5014632-0BA1-45EB-9389-39EFD4CAFAD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5014632-0BA1-45EB-9389-39EFD4CAFAD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5014632-0BA1-45EB-9389-39EFD4CAFAD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B497D11E-E0C2-425D-8B1A-6E2E292717E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B497D11E-E0C2-425D-8B1A-6E2E292717E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B497D11E-E0C2-425D-8B1A-6E2E292717E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B497D11E-E0C2-425D-8B1A-6E2E292717E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C6DF586-3A79-47E4-B514-67644C9C4807}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DD96BEA-1C5B-45D0-BAAC-7B9E212A085B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DD96BEA-1C5B-45D0-BAAC-7B9E212A085B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DD96BEA-1C5B-45D0-BAAC-7B9E212A085B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DD96BEA-1C5B-45D0-BAAC-7B9E212A085B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFB84488-0779-4DFD-AA94-86F0464A95E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFB84488-0779-4DFD-AA94-86F0464A95E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFB84488-0779-4DFD-AA94-86F0464A95E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFB84488-0779-4DFD-AA94-86F0464A95E0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B5014632-0BA1-45EB-9389-39EFD4CAFAD4} = {388AC4E7-1E16-4D4E-ADF1-B734B3100D30}
+		{B497D11E-E0C2-425D-8B1A-6E2E292717E7} = {388AC4E7-1E16-4D4E-ADF1-B734B3100D30}
+		{6C6DF586-3A79-47E4-B514-67644C9C4807} = {D332BB7D-0395-4E48-BF50-1D3A659164C7}
+		{3DD96BEA-1C5B-45D0-BAAC-7B9E212A085B} = {388AC4E7-1E16-4D4E-ADF1-B734B3100D30}
+		{DFB84488-0779-4DFD-AA94-86F0464A95E0} = {D332BB7D-0395-4E48-BF50-1D3A659164C7}
+	EndGlobalSection
+EndGlobal
