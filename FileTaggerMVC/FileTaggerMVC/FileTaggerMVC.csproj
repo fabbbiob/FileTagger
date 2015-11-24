@@ -165,12 +165,14 @@
     <Compile Include="RestSharp\Abstract\ISearchRest.cs" />
     <Compile Include="RestSharp\Abstract\ITagRest.cs" />
     <Compile Include="RestSharp\Abstract\ITagTypeRest.cs" />
+    <Compile Include="RestSharp\Abstract\IValidateFilePathControllerRest.cs" />
     <Compile Include="RestSharp\Impl\DataBaseCreatorRestSharp.cs" />
     <Compile Include="RestSharp\Impl\FileRestSharp.cs" />
     <Compile Include="RestSharp\Impl\ProcessRestSharp.cs" />
     <Compile Include="RestSharp\Impl\SearchRestSharp.cs" />
     <Compile Include="RestSharp\Impl\TagRestSharp.cs" />
     <Compile Include="RestSharp\Impl\TagTypeRestSharp.cs" />
+    <Compile Include="RestSharp\Impl\ValidateFilePathControllerRestSharp.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css">

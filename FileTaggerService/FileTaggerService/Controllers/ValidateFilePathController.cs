@@ -8,7 +8,7 @@ namespace FileTaggerService.Controllers
         // GET: api/ValidateFilePath?filePath=abc
         public bool Get([FromUri] string filePath)
         {
-            return File.Exists(filePath);
+            return Directory.Exists(filePath);
         }
     }
 }

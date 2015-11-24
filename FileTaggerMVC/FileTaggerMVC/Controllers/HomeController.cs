@@ -9,6 +9,7 @@ using FileTaggerMVC.Models.Base;
 
 namespace FileTaggerMVC.Controllers
 {
+    //TODO remake search
     [FileTaggerHandleError]
     public class HomeController : BaseController
     {
@@ -35,7 +36,6 @@ namespace FileTaggerMVC.Controllers
         {
             if (tagIds == null || tagIds.Length == 0)
             {
-                // TODO move to new view
                 return Content("<hr />Select at least one tag", "text/html");
             }
             

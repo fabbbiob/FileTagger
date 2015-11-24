@@ -19,16 +19,19 @@ namespace FileTaggerMVC.Controllers
         private readonly IFileRest _fileRest;
         private readonly IProcessRest _processRest;
         private readonly ISearchRest _searchRest;
+        private readonly IValidateFilePathControllerRest _validateRest;
 
         public FileController(ITagRest tagRest,
                               IFileRest fileRest,
                               IProcessRest processRest,
-                              ISearchRest searchRest) : base()
+                              ISearchRest searchRest,
+                              IValidateFilePathControllerRest validateRest) : base()
         {
             _tagRest = tagRest;
             _fileRest = fileRest;
             _processRest = processRest;
             _searchRest = searchRest;
+            _validateRest = validateRest;
         }
 
         // GET: /File/
@@ -40,7 +43,12 @@ namespace FileTaggerMVC.Controllers
         // GET: /File/ListFiles?folderPath=path
         public ActionResult ListFiles(string folderPath)
         {
-            //TODO use web api to validate folderPath
+            ViewBag.FolderPath = null;
+            if (!_validateRest.Validate(folderPath))
+            {
+                ViewBag.FolderPath = "Folder path is invalid.";
+                return View("Index");
+            }
 
             Session["folderPath"] = folderPath;
             JsTreeNodeModel root = new JsTreeNodeModel

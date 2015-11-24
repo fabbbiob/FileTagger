@@ -39,6 +39,7 @@ namespace FileTaggerMVC.App_Start
             container.RegisterType<ITagRest, TagRestSharp>();
             container.RegisterType<ITagTypeRest, TagTypeRestSharp>();
             container.RegisterType<IDataBaseCreatorRest, DataBaseCreatorRestSharp>();
+            container.RegisterType<IValidateFilePathControllerRest, ValidateFilePathControllerRestSharp>();
         }
     }
 }
