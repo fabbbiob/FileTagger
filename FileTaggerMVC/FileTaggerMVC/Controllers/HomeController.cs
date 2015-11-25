@@ -25,10 +25,11 @@ namespace FileTaggerMVC.Controllers
         public ActionResult Index()
         {
             List<BaseTag> list = _tagRest.Get();
-            List<TagViewModel> viewModelList = Mapper.Map<IEnumerable<BaseTag>, IEnumerable<TagViewModel>>(list)
-                .OrderByDescending(t => t.TagType)
-                .ThenBy(t => t.Description)
+            List<IGrouping<TagTypeViewModel, TagViewModel>> viewModelList = 
+                Mapper.Map<List<BaseTag>, List<TagViewModel>>(list)
+                .GroupBy(t => t.TagType)
                 .ToList();
+
             return View(viewModelList);
         }
 
@@ -44,4 +45,5 @@ namespace FileTaggerMVC.Controllers
             return PartialView(list);
         }
     }
+
 }

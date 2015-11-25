@@ -1,4 +1,5 @@
-﻿@model IEnumerable<FileTaggerMVC.Models.TagViewModel>
+﻿@using FileTaggerMVC.Models
+@model List<IGrouping<TagTypeViewModel, TagViewModel>>
 @{
     ViewBag.Title = "Search";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -22,16 +23,25 @@
 
 @using (Html.BeginForm("ByTags", "Home"))
 {
-    <div class="form-horizontal">
-        @foreach (FileTaggerMVC.Models.TagViewModel tag in Model)
+    foreach (IGrouping<TagTypeViewModel, TagViewModel> grouping in Model)
+    {
+        <span>Tag type:</span>
+        <span>
+            @if(grouping.Key == null)
+
+        </span>
+
+        foreach (TagViewModel tag in grouping)
         {
             <label class="checkbox-inline">
                 <input type="checkbox" value="@tag.Id" name="tagIds"> @tag.Description
             </label>
             <text>&nbsp;&nbsp;&nbsp;</text>
         }
-    </div>
-    <hr />
+
+        <hr />
+    }
+
     <button class="btn btn-default" type="submit">Search</button>
 }
 
