@@ -4,7 +4,6 @@ using System.Web.Routing;
 using FileTaggerMVC.AutoMapper;
 using FileTaggerMVC.RestSharp.Abstract;
 using FileTaggerMVC.App_Start;
-using Microsoft.Practices.Unity;
 
 namespace FileTaggerMVC
 {
@@ -16,8 +15,9 @@ namespace FileTaggerMVC
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            SimpleInjectorInitializer.Initialize();
 
-            IDataBaseCreatorRest creator = UnityConfig.GetConfiguredContainer().Resolve<IDataBaseCreatorRest>();
+            IDataBaseCreatorRest creator = DependencyResolver.Current.GetService<IDataBaseCreatorRest>();
             creator.Create();
             AutoMapperConfiguration.Configure();
         }
