@@ -69,7 +69,16 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\FileTaggerModel\FileTaggerModel.csproj">
+      <Project>{b5014632-0ba1-45eb-9389-39efd4cafad4}</Project>
+      <Name>FileTaggerModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FileTaggerRepository\FileTaggerRepository.csproj">
+      <Project>{b497d11e-e0c2-425d-8b1a-6e2e292717e7}</Project>
+      <Name>FileTaggerRepository</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

@@ -3,7 +3,6 @@ using FileTaggerRepository.Repositories.Abstract;
 using FileTaggerService.Controllers;
 using Moq;
 using NUnit.Framework;
-using System.Linq;
 
 namespace FileTaggerService.Tests.Tests
 {

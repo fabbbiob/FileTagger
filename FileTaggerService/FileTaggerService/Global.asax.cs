@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using FileTaggerRepository.Repositories.Abstract;
+using FileTaggerRepository.Repositories.Impl;
+using SimpleInjector;
+using SimpleInjector.Integration.WebApi;
 using System.Web.Http;
-using System.Web.Routing;
 
 namespace FileTaggerService
 {
@@ -12,6 +11,20 @@ namespace FileTaggerService
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
+
+            var container = new Container();
+            container.Options.DefaultScopedLifestyle = new WebApiRequestLifestyle();
+
+            container.Register<IFileRepository, FileRepository>(Lifestyle.Scoped);
+            container.Register<ITagRepository, TagRepository>(Lifestyle.Scoped);
+            container.Register<ITagTypeRepository, TagTypeRepository>(Lifestyle.Scoped);
+
+            container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
+
+            container.Verify();
+
+            GlobalConfiguration.Configuration.DependencyResolver =
+                new SimpleInjectorWebApiDependencyResolver(container);
         }
     }
 }
