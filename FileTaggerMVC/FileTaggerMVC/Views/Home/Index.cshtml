@@ -25,24 +25,43 @@
 {
     foreach (IGrouping<TagTypeViewModel, TagViewModel> grouping in Model)
     {
-        <span>Tag type:</span>
-        <span>
-            @if(grouping.Key == null)
-
-        </span>
-
-        foreach (TagViewModel tag in grouping)
-        {
-            <label class="checkbox-inline">
-                <input type="checkbox" value="@tag.Id" name="tagIds"> @tag.Description
-            </label>
-            <text>&nbsp;&nbsp;&nbsp;</text>
-        }
-
-        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>
+                            @if (grouping.Key == null)
+                            {
+                                <strong>
+                                    <i>None</i>
+                                </strong>
+                            }
+                            else
+                            {
+                                <strong>
+                                    <text>@grouping.Key.Description</text>
+                                </strong>
+                            }
+                        </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        @foreach (TagViewModel tag in grouping)
+                        {
+                            <label class="checkbox-inline">
+                                <input type="checkbox" value="@tag.Id" name="tagIds">
+                                <span class="label label-info">@tag.Description</span>
+                            </label>
+                        }
+                    </div>
+                </div>
+                <hr />
+            </div>
+        </div>
     }
 
-    <button class="btn btn-default" type="submit">Search</button>
+    <button class="btn btn-primary" type="submit">Search</button>
 }
 
 &nbsp;

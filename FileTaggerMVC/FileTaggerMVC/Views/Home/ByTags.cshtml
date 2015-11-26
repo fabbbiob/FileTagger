@@ -3,13 +3,6 @@
 <script type="text/javascript" src="~/Scripts/fileRunner.js"></script>
 
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.FileName)
-        </th>
-        <th>
-        </th>
-    </tr>
     @foreach (var item in Model)
     {
         <tr>
@@ -17,6 +10,10 @@
                 @item.FileName
             </td>
             <td>
+                
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
                 @{
                     Html.RenderPartial("RunButton", item.FilePath);
                 }

@@ -10,7 +10,7 @@
     <link rel="SHORTCUT ICON" href="@Url.Content("~/favicon.ico")" />
 </head>
 <body>
-    <div class="navbar navbar-inverse">
+    <div class="navbar navbar-default navbar-static-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -22,10 +22,10 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Search", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Tags", "Index", "Tag")</li>
-                    <li>@Html.ActionLink("Tag Types", "Index", "TagType")</li>
-                    <li>@Html.ActionLink("Files", "Index", "File")</li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Home" ? "active" : "")">@Html.ActionLink("Search", "Index", "Home")</li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Tag" ? "active" : "")">@Html.ActionLink("Tags", "Index", "Tag")</li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "TagType" ? "active" : "")">@Html.ActionLink("Tag Types", "Index", "TagType")</li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "File" ? "active" : "")">@Html.ActionLink("Files", "Index", "File")</li>
                 </ul>
             </div>
         </div>

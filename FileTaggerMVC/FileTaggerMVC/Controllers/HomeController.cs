@@ -9,7 +9,6 @@ using FileTaggerMVC.Models.Base;
 
 namespace FileTaggerMVC.Controllers
 {
-    //TODO remake search
     [FileTaggerHandleError]
     public class HomeController : BaseController
     {
