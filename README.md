@@ -29,6 +29,6 @@ Web application that manages tags on arbitrary files.
 1. In Web.Config of FileTaggerService solution, set the connection string for SQLite, `<add key="sqliteconnectionstring" value="connection string here" />`
 2. Build and deploy the FileTaggerService solution to the machine where the files are.
 3. In Web.Config of FileTaggerMVC solution, set the service url to where the FileTaggerService solution was deployed, `<add key="FileTaggerServiceUrl" value="link here" />`
-··1. Optionally, configure log4net.
+  1. Optionally, configure log4net.
 4. Build and deploy the FileTaggerMVC solution to any machine.
-··1. Optionally, build the FileTaggerLauncher solution and execute it on the machine running the service solution.
+  1. Optionally, build the FileTaggerLauncher solution and execute it on the machine running the service solution.
