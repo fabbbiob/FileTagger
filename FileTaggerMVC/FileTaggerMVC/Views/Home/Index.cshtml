@@ -7,14 +7,26 @@
 
 <script type="text/javascript">
     $(function () {
+        $('span').mousedown(function (e) { e.preventDefault(); });
+
+        var btnSearch = $('#btnSearch');
+
+        var complete = function (result) {
+            $('#result').html(result);
+            btnSearch.button('reset');
+        };
+
         $('form').submit(function () {
             $.ajax({
                 url: this.action,
                 type: this.method,
                 data: $(this).serialize(),
-                success: function (result) {
-                    $('#result').html(result);
-                }
+                beforeSend: function () {
+                    btnSearch.button('loading');
+                    $('#result').empty();
+                },
+                error: complete,
+                success: complete
             });
             return false;
         });
@@ -45,6 +57,7 @@
                         </h4>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-md-12">
                         @foreach (TagViewModel tag in grouping)
@@ -56,12 +69,13 @@
                         }
                     </div>
                 </div>
+
                 <hr />
             </div>
         </div>
     }
 
-    <button class="btn btn-primary" type="submit">Search</button>
+    <button class="btn btn-primary" type="submit" id="btnSearch">Search</button>
 }
 
 &nbsp;
