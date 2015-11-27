@@ -10,9 +10,10 @@
         $('span').mousedown(function (e) { e.preventDefault(); });
 
         var btnSearch = $('#btnSearch');
+        var divResult = $('#result');
 
         var complete = function (result) {
-            $('#result').html(result);
+            divResult.html(result);
             btnSearch.button('reset');
         };
 
@@ -23,7 +24,7 @@
                 data: $(this).serialize(),
                 beforeSend: function () {
                     btnSearch.button('loading');
-                    $('#result').empty();
+                    divResult.empty();
                 },
                 error: complete,
                 success: complete

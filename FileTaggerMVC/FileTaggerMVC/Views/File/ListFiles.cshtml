@@ -6,13 +6,24 @@
 <script type="text/javascript">
     $(function () {
         $('#jstreeDiv').on('select_node.jstree', function (e, nodeData) {
-            if (nodeData.node.a_attr["data-filename"] == undefined) return;
+            if (nodeData.node.a_attr["data-filename"] == undefined)
+                return;
+
+            var divView = $("#divView");
+
+            var complete = function (result) {
+                divView.html(result);
+            };
+
             $.ajax({
                 type: "GET",
                 url: "/File/Details",
-                data: "fileName=" + escape(nodeData.node.a_attr["data-filename"])
-            }).done(function (dataDone) {
-                $("#divView").html(dataDone);
+                data: "fileName=" + escape(nodeData.node.a_attr["data-filename"]),
+                beforeSend: function () {
+                    divView.empty();
+                },
+                error: complete,
+                success: complete
             });
         }).jstree({
             "types" : {
