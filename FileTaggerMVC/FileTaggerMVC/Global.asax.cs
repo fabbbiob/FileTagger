@@ -4,6 +4,8 @@ using System.Web.Routing;
 using FileTaggerMVC.AutoMapper;
 using FileTaggerMVC.RestSharp.Abstract;
 using FileTaggerMVC.App_Start;
+using StackExchange.Profiling;
+using StackExchange.Profiling.Mvc;
 
 namespace FileTaggerMVC
 {
@@ -20,6 +22,17 @@ namespace FileTaggerMVC
             IDataBaseCreatorRest creator = DependencyResolver.Current.GetService<IDataBaseCreatorRest>();
             creator.Create();
             AutoMapperConfiguration.Configure();
+            //GlobalFilters.Filters.Add(new ProfilingActionFilter());
+        }
+
+        protected void Application_BeginRequest()
+        {
+            MiniProfiler.Start();
+        }
+
+        protected void Application_EndRequest()
+        {
+            MiniProfiler.Stop();
         }
     }
 }

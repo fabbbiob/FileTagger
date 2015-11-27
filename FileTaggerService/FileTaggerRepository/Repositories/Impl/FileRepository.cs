@@ -205,20 +205,20 @@ namespace FileTaggerRepository.Repositories.Impl
                                    FROM File AS f
                                    INNER JOIN TagMap AS tm
                                        ON f.Id = tm.File_Id
-                                   WHERE tm.Tag_Id IN (";
+                                   WHERE ";
 
             StringBuilder sb = new StringBuilder();
             int i = 0;
             IEnumerator<int> tagsEnumerator = tagIds.GetEnumerator();
             while (tagsEnumerator.MoveNext())
             {
+                sb.Append(" tm.Tag_Id = ");
                 sb.Append("@Tag_Id");
                 sb.Append(i);
-                sb.Append(",");
+                sb.Append(" AND");
                 i++;
             }
-            sb.Remove(sb.Length - 1, 1);
-            sb.Append(")");
+            sb.Remove(sb.Length - 4, 4);
 
             return query + sb.ToString();
         }

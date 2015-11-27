@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Linq;
 using FileTaggerMVC.RestSharp.Abstract;
 using FileTaggerMVC.Models.Base;
+using StackExchange.Profiling;
 
 namespace FileTaggerMVC.Controllers
 {
@@ -24,7 +25,7 @@ namespace FileTaggerMVC.Controllers
         public ActionResult Index()
         {
             List<BaseTag> list = _tagRest.Get();
-            List<IGrouping<TagTypeViewModel, TagViewModel>> viewModelList = 
+            List<IGrouping<TagTypeViewModel, TagViewModel>> viewModelList =
                 Mapper.Map<List<BaseTag>, List<TagViewModel>>(list)
                 .GroupBy(t => t.TagType)
                 .ToList();
@@ -38,7 +39,7 @@ namespace FileTaggerMVC.Controllers
             {
                 return Content("<hr />Select at least one tag", "text/html");
             }
-            
+
             List<BaseFile> files = _searchRest.GetByTags(tagIds);
             List<FileViewModel> list = Mapper.Map<List<BaseFile>, List<FileViewModel>>(files);
             return PartialView(list);
