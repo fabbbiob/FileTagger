@@ -13,5 +13,21 @@ namespace FileTaggerMVC.Models
         {
             return Description.CompareTo(other.Description);
         }
+
+        public override int GetHashCode()
+        {
+            return Id;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            { 
+                return false;
+            }
+            TagTypeViewModel other = (TagTypeViewModel)obj;
+            return Id == other.Id;
+        }
+
     }
 }
