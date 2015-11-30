@@ -37,12 +37,12 @@ namespace FileTaggerRepository.Repositories.Impl
         private static string AddQuery => @"INSERT INTO File(FilePath) VALUES(@FilePath);
                                             SELECT last_insert_rowid() FROM File;";
 
-        private static string AddWithReferencesQuery(FileTaggerModel.Model.File entity)
+        private static string AddWithReferencesQuery(File entity)
         {
             return AddQuery + InsertTagMap(entity, "(SELECT Id FROM File ORDER BY Id DESC LIMIT 1)");
         }
 
-        private static string InsertTagMap(FileTaggerModel.Model.File entity, string fileId)
+        private static string InsertTagMap(File entity, string fileId)
         {
             StringBuilder sb = new StringBuilder();
             int i = 0;
@@ -62,7 +62,7 @@ namespace FileTaggerRepository.Repositories.Impl
 
         private static void AddWithReferencesCommandBinder(SQLiteCommand cmd, IEntity entity)
         {
-            FileTaggerModel.Model.File file = (FileTaggerModel.Model.File)entity;
+            File file = (File)entity;
             cmd.Parameters.Add("@FilePath", DbType.String).Value = file.FilePath;
             int i = 0;
             foreach (Tag tag in file.Tags)
@@ -72,14 +72,14 @@ namespace FileTaggerRepository.Repositories.Impl
             }
         }
 
-        public void Add(FileTaggerModel.Model.File file)
+        public void Add(File file)
         {
             SqliteHelper.Insert(AddWithReferencesQuery(file), AddWithReferencesCommandBinder, file);
         }
 
         private static string UpdateWithReferencesQuery(IEntity entity)
         {
-            FileTaggerModel.Model.File file = (FileTaggerModel.Model.File)entity;
+            File file = (File)entity;
             string delete = "DELETE FROM TagMap WHERE File_Id = @FileId;";
             string insert = string.Empty;
             if (file.Tags.Any())
@@ -92,12 +92,12 @@ namespace FileTaggerRepository.Repositories.Impl
 
         private static void UpdateWithReferencesCommandBinder(SQLiteCommand cmd, IEntity entity)
         {
-            FileTaggerModel.Model.File file = (FileTaggerModel.Model.File)entity;
+            File file = (File)entity;
             cmd.Parameters.Add("@FileId", DbType.Int32).Value = entity.Id;
             BindTagIds(cmd, file);
         }
 
-        private static void BindTagIds(SQLiteCommand cmd, FileTaggerModel.Model.File file)
+        private static void BindTagIds(SQLiteCommand cmd, File file)
         {
             int i = 0;
             foreach (Tag tag in file.Tags)
@@ -107,7 +107,7 @@ namespace FileTaggerRepository.Repositories.Impl
             }
         }
 
-        public void Update(FileTaggerModel.Model.File file)
+        public void Update(File file)
         {
             SqliteHelper.Update(UpdateWithReferencesQuery(file), UpdateWithReferencesCommandBinder, file);
         }
@@ -123,15 +123,15 @@ namespace FileTaggerRepository.Repositories.Impl
 
         private static void GetByFilePathCommandBinder(SQLiteCommand cmd, IEntity entity)
         {
-            FileTaggerModel.Model.File file = (FileTaggerModel.Model.File)entity;
+            File file = (File)entity;
             cmd.Parameters.Add("@Where", DbType.String).Value = file.FilePath;
         }
 
-        private static FileTaggerModel.Model.File ParseWithReferences(SQLiteDataReader dr)
+        private static File ParseWithReferences(SQLiteDataReader dr)
         {
             if (!dr.Read()) return null;
 
-            FileTaggerModel.Model.File file = Parse(dr);
+            File file = Parse(dr);
 
             List<Tag> tags = new List<Tag>();
             dr.NextResult();
@@ -161,21 +161,21 @@ namespace FileTaggerRepository.Repositories.Impl
             return file;
         }
 
-        private static FileTaggerModel.Model.File Parse(SQLiteDataReader dr)
+        private static File Parse(SQLiteDataReader dr)
         {
-            return new FileTaggerModel.Model.File
+            return new File
             {
                 Id = dr.GetInt32(0),
                 FilePath = dr.GetString(1)
             };
         }
 
-        public FileTaggerModel.Model.File GetByFilename(string filename)
+        public File GetByFilename(string filename)
         {
-            FileTaggerModel.Model.File file = null;
+            File file = null;
             SqliteHelper.GetById(GetByFilePathQuery, 
                                  GetByFilePathCommandBinder, 
-                                 new FileTaggerModel.Model.File { FilePath = filename },
+                                 new File { FilePath = filename },
                                  dr => file = ParseWithReferences(dr));
             return file;
         }
@@ -186,9 +186,9 @@ namespace FileTaggerRepository.Repositories.Impl
                                                      ON f.Id = tm.File_Id
                                                  WHERE tm.Tag_Id = @Tag_Id";
 
-        public IEnumerable<FileTaggerModel.Model.File> GetByTag(int tagId)
+        public IEnumerable<File> GetByTag(int tagId)
         {
-            LinkedList<FileTaggerModel.Model.File> list = new LinkedList<FileTaggerModel.Model.File>();
+            LinkedList<File> list = new LinkedList<File>();
             SqliteHelper.GetAllByCriteria(GetByTagQuery, dr =>
             {
                 while (dr.Read())
@@ -205,27 +205,27 @@ namespace FileTaggerRepository.Repositories.Impl
                                    FROM File AS f
                                    INNER JOIN TagMap AS tm
                                        ON f.Id = tm.File_Id
-                                   WHERE ";
+                                   WHERE tm.Tag_Id in (";
 
             StringBuilder sb = new StringBuilder();
             int i = 0;
             IEnumerator<int> tagsEnumerator = tagIds.GetEnumerator();
             while (tagsEnumerator.MoveNext())
             {
-                sb.Append(" tm.Tag_Id = ");
                 sb.Append("@Tag_Id");
                 sb.Append(i);
-                sb.Append(" AND");
+                sb.Append(",");
                 i++;
             }
-            sb.Remove(sb.Length - 4, 4);
+            sb.Remove(sb.Length - 1, 1);
+            sb.Append(") GROUP BY f.Id HAVING COUNT(DISTINCT tm.Tag_ID) = @nTagIds");
 
             return query + sb.ToString();
         }
 
-        public IEnumerable<FileTaggerModel.Model.File> GetByTags(IEnumerable<int> tagIds)
+        public IEnumerable<File> GetByTags(IEnumerable<int> tagIds)
         {
-            LinkedList<FileTaggerModel.Model.File> list = new LinkedList<FileTaggerModel.Model.File>();
+            LinkedList<File> list = new LinkedList<File>();
             SqliteHelper.GetAllByCriteria(GetByTagsQuery(tagIds), dr =>
             {
                 while (dr.Read())
@@ -240,6 +240,7 @@ namespace FileTaggerRepository.Repositories.Impl
                     cmd.Parameters.Add("@Tag_Id" + i, DbType.Int32).Value = tagId;
                     i++;
                 }
+                cmd.Parameters.Add("@nTagIds", DbType.Int32).Value = i;
             });
             return list;
         }
