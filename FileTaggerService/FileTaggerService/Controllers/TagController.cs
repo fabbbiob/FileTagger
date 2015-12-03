@@ -32,7 +32,7 @@ namespace FileTaggerService.Controllers
             _tagRepository.Add(tag);
         }
 
-        // PUT: api/Tag/5
+        // PUT: api/Tag
         public void Put([FromBody]Tag tag)
         {
             _tagRepository.Update(tag);

@@ -6,6 +6,7 @@ using System.Data.SQLite;
 using FileTaggerModel;
 using FileTaggerRepository.Helpers;
 using FileTaggerRepository.Repositories.Abstract;
+using System.Text;
 
 namespace FileTaggerRepository.Repositories.Impl
 {
@@ -159,6 +160,54 @@ namespace FileTaggerRepository.Repositories.Impl
                 }
             });
             return tag;
+        }
+
+        public IEnumerable<Tag> FilteredTags(IEnumerable<int> tagIds)
+        {
+            LinkedList<Tag> list = new LinkedList<Tag>();
+            SqliteHelper.GetAllByCriteria(GetByTagsQuery(tagIds), dr => 
+            {
+                while (dr.Read())
+                {
+                    list.AddLast(Parse(dr));
+                }
+            }, cmd =>
+            {
+                int i = 0;
+                foreach (int tagId in tagIds)
+                {
+                    cmd.Parameters.Add("@Tag_Id" + i, DbType.Int32).Value = tagId;
+                    i++;
+                }
+                cmd.Parameters.Add("@nTagIds", DbType.Int32).Value = i;
+            });
+            return list;
+        }
+
+        private static string GetByTagsQuery(IEnumerable<int> tagIds)
+        {
+            const string query =  @"select distinct tm.Tag_Id
+                                    from TagMap as tm
+                                    where tm.File_Id in 
+                                    (
+                                    select tm.File_Id
+                                    from TagMap as tm
+                                    where tm.Tag_Id in (";
+
+            StringBuilder sb = new StringBuilder();
+            int i = 0;
+            IEnumerator<int> tagsEnumerator = tagIds.GetEnumerator();
+            while (tagsEnumerator.MoveNext())
+            {
+                sb.Append("@Tag_Id");
+                sb.Append(i);
+                sb.Append(",");
+                i++;
+            }
+            sb.Remove(sb.Length - 1, 1);
+
+            sb.Append(") GROUP BY f.Id HAVING COUNT(DISTINCT tm.Tag_ID) = @nTagIds)");
+            return query + sb.ToString();
         }
     }
 }

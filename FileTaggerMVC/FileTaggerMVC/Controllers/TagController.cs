@@ -59,7 +59,7 @@ namespace FileTaggerMVC.Controllers
             return View(tagViewModel);
         }
 
-        // POST: Tag/Edit/5
+        // POST: Tag/Edit
         [HttpPost]
         public ActionResult Edit(TagViewModel tagViewModel)
         {

@@ -10,5 +10,6 @@ namespace FileTaggerRepository.Repositories.Abstract
         void Delete(int id);
         IEnumerable<Tag> GetAll();
         Tag GetById(int id);
+        IEnumerable<Tag> FilteredTags(IEnumerable<int> tagIds);
     }
 }

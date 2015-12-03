@@ -130,6 +130,7 @@
     <Compile Include="Controllers\FileNameController.cs" />
     <Compile Include="Controllers\ProcessController.cs" />
     <Compile Include="Controllers\TagController.cs" />
+    <Compile Include="Controllers\TagFilterController.cs" />
     <Compile Include="Controllers\TagTypeController.cs" />
     <Compile Include="Controllers\ValidateFilePathController.cs" />
     <Compile Include="Global.asax.cs">
