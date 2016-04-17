@@ -112,14 +112,14 @@ namespace FileTaggerRepository.Repositories.Impl
             SqliteHelper.Update(UpdateWithReferencesQuery(file), UpdateWithReferencesCommandBinder, file);
         }
 
-        private static string GetByFilePathQuery => @"SELECT Id, FilePath FROM File WHERE FilePath = @Where;" +
+        private static string GetByFilePathQuery => @"SELECT Id, FilePath FROM File WHERE FilePath like @Where;" +
                                                    @"SELECT t.Id, t.Description, tt.Id, tt.Description 
                                                      FROM Tag AS t
                                                      INNER JOIN TagMap as tm
                                                         ON tm.Tag_Id = t.Id
                                                      LEFT JOIN TagType AS tt
                                                         ON t.TagType_Id = tt.Id 
-                                                     WHERE tm.File_Id = (SELECT Id FROM File WHERE FilePath = @Where)";
+                                                     WHERE tm.File_Id = (SELECT Id FROM File WHERE FilePath like @Where)";
 
         private static void GetByFilePathCommandBinder(SQLiteCommand cmd, IEntity entity)
         {
@@ -175,7 +175,7 @@ namespace FileTaggerRepository.Repositories.Impl
             File file = null;
             SqliteHelper.GetById(GetByFilePathQuery, 
                                  GetByFilePathCommandBinder, 
-                                 new File { FilePath = filename },
+                                 new File { FilePath = "%" + filename.Substring(1) },
                                  dr => file = ParseWithReferences(dr));
             return file;
         }

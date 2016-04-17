@@ -27,8 +27,11 @@
             });
         }).jstree({
             "types" : {
-                "leaf": {
-                    "icon" : "glyphicon glyphicon-file"
+                "file_new": {
+                    "icon": "glyphicon glyphicon-plus"
+                },
+                "file_added": {
+                    "icon": "glyphicon glyphicon-ok"
                 }
             },
             "plugins" : [ "types" ],
@@ -46,7 +49,6 @@
         });
     });
 </script>
-
 <div class="row">
     <div class="col-md-4">
         <div id="divView" data-spy="affix" data-offset-top="205">

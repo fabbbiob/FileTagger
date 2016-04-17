@@ -9,6 +9,8 @@ using FileTaggerMVC.ModelBinders;
 using FileTaggerMVC.Filters;
 using FileTaggerMVC.RestSharp.Abstract;
 using FileTaggerMVC.Models.Base;
+using System.Web.Configuration;
+using System.Linq;
 
 namespace FileTaggerMVC.Controllers
 {
@@ -20,6 +22,7 @@ namespace FileTaggerMVC.Controllers
         private readonly IProcessRest _processRest;
         private readonly ISearchRest _searchRest;
         private readonly IValidateFilePathControllerRest _validateRest;
+        private static readonly string[] AllowedExtensions;
 
         public FileController(ITagRest tagRest,
                               IFileRest fileRest,
@@ -32,6 +35,16 @@ namespace FileTaggerMVC.Controllers
             _processRest = processRest;
             _searchRest = searchRest;
             _validateRest = validateRest;
+        }
+
+        static FileController()
+        {
+            AllowedExtensions = null;
+            string configAllowedExtensions = WebConfigurationManager.AppSettings["FileTaggerFileExtensions"];
+            if (!string.IsNullOrEmpty(configAllowedExtensions))
+            {
+                AllowedExtensions = configAllowedExtensions.Split(';');
+            }
         }
 
         // GET: /File/
@@ -57,7 +70,7 @@ namespace FileTaggerMVC.Controllers
                 State = new JsTreeNodeState()
             };
 
-            DirectorySearch(folderPath, root);
+            DirectorySearch(folderPath, root, _fileRest);
             return View("ListFiles", null, JsonConvert.SerializeObject(root));
         }
 
@@ -85,7 +98,7 @@ namespace FileTaggerMVC.Controllers
         // GET: /File/Edit/5
         public ActionResult Edit(int id)
         {
-            BaseFile file = Get((string)Session["fileName"]); 
+            BaseFile file = Get((string)Session["fileName"]);
             FileViewModel fileViewModel = Mapper.Map<BaseFile, FileViewModel>(file);
 
             ViewBag.Action = "Edit";
@@ -148,21 +161,26 @@ namespace FileTaggerMVC.Controllers
             return _processRest.Run(filePath);
         }
 
-        private static void DirectorySearch(string folderPath, JsTreeNodeModel root)
+        private static void DirectorySearch(string folderPath, JsTreeNodeModel root, IFileRest fileRest)
         {
             root.Children = new List<JsTreeNodeModel>();
             root.State.Opened = true;
 
             foreach (string fileName in Directory.GetFiles(folderPath))
             {
-                FileInfo fileInfo = new FileInfo(fileName);
-                root.Children.Add(new JsTreeNodeModel
+                if (AllowedExtensions != null && AllowedExtensions.Any(ext => fileName.EndsWith(ext)))
                 {
-                    Text = fileInfo.Name,
-                    Type = "leaf",
-                    Attr = new JsTreeAttr { DataFilename = fileInfo.FullName },
-                    State = new JsTreeNodeState()
-                });
+                    BaseFile file = fileRest.Get(fileName);
+
+                    FileInfo fileInfo = new FileInfo(fileName);
+                    root.Children.Add(new JsTreeNodeModel
+                    {
+                        Text = fileInfo.Name,
+                        Type = file == null ? "file_new" : "file_added",
+                        Attr = new JsTreeAttr { DataFilename = fileInfo.FullName },
+                        State = new JsTreeNodeState()
+                    });
+                }
             }
 
             foreach (string directoryName in Directory.GetDirectories(folderPath))
@@ -175,7 +193,7 @@ namespace FileTaggerMVC.Controllers
                     State = new JsTreeNodeState()
                 };
 
-                DirectorySearch(directoryName, node);
+                DirectorySearch(directoryName, node, fileRest);
 
                 root.Children.Add(node);
             }
